@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://campital.com/sitemap.xml
