@@ -3,7 +3,7 @@
   <url>
     <loc>https://campital.com/</loc>
     <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
@@ -25,15 +25,15 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://campital.com/terms</loc>
+    <loc>https://campital.com/terms-of-service</loc>
     <lastmod>2026-09-21</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://campital.com/privacy</loc>
+    <loc>https://campital.com/privacy-policy</loc>
     <lastmod>2026-09-21</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
   </url>
 </urlset>
