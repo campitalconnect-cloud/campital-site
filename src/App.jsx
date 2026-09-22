@@ -14,6 +14,8 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { TermsOfService } from './pages/TermsOfService';
 import { NotFound } from './pages/NotFound';
 
+import { CookieConsent } from './components/common/CookieConsent';
+
 export const App = () => {
   return (
     <div className="app-layout">
@@ -34,6 +36,7 @@ export const App = () => {
         </Routes>
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 };
