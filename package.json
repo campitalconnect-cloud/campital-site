@@ -1,6 +1,7 @@
 {
   "name": "campital",
   "version": "1.0.0",
+  "description": "Campital - Institutional Campus Venture Network",
   "private": true,
   "type": "module",
   "scripts": {

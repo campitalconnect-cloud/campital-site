@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
+import { CustomSelect } from './CustomSelect';
 
 export const FormField = ({
   label,
@@ -25,21 +26,16 @@ export const FormField = ({
       )}
 
       {type === 'select' ? (
-        <select
+        <CustomSelect
           id={name}
           name={name}
           value={value}
-          onChange={(e) => onChange(name, e.target.value)}
-          className={`form-select ${error ? 'has-error' : ''}`}
+          onChange={onChange}
+          options={options}
+          placeholder={placeholder}
+          error={error}
           disabled={disabled}
-        >
-          <option value="">{placeholder || 'Select an option...'}</option>
-          {options.map((opt) => (
-            <option key={opt.value || opt} value={opt.value || opt}>
-              {opt.label || opt}
-            </option>
-          ))}
-        </select>
+        />
       ) : type === 'textarea' ? (
         <textarea
           id={name}

@@ -2,11 +2,11 @@
  * Form Validation Utilities
  */
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const validateInquiryForm = (formData, options = {}) => {
   const errors = {};
-  const { requireOrg = true, requirePartnerType = false } = options;
+  const { requireOrg = true, requirePartnerType = false, requireMessage = false } = options;
 
   // Validate Name
   if (!formData.name || !formData.name.trim()) {
@@ -24,7 +24,7 @@ export const validateInquiryForm = (formData, options = {}) => {
 
   // Validate Organization (if required)
   if (requireOrg && (!formData.organization || !formData.organization.trim())) {
-    errors.organization = 'Organization / Startup / University name is required.';
+    errors.organization = 'Startup / Venture / Organization name is required.';
   }
 
   // Validate Partner Type (if required)
@@ -32,15 +32,16 @@ export const validateInquiryForm = (formData, options = {}) => {
     errors.partnerType = 'Please select a partner category.';
   }
 
-  // Validate Message
-  if (!formData.message || !formData.message.trim()) {
-    errors.message = 'Please provide details for your inquiry.';
-  } else if (formData.message.trim().length < 10) {
-    errors.message = 'Message must be at least 10 characters.';
+  // Validate Message (only if explicitly required)
+  if (requireMessage) {
+    if (!formData.message || !formData.message.trim()) {
+      errors.message = 'Please provide brief details.';
+    }
   }
 
   return {
     isValid: Object.keys(errors).length === 0,
-    errors
+    errors,
   };
 };
+

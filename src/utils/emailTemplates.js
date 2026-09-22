@@ -17,11 +17,27 @@ export const buildEmailSubject = (typeKey, { name, organization, partnerType }) 
   return config.subjectTemplate(name, organization);
 };
 
-/**
- * Generate formatted plain-text email body
- */
-export const buildEmailBody = (inquiryTypeLabel, { name, email, organization, partnerType, message }) => {
+export const buildEmailBody = (inquiryTypeLabel, formData) => {
+  const {
+    name,
+    email,
+    organization,
+    partnerType,
+    message,
+    oneSentencePitch,
+    stage,
+    campusAffiliation,
+    foundersBackground,
+    problemAndCustomer,
+    traction,
+    targetRaiseAndUse,
+    priorFunding,
+    productStatus,
+    whyNow,
+  } = formData;
+
   const currentDate = new Date().toISOString().split('T')[0];
+  const isStartup = inquiryTypeLabel?.toLowerCase().includes('startup') || formData.inquiryType === 'startup';
 
   const lines = [
     '========================================',
@@ -36,16 +52,70 @@ export const buildEmailBody = (inquiryTypeLabel, { name, email, organization, pa
     `Date:          ${currentDate}`,
     '',
     '----------------------------------------',
-    'MESSAGE / DETAILS:',
+    'MESSAGE / CORE OVERVIEW:',
     '----------------------------------------',
-    message || '',
+    message || 'N/A',
+  ];
+
+  if (
+    isStartup ||
+    oneSentencePitch ||
+    stage ||
+    campusAffiliation ||
+    foundersBackground ||
+    problemAndCustomer ||
+    traction ||
+    targetRaiseAndUse ||
+    priorFunding ||
+    productStatus ||
+    whyNow
+  ) {
+    lines.push(
+      '',
+      '========================================',
+      'STARTUP SCREENING & EVALUATION DETAILS:',
+      '========================================',
+      '',
+      '1. One-Sentence Pitch:',
+      `   ${oneSentencePitch || 'N/A'}`,
+      '',
+      '2. Venture Stage:',
+      `   ${stage || 'N/A'}`,
+      '',
+      '3. Campus Incubator / University Affiliation:',
+      `   ${campusAffiliation || 'N/A'}`,
+      '',
+      '4. Founding Team & Background/Roles:',
+      `   ${foundersBackground || 'N/A'}`,
+      '',
+      '5. Problem Solving & Target Customer:',
+      `   ${problemAndCustomer || 'N/A'}`,
+      '',
+      '6. Real Traction (Users, Revenue, Pilots, LOIs, Waitlist):',
+      `   ${traction || 'N/A'}`,
+      '',
+      '7. Target Fundraise & Allocation (What it will fund):',
+      `   ${targetRaiseAndUse || 'N/A'}`,
+      '',
+      '8. Prior Funding History (Grants, Angels, Prior Round):',
+      `   ${priorFunding || 'N/A'}`,
+      '',
+      '9. Product Status (Working Product vs Concept/Deck):',
+      `   ${productStatus || 'N/A'}`,
+      '',
+      '10. Why Now (Inflection Point / Market Catalyst):',
+      `   ${whyNow || 'N/A'}`
+    );
+  }
+
+  lines.push(
     '',
     '========================================',
     'Prepared via Campital (Static Web Portal)',
     '========================================'
-  ].filter(Boolean);
+  );
 
-  return lines.join('\n');
+  return lines.filter((line) => line !== null).join('\n');
 };
 
 /**
@@ -63,3 +133,4 @@ export const generateMailtoUrl = ({ recipient = CAMPITAL_CONTACT_EMAIL, subject,
 export const buildClipboardSummary = ({ recipient = CAMPITAL_CONTACT_EMAIL, subject, body }) => {
   return `To: ${recipient}\nSubject: ${subject}\n\n${body}`;
 };
+

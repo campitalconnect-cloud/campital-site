@@ -10,6 +10,17 @@ export const useEmailInquiry = (defaultType = 'general', validationOptions = {})
     organization: '',
     partnerType: '',
     message: '',
+    // Startup deep-dive screening questions
+    oneSentencePitch: '',
+    stage: '',
+    campusAffiliation: '',
+    foundersBackground: '',
+    problemAndCustomer: '',
+    traction: '',
+    targetRaiseAndUse: '',
+    priorFunding: '',
+    productStatus: '',
+    whyNow: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -46,7 +57,7 @@ export const useEmailInquiry = (defaultType = 'general', validationOptions = {})
     }
 
     const subject = buildEmailSubject(inquiryTypeKey, formData);
-    const body = buildEmailBody(inquiryTypeLabel || inquiryTypeKey, formData);
+    const body = buildEmailBody(inquiryTypeLabel || inquiryTypeKey, { ...formData, inquiryType: inquiryTypeKey });
     const mailtoUrl = generateMailtoUrl({ recipient: CAMPITAL_CONTACT_EMAIL, subject, body });
     const clipboardText = buildClipboardSummary({ recipient: CAMPITAL_CONTACT_EMAIL, subject, body });
 
@@ -66,14 +77,20 @@ export const useEmailInquiry = (defaultType = 'general', validationOptions = {})
     const draft = prepareDraft(inquiryTypeKey, inquiryTypeLabel);
     if (!draft) return false;
 
-    // Trigger user email client
+    // Trigger user email client via hidden anchor to prevent page reload interruptions
     try {
-      window.location.href = draft.mailtoUrl;
+      const link = document.createElement('a');
+      link.href = draft.mailtoUrl;
+      link.target = '_top';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       setStatus('draft_opened');
-      setStatusMessage('Your email draft is ready. Please review and send it from your email application.');
+      setStatusMessage('Email draft opened in your mail app. Review and hit send!');
       return true;
     } catch (err) {
       console.warn('Could not launch mailto automatically:', err);
+      // Fallback to clipboard & modal
       setShowManualCopyModal(true);
       return false;
     }
@@ -83,19 +100,41 @@ export const useEmailInquiry = (defaultType = 'general', validationOptions = {})
     const draft = prepareDraft(inquiryTypeKey, inquiryTypeLabel);
     if (!draft) return false;
 
+    let copied = false;
     try {
       if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(draft.clipboardText);
-        setStatus('copied');
-        setStatusMessage('Email details copied. Paste them into your preferred email application and send.');
-        return true;
-      } else {
-        setShowManualCopyModal(true);
-        return false;
+        copied = true;
       }
     } catch (err) {
-      console.warn('Clipboard write failed:', err);
+      console.warn('navigator.clipboard failed, attempting execCommand fallback:', err);
+    }
+
+    if (!copied) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = draft.clipboardText;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        copied = document.execCommand('copy');
+        document.body.removeChild(textarea);
+      } catch (e) {
+        console.warn('execCommand fallback failed too:', e);
+      }
+    }
+
+    if (copied) {
+      setStatus('copied');
+      setStatusMessage('✓ Application details copied to clipboard! Paste directly into your email.');
+      return true;
+    } else {
       setShowManualCopyModal(true);
+      setStatus('copied');
+      setStatusMessage('Please copy the details from the box below.');
       return false;
     }
   }, [defaultType, prepareDraft]);
@@ -107,6 +146,16 @@ export const useEmailInquiry = (defaultType = 'general', validationOptions = {})
       organization: '',
       partnerType: '',
       message: '',
+      oneSentencePitch: '',
+      stage: '',
+      campusAffiliation: '',
+      foundersBackground: '',
+      problemAndCustomer: '',
+      traction: '',
+      targetRaiseAndUse: '',
+      priorFunding: '',
+      productStatus: '',
+      whyNow: '',
     });
     setErrors({});
     setStatus('idle');
