@@ -95,8 +95,13 @@
   --transition-normal: 250ms cubic-bezier(0.16, 1, 0.3, 1);
   --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Z-Index */
-  --z-header: 1000;
-  --z-modal: 2000;
-  --z-toast: 3000;
+  /* Z-Index Hierarchy */
+  --z-base: 1;
+  --z-sticky: 50;
+  --z-header: 100;
+  --z-dropdown: 500;
+  --z-modal-backdrop: 99990;
+  --z-modal: 99999;
+  --z-toast: 100000;
 }
+

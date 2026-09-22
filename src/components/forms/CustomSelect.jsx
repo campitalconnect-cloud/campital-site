@@ -36,20 +36,25 @@ export const CustomSelect = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
-  const selectedOption = options.find((opt) => {
-    const optVal = typeof opt === 'object' ? opt.value : opt;
+  const safeOptions = Array.isArray(options) ? options : [];
+
+  const selectedOption = safeOptions.find((opt) => {
+    if (!opt) return false;
+    const optVal = typeof opt === 'object' && opt !== null ? opt.value : opt;
     return optVal === value;
   });
 
   const displayLabel = selectedOption
-    ? typeof selectedOption === 'object'
+    ? typeof selectedOption === 'object' && selectedOption !== null
       ? selectedOption.label
       : selectedOption
     : placeholder;
 
   const handleSelect = (opt) => {
-    const optVal = typeof opt === 'object' ? opt.value : opt;
-    onChange(name, optVal);
+    const optVal = typeof opt === 'object' && opt !== null ? opt.value : opt;
+    if (typeof onChange === 'function') {
+      onChange(name, optVal);
+    }
     setIsOpen(false);
   };
 
@@ -126,9 +131,9 @@ export const CustomSelect = ({
             animation: 'dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          {options.map((opt, index) => {
-            const optVal = typeof opt === 'object' ? opt.value : opt;
-            const optLabel = typeof opt === 'object' ? opt.label : opt;
+          {safeOptions.map((opt, index) => {
+            const optVal = typeof opt === 'object' && opt !== null ? opt.value : opt;
+            const optLabel = typeof opt === 'object' && opt !== null ? opt.label : opt;
             const isSelected = optVal === value;
 
             return (

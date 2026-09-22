@@ -42,22 +42,47 @@ export class ErrorBoundary extends React.Component {
             <p style={{ color: '#475569', marginBottom: '2rem', fontSize: '1rem', lineHeight: '1.6' }}>
               An unexpected render issue occurred. Click the button below to reload the platform.
             </p>
-            <button
-              onClick={() => window.location.reload()}
-              style={{
-                padding: '0.85rem 1.75rem',
-                borderRadius: '9999px',
-                background: 'linear-gradient(135deg, #0052ff 0%, #0066ff 100%)',
-                color: '#ffffff',
-                border: 'none',
-                fontWeight: '700',
-                fontSize: '0.95rem',
-                cursor: 'pointer',
-                boxShadow: '0 4px 16px rgba(0, 102, 255, 0.3)'
-              }}
-            >
-              Reload Page
-            </button>
+            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+              <button
+                onClick={() => this.setState({ hasError: false, error: null })}
+                style={{
+                  padding: '0.85rem 1.5rem',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(135deg, #0052ff 0%, #0066ff 100%)',
+                  color: '#ffffff',
+                  border: 'none',
+                  fontWeight: '700',
+                  fontSize: '0.95rem',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 16px rgba(0, 102, 255, 0.3)'
+                }}
+              >
+                Try Again
+              </button>
+              <button
+                onClick={() => window.location.href = '/'}
+                style={{
+                  padding: '0.85rem 1.5rem',
+                  borderRadius: '9999px',
+                  background: '#f1f5f9',
+                  color: '#334155',
+                  border: '1px solid #cbd5e1',
+                  fontWeight: '700',
+                  fontSize: '0.95rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Return Home
+              </button>
+            </div>
+            {this.state.error && (
+              <details style={{ marginTop: '1.5rem', textAlign: 'left', fontSize: '0.8rem', color: '#64748b' }}>
+                <summary style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>Technical details</summary>
+                <pre style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '8px', overflowX: 'auto', whiteSpace: 'pre-wrap' }}>
+                  {this.state.error.toString()}
+                </pre>
+              </details>
+            )}
           </div>
         </div>
       );

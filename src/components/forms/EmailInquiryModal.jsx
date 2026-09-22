@@ -37,7 +37,7 @@ export const EmailInquiryModal = ({
   subtitle = 'Prepare your structured application draft to connect with the Campital evaluation team.',
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [step1ErrorMsg, setStep1ErrorMsg] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
   const isStartupTrack = inquiryType === 'startup';
 
   const {
@@ -53,30 +53,56 @@ export const EmailInquiryModal = ({
     resetForm,
   } = useEmailInquiry(inquiryType, { requireOrg: true, requireMessage: false });
 
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleClose = () => {
     resetForm();
     setCurrentStep(1);
-    setStep1ErrorMsg('');
-    onClose();
+    setFieldErrors({});
+    if (typeof onClose === 'function') {
+      onClose();
+    }
+  };
+
+  const handleFieldChange = (field, value) => {
+    handleChange(field, value);
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const validateStep1 = () => {
+    const errs = {};
+    if (!formData.name || !formData.name.trim()) {
+      errs.name = 'Full name is required.';
+    } else if (formData.name.trim().length < 2) {
+      errs.name = 'Name must be at least 2 characters.';
+    }
+
+    if (!formData.email || !formData.email.trim()) {
+      errs.email = 'Email address is required.';
+    } else if (!EMAIL_REGEX.test(formData.email.trim())) {
+      errs.email = 'Please enter a valid email address (e.g. founder@university.edu).';
+    }
+
+    if (!formData.organization || !formData.organization.trim()) {
+      errs.organization = isStartupTrack ? 'Startup / Venture name is required.' : 'Organization name is required.';
+    }
+
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
   };
 
   const handleNextStep = (e) => {
     if (e) e.preventDefault();
-    // Validate Step 1 basics
-    if (!formData.name || !formData.name.trim()) {
-      setStep1ErrorMsg('Please enter your full name before proceeding.');
-      return;
-    }
-    if (!formData.email || !formData.email.trim()) {
-      setStep1ErrorMsg('Please enter your email address before proceeding.');
-      return;
-    }
-    if (!formData.organization || !formData.organization.trim()) {
-      setStep1ErrorMsg('Please enter your Startup / Venture name.');
+    if (!validateStep1()) {
       return;
     }
 
-    setStep1ErrorMsg('');
     setCurrentStep(2);
 
     // Scroll modal content to top
@@ -88,7 +114,6 @@ export const EmailInquiryModal = ({
 
   const handlePrevStep = () => {
     setCurrentStep(1);
-    setStep1ErrorMsg('');
     setTimeout(() => {
       const modalBox = document.querySelector('.modal-content');
       if (modalBox) modalBox.scrollTop = 0;
@@ -185,15 +210,15 @@ export const EmailInquiryModal = ({
       {/* STEP 1: BASIC DETAILS (ONE BY ONE) */}
       {/* ========================================================= */}
       {(!isStartupTrack || currentStep === 1) && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
           <FormField
             label="Your Full Name"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={handleFieldChange}
             placeholder="e.g. Saran Kumar"
             required
-            error={errors.name}
+            error={fieldErrors.name || errors.name}
           />
 
           <FormField
@@ -201,20 +226,27 @@ export const EmailInquiryModal = ({
             name="email"
             type="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={handleFieldChange}
             placeholder="founder@university.edu"
             required
-            error={errors.email}
+            error={fieldErrors.email || errors.email}
+            helper={
+              formData.email && !fieldErrors.email && EMAIL_REGEX.test(formData.email) ? (
+                <span style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.8rem' }}>
+                  ✓ Valid email address
+                </span>
+              ) : null
+            }
           />
 
           <FormField
             label={isStartupTrack ? 'Startup / Venture Name' : 'Organization / University Name'}
             name="organization"
             value={formData.organization}
-            onChange={handleChange}
+            onChange={handleFieldChange}
             placeholder={isStartupTrack ? 'e.g. QuantumPulse Labs' : 'e.g. NextGen Robotics'}
             required
-            error={errors.organization}
+            error={fieldErrors.organization || errors.organization}
           />
 
           <FormField
@@ -222,17 +254,11 @@ export const EmailInquiryModal = ({
             name="message"
             type="textarea"
             value={formData.message}
-            onChange={handleChange}
+            onChange={handleFieldChange}
             placeholder="Briefly introduce your venture or goals..."
             rows={3}
             error={errors.message}
           />
-
-          {step1ErrorMsg && (
-            <div style={{ padding: '0.65rem 0.85rem', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', color: '#b91c1c', fontSize: '0.84rem', fontWeight: '500' }}>
-              {step1ErrorMsg}
-            </div>
-          )}
         </div>
       )}
 
