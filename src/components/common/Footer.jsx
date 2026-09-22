@@ -127,6 +127,16 @@ export const Footer = () => {
                   For Incubators
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/you-are?persona=sme"
+                  style={{ color: '#cbd5e1', fontSize: '0.92rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
+                >
+                  For SMEs
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -242,8 +252,16 @@ export const Footer = () => {
           }}
           className="footer-bottom"
         >
-          <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
-            All rights reserved — {currentYear} © Campital Platform
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
+              All rights reserved — {currentYear} © Campital Platform
+            </span>
+            <Link to="/privacy-policy" style={{ fontSize: '0.82rem', color: '#94a3b8', textDecoration: 'none' }}>
+              Privacy Policy
+            </Link>
+            <Link to="/terms-of-service" style={{ fontSize: '0.82rem', color: '#94a3b8', textDecoration: 'none' }}>
+              Terms of Service
+            </Link>
           </div>
 
           {/* Social Icons */}
