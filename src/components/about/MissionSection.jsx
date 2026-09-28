@@ -73,6 +73,27 @@ export const MissionSection = () => {
               subtitle={ABOUT_MISSION_DATA.lead}
             />
 
+            {/* Sector-Agnostic Thesis Callout */}
+            {ABOUT_MISSION_DATA.sectorAgnosticThesis && (
+              <div
+                style={{
+                  backgroundColor: 'rgba(0, 102, 255, 0.05)',
+                  border: '1.5px solid rgba(0, 102, 255, 0.25)',
+                  borderRadius: '14px',
+                  padding: '1.15rem 1.35rem',
+                  marginBottom: '1.5rem',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '0.75rem',
+                }}
+              >
+                <Target size={20} style={{ color: '#0066ff', flexShrink: 0, marginTop: '2px' }} />
+                <p style={{ margin: 0, fontSize: '0.94rem', color: '#0052ff', fontWeight: '600', lineHeight: '1.55' }}>
+                  {ABOUT_MISSION_DATA.sectorAgnosticThesis}
+                </p>
+              </div>
+            )}
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
               {ABOUT_MISSION_DATA.paragraphs.map((p, idx) => (
                 <p
@@ -89,6 +110,7 @@ export const MissionSection = () => {
               ))}
             </div>
           </div>
+
 
           {/* Right: The 3 Disconnects and the Campital Solution */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>

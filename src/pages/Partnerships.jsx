@@ -100,11 +100,77 @@ export const Partnerships = () => {
       {/* B. Partner Categories */}
       <PartnerCategories onSelectCategory={handleSelectCategory} />
 
+      {/* Sponsor a Challenge Track Spotlight */}
+      <section className="section" style={{ backgroundColor: '#f8fafc', padding: '4rem 0', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
+        <Container>
+          <div
+            style={{
+              maxWidth: '960px',
+              margin: '0 auto',
+              backgroundColor: 'linear-gradient(135deg, #090d1a 0%, #0052ff 100%)',
+              background: 'linear-gradient(135deg, #0a1128 0%, #173887 60%, #0052ff 100%)',
+              borderRadius: '24px',
+              padding: 'clamp(2rem, 4vw, 3.5rem)',
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '2rem',
+              flexWrap: 'wrap',
+              boxShadow: '0 20px 40px rgba(0, 82, 255, 0.2)',
+            }}
+          >
+            <div style={{ maxWidth: '560px' }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.3rem 0.8rem',
+                  borderRadius: '9999px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                  color: '#38bdf8',
+                  fontSize: '0.78rem',
+                  fontWeight: '800',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                  marginBottom: '1rem',
+                }}
+              >
+                <Sparkles size={14} />
+                <span>Enterprise Innovation</span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: '800', color: '#ffffff', marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
+                Sponsor a Challenge Track
+              </h2>
+              <p style={{ color: '#cbd5e1', fontSize: '1rem', lineHeight: '1.6', margin: 0 }}>
+                Define industry-specific problem briefs, mentor top student engineering teams across our partner campus network, and secure first-look rights to high-potential spin-offs.
+              </p>
+            </div>
+            <Button
+              variant="primary"
+              onClick={() => handleSelectCategory('Corporate-Ecosystem')}
+              style={{
+                backgroundColor: '#ffffff',
+                color: '#0052ff',
+                borderColor: '#ffffff',
+                fontWeight: '800',
+                padding: '0.85rem 1.75rem',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Sponsor a Track
+            </Button>
+          </div>
+        </Container>
+      </section>
+
       {/* C. Partner Case Study / Placeholder */}
       <PartnerCaseStudy />
 
       {/* E. How to Partner (5 Steps) */}
       <PartnerProcess />
+
 
       {/* F. Partnership Inquiry Form */}
       <section className="section" id="inquiry-section">

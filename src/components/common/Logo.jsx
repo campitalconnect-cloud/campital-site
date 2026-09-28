@@ -2,16 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export const Logo = ({ size = 'md', isLink = true, light = false, className = '' }) => {
-  // Height map based on size
+  // Refined modern height map for clean proportions
   const heightMap = {
+    xs: '32px',
     sm: '40px',
-    md: '54px',
-    lg: '68px',
-    xl: '84px',
+    md: '48px',
+    lg: '60px',
+    xl: '76px',
   };
 
   const logoSrc = light ? '/images/campital_logo_dark.png' : '/images/campital_logo.png';
-  const logoHeight = heightMap[size] || '54px';
+  const logoHeight = heightMap[size] || '48px';
 
   const content = (
     <div 
@@ -20,7 +21,7 @@ export const Logo = ({ size = 'md', isLink = true, light = false, className = ''
         display: 'inline-flex',
         alignItems: 'center',
         cursor: isLink ? 'pointer' : 'default',
-        transition: 'transform 0.2s ease, opacity 0.2s ease',
+        transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease',
       }}
     >
       <img
@@ -31,6 +32,7 @@ export const Logo = ({ size = 'md', isLink = true, light = false, className = ''
           width: 'auto',
           objectFit: 'contain',
           display: 'block',
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           filter: light ? 'drop-shadow(0 2px 10px rgba(0, 102, 255, 0.2))' : 'none',
         }}
         onError={(e) => {
@@ -46,7 +48,17 @@ export const Logo = ({ size = 'md', isLink = true, light = false, className = ''
   if (!isLink) return content;
 
   return (
-    <Link to="/" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }} aria-label="Campital Home">
+    <Link 
+      to="/" 
+      style={{ 
+        textDecoration: 'none', 
+        display: 'inline-flex', 
+        alignItems: 'center',
+        outline: 'none',
+      }} 
+      aria-label="Campital Home"
+      className="campital-logo-link"
+    >
       {content}
     </Link>
   );

@@ -6,6 +6,7 @@ export const ABOUT_MISSION_DATA = {
   eyebrow: 'Our Purpose',
   headline: 'Closing the loop between campus innovation and real capital.',
   lead: 'Incubators find founders. Investors have capital. Neither had a way to reach the other.',
+  sectorAgnosticThesis: "We're sector-agnostic by design. Great companies come out of every lab, hostel room and workshop. We don't bet on industries — we build the pipeline that finds the ones ready for capital.",
   paragraphs: [
     'Campus incubators had student, alumni, and faculty founders, but no compliant route to real equity funding, only grants, which are finite and cyclical.',
     'Capital providers had real money and accredited investors ready to deploy it, but no reliable way to find fundworthy companies at scale.',
@@ -68,22 +69,25 @@ export const ABOUT_TEAM_DATA = {
   members: [
     {
       name: 'Saran Kumar',
-      role: 'Co-Founder',
-      image: null,
+      role: 'Founder & CEO',
+      image: '/images/saran_kumar.jpg',
       bio: 'Focused on ecosystem architecture, campus incubator partnerships, and venture pipeline acceleration.',
       initials: 'SK',
+      linkedin: 'https://www.linkedin.com/in/0xsaran/',
       focusAreas: ['Ecosystem Architecture', 'Campus Incubators', 'Pipeline Strategy']
     },
     {
       name: 'Sandeep Gupta',
       role: 'Co-Founder',
-      image: null,
+      image: '/images/sandeep_gupta.jpg',
       bio: 'Focused on capital network syndication, compliant investment routing, and founder readiness evaluation.',
       initials: 'SG',
+      linkedin: 'https://www.linkedin.com/in/sandgupta/',
       focusAreas: ['Capital Syndication', 'Compliant Routes', 'Investor Relations']
     }
   ]
 };
+
 
 export const ABOUT_VALUES_DATA = [
   {
@@ -105,12 +109,18 @@ export const ABOUT_VALUES_DATA = [
     title: 'Campus-first, not campus-only.',
     description: 'Built for student founders, open to SMEs.',
     icon: 'Globe'
+  },
+  {
+    title: 'Merit over sector.',
+    description: 'Every company gets the same evaluation, whatever it builds.',
+    icon: 'Target'
   }
 ];
 
 export const ABOUT_CTA = {
   headline: 'Find your place in the Campital pipeline.',
-  subheadline: 'Whether you are building on campus, operating an SME, or running an incubator, see where you fit.',
+  subheadline: 'Whether you are building on campus, operating an SME, running an incubator, or commercializing research.',
   buttonText: 'See where you fit → You Are',
   path: '/you-are'
 };
+

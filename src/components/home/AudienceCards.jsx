@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Rocket, Building2, Briefcase, ArrowUpRight } from 'lucide-react';
+import { Rocket, Building2, Briefcase, GraduationCap, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Container } from '../common/Container';
 import { SectionHeading } from '../common/SectionHeading';
@@ -13,6 +13,7 @@ const iconMap = {
   Rocket: Rocket,
   Building2: Building2,
   Briefcase: Briefcase,
+  GraduationCap: GraduationCap,
 };
 
 export const AudienceCards = () => {
@@ -22,15 +23,16 @@ export const AudienceCards = () => {
     <section 
       className="section"
       style={{
-        backgroundColor: '#ffffff',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        backgroundColor: '#f8fafc',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
+        borderBottom: '1px solid #e2e8f0',
       }}
     >
       <Container>
         <SectionHeading
           eyebrow="You Are"
-          title="Designed for Campus Founders, Incubators, and SMEs"
+          title="Designed for Campus Founders, Incubators, SMEs & Researchers"
           subtitle="Select your track to explore tailored evaluation criteria, partnership benefits, and funding pipelines."
           centered
         />
@@ -38,8 +40,8 @@ export const AudienceCards = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '2rem',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '1.5rem',
             marginTop: '3.5rem',
           }}
           className="audience-grid"
@@ -131,7 +133,12 @@ export const AudienceCards = () => {
       </Container>
 
       <style>{`
-        @media (max-width: 900px) {
+        @media (max-width: 1080px) {
+          .audience-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 640px) {
           .audience-grid {
             grid-template-columns: 1fr !important;
           }
@@ -140,3 +147,4 @@ export const AudienceCards = () => {
     </section>
   );
 };
+

@@ -9,7 +9,10 @@ import { Animated3DBackground } from './components/common/Animated3DBackground';
 import { Home } from './pages/Home';
 import { AboutUs } from './pages/AboutUs';
 import { YouAre } from './pages/YouAre';
+import { HowWeFund } from './pages/HowWeFund';
+import { ProgramsEvents } from './pages/ProgramsEvents';
 import { Partnerships } from './pages/Partnerships';
+import { Insights } from './pages/Insights';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { TermsOfService } from './pages/TermsOfService';
 import { NotFound } from './pages/NotFound';
@@ -29,7 +32,10 @@ export const App = () => {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/team" element={<AboutUs />} />
           <Route path="/you-are" element={<YouAre />} />
+          <Route path="/how-we-fund" element={<HowWeFund />} />
+          <Route path="/programs-events" element={<ProgramsEvents />} />
           <Route path="/partnerships" element={<Partnerships />} />
+          <Route path="/insights" element={<Insights />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="*" element={<NotFound />} />
@@ -40,3 +46,4 @@ export const App = () => {
     </div>
   );
 };
+

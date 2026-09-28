@@ -4,7 +4,7 @@ import { FOOTER_LINKS } from '../../config/navigation';
 import { SITE_CONFIG } from '../../config/siteConfig';
 import { Logo } from './Logo';
 import { Container } from './Container';
-import { Mail, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Mail, ArrowRight, CheckCircle2, MapPin } from 'lucide-react';
 
 const SocialIcon = ({ type }) => {
   if (type === 'linkedin') {
@@ -59,9 +59,9 @@ export const Footer = () => {
   return (
     <footer
       style={{
-        backgroundColor: '#11141c',
+        backgroundColor: '#090d1a',
         color: '#ffffff',
-        borderTop: '1px solid #1e2433',
+        borderTop: '1px solid #1e293b',
         paddingTop: '5rem',
         paddingBottom: '2.5rem',
         position: 'relative',
@@ -72,8 +72,8 @@ export const Footer = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1.4fr 0.9fr 1.1fr 1.4fr',
-            gap: '3rem',
+            gridTemplateColumns: '1.4fr 0.9fr 1fr 0.9fr 1.3fr',
+            gap: '2.5rem',
             marginBottom: '4rem',
           }}
           className="footer-grid"
@@ -81,113 +81,148 @@ export const Footer = () => {
           {/* Column 1: Brand & Positioning */}
           <div>
             <Logo size="lg" light />
-            <p style={{ marginTop: '1.5rem', marginBottom: '1.25rem', color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.65', maxWidth: '330px' }}>
-              Campital connects campus-born startups, campus incubators, and SMEs to structured, compliant institutional capital pipelines.
+            <p style={{ marginTop: '1.25rem', marginBottom: '1.25rem', color: '#94a3b8', fontSize: '0.88rem', lineHeight: '1.65', maxWidth: '300px' }}>
+              Campital closes the campus capital gap — connecting high-potential student ventures, incubators, and SMEs to structured institutional funding.
             </p>
-            <p style={{ color: '#ffffff', fontWeight: '800', fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
-              Fueling Tomorrow's Founders, Today.
-            </p>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', padding: '0.3rem 0.75rem', borderRadius: '9999px', backgroundColor: 'rgba(0, 102, 255, 0.15)', border: '1px solid rgba(0, 102, 255, 0.3)', color: '#38bdf8', fontSize: '0.78rem', fontWeight: '700' }}>
+              <span>Campus + Capital = Campital</span>
+            </div>
           </div>
 
-          {/* Column 2: Sitemap */}
+          {/* Column 2: Platform */}
           <div>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: '800', color: '#38bdf8', marginBottom: '1.35rem', letterSpacing: '-0.01em' }}>
-              Sitemap
+            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              Platform
             </h4>
-            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {FOOTER_LINKS.navigation.map((link) => (
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', listStyle: 'none', padding: 0, margin: 0 }}>
+              {FOOTER_LINKS.platform.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    style={{ color: '#cbd5e1', fontSize: '0.92rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
+                    style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/you-are?persona=startup"
-                  style={{ color: '#cbd5e1', fontSize: '0.92rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
-                >
-                  For Startups
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/you-are?persona=incubator"
-                  style={{ color: '#cbd5e1', fontSize: '0.92rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
-                >
-                  For Incubators
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/you-are?persona=sme"
-                  style={{ color: '#cbd5e1', fontSize: '0.92rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
-                >
-                  For SMEs
-                </Link>
-              </li>
             </ul>
           </div>
 
-          {/* Column 3: Office & Hub */}
+          {/* Column 3: Pathways */}
           <div>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: '800', color: '#38bdf8', marginBottom: '1.35rem', letterSpacing: '-0.01em' }}>
-              Office
+            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              Pathways
             </h4>
-            <div style={{ color: '#cbd5e1', fontSize: '0.9rem', lineHeight: '1.7' }}>
-              <strong style={{ color: '#ffffff', display: 'block', marginBottom: '0.35rem' }}>Campital Innovation Hub</strong>
-              Campus Ecosystem & Capital Bridge<br />
-              Koramangala 4th Block,<br />
-              Bengaluru, Karnataka 560034<br />
-              India
-            </div>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', listStyle: 'none', padding: 0, margin: 0 }}>
+              {FOOTER_LINKS.pathways.map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Column 4: Newsletter & Contact */}
+          {/* Column 4: Company */}
           <div>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: '800', color: '#38bdf8', marginBottom: '1.35rem', letterSpacing: '-0.01em' }}>
-              Subscribe to our newsletter
+            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              Company
             </h4>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', listStyle: 'none', padding: 0, margin: 0 }}>
+              {FOOTER_LINKS.company.map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 5: Office & Brief */}
+          <div>
+            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              Innovation Hub
+            </h4>
+            <div style={{ color: '#94a3b8', fontSize: '0.86rem', lineHeight: '1.6', marginBottom: '0.85rem' }}>
+              <strong style={{ color: '#ffffff', display: 'block', marginBottom: '0.2rem' }}>Campital Innovation Hub</strong>
+              Bhive, Ground Floor, JBR Tech Park,<br />
+              Whitefield, Bengaluru,<br />
+              Karnataka 560066, India
+            </div>
+
+            {/* Find us on Map Link */}
+            <div style={{ marginBottom: '1.15rem' }}>
+              <a
+                href="https://share.google/wSi3xfFpx3vEyw4Li"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  color: '#38bdf8',
+                  fontSize: '0.84rem',
+                  fontWeight: '700',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s ease',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#38bdf8')}
+              >
+                <MapPin size={15} />
+                <span>Find us on Google Maps ↗</span>
+              </a>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
+              <Mail size={15} color="#38bdf8" />
+              <a href="mailto:team@campital.in" style={{ color: '#38bdf8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: '700' }}>
+                team@campital.in
+              </a>
+            </div>
 
             {isSubscribed ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1rem', backgroundColor: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981', borderRadius: '9999px', color: '#34d399', fontSize: '0.875rem' }}>
-                <CheckCircle2 size={16} />
-                <span>Thank you for subscribing!</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.65rem 0.85rem', backgroundColor: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981', borderRadius: '10px', color: '#34d399', fontSize: '0.82rem' }}>
+                <CheckCircle2 size={15} />
+                <span>Subscribed to The Brief!</span>
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} style={{ marginBottom: '1.5rem' }}>
+              <form onSubmit={handleSubscribe}>
                 <div 
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    backgroundColor: '#1c2233',
-                    border: '1px solid #2d374d',
-                    borderRadius: '9999px',
-                    padding: '0.3rem 0.35rem 0.3rem 1.1rem',
+                    backgroundColor: '#161f38',
+                    border: '1px solid #293556',
+                    borderRadius: '10px',
+                    padding: '0.25rem 0.3rem 0.25rem 0.85rem',
                   }}
                 >
                   <input
                     type="email"
                     required
-                    placeholder="Enter your email"
+                    placeholder="Work email for Brief..."
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
                     style={{
                       background: 'transparent',
                       border: 'none',
                       color: '#ffffff',
-                      fontSize: '0.88rem',
+                      fontSize: '0.82rem',
                       outline: 'none',
                       width: '100%',
                       fontFamily: 'inherit',
@@ -196,48 +231,30 @@ export const Footer = () => {
                   <button
                     type="submit"
                     style={{
-                      backgroundColor: '#272f44',
+                      backgroundColor: '#0066ff',
                       color: '#ffffff',
-                      border: '1px solid #3e4c6d',
-                      borderRadius: '9999px',
-                      padding: '0.5rem 1rem',
-                      fontSize: '0.82rem',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '0.45rem 0.75rem',
+                      fontSize: '0.78rem',
                       fontWeight: '700',
                       cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '0.4rem',
+                      gap: '0.3rem',
                       whiteSpace: 'nowrap',
                       transition: 'all 0.2s ease',
                     }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#0066ff';
-                      e.currentTarget.style.borderColor = '#0066ff';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#272f44';
-                      e.currentTarget.style.borderColor = '#3e4c6d';
-                    }}
                   >
-                    <span>Subscribe</span>
-                    <ArrowRight size={14} />
+                    <span>Join</span>
+                    <ArrowRight size={13} />
                   </button>
                 </div>
               </form>
             )}
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94a3b8', fontSize: '0.88rem', marginBottom: '0.75rem' }}>
-              <Mail size={15} color="#38bdf8" />
-              <a href="mailto:team@campital.in" style={{ color: '#ffffff', textDecoration: 'none', fontWeight: '600' }}>
-                team@campital.in
-              </a>
-            </div>
-
-            <p style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
-              Campital operates compliant institutional pipeline introductions with accredited angel networks and funds.
-            </p>
           </div>
         </div>
+
 
         {/* Bottom Bar: Copyright, Legal & Socials */}
         <div

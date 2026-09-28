@@ -7,39 +7,30 @@ import { Sparkles, ArrowDown } from 'lucide-react';
 
 const PROCESS_STEPS = [
   {
-    id: 'ep',
+    id: 'source',
     num: '01',
-    title: 'Elevator Pitch & Sourcing',
-    days: 'Days 1–5',
+    title: 'Source',
+    days: 'Campus & SME Origination',
     color: '#0a1128',
-    desc: 'Campus incubators and student founders submit concise decks and traction data through our standardized portal.',
+    desc: 'We source high-potential startups from university incubators, and SMEs directly.',
     width: '100%',
   },
   {
-    id: 'fm',
+    id: 'evaluate',
     num: '02',
-    title: 'First Evaluation & Screening',
-    days: 'Days 6–10',
-    color: '#173887',
-    desc: 'Our investment associates review founder problem statements, technical defensibility, and market timing.',
-    width: '90%',
-  },
-  {
-    id: 'sm',
-    num: '03',
-    title: 'Deep Dive & Diligence',
-    days: 'Days 11–16',
+    title: 'Evaluate',
+    days: 'Discovery & Scoring',
     color: '#0052ff',
-    desc: 'Structured evaluation sessions examining IP clarity, cap table structure, and initial user validation.',
-    width: '80%',
+    desc: 'Hackathons, demo days and pitch competitions narrow the field to companies that are actually investment-ready.',
+    width: '85%',
   },
   {
-    id: 'ic',
-    num: '04',
-    title: 'Investment Committee (IC)',
-    days: 'Days 17–21',
+    id: 'fund',
+    num: '03',
+    title: 'Fund',
+    days: 'Compliant Investment Route',
     color: '#0066ff',
-    desc: 'High-conviction founders present directly to the committee for term sheet structuring and allocation.',
+    desc: 'Vetted companies move into a compliant route to real capital — not another grant.',
     width: '70%',
   },
 ];
@@ -51,18 +42,19 @@ export const HowItWorks = () => {
     <section 
       className="section"
       style={{
-        backgroundColor: '#f8fafc',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        backgroundColor: '#ffffff',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
         position: 'relative',
         overflow: 'hidden',
+        borderBottom: '1px solid #e2e8f0',
       }}
     >
       <Container>
         <SectionHeading
-          eyebrow="How It Works"
-          title="Quick, Transparent, Objective 4-Step Process"
-          subtitle="A predictable, founder-friendly evaluation funnel designed to take promising campus ideas from application to institutional investment readiness in record time."
+          eyebrow="How the pipeline works"
+          title="Three Rigorous Steps from Discovery to Term Sheet"
+          subtitle="A transparent, outcome-oriented evaluation engine designed to take promising ventures into real institutional capital."
           centered
         />
 

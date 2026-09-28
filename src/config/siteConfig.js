@@ -14,15 +14,24 @@ export const SITE_CONFIG = {
   
   // Note: Placeholders are kept configurable and clear to prevent fabricating unapproved info
   company: {
-    legalName: 'Campital Inc. (Draft pending legal finalization)',
-    headquarters: 'Campus Innovation Network',
+    legalName: 'Campital',
+    headquarters: 'Bhive, Ground Floor, JBR Tech Park, Whitefield, Bengaluru, Karnataka 560066',
+    address: {
+      line1: 'Bhive, Ground Floor, JBR Tech Park',
+      line2: 'Whitefield, Bengaluru',
+      state: 'Karnataka',
+      postalCode: '560066',
+      country: 'India'
+    },
+    mapUrl: 'https://share.google/wSi3xfFpx3vEyw4Li',
     contactNotice: 'For inquiries, use the structured email submission or partner form.'
   },
 
   social: {
-    linkedin: 'https://linkedin.com/company/campital', // Configurable placeholder
-    twitter: 'https://twitter.com/campital',          // Configurable placeholder
+    linkedin: 'https://www.linkedin.com/company/campital',
+    twitter: 'https://twitter.com/campital',
   },
+
 
   disclaimer: 'Campital is a startup discovery, evaluation, and capital-introduction platform. Campital is not a bank, grant provider, crowdfunding portal, or licensed broker-dealer, and does not guarantee investment capital or commercial outcomes.'
 };

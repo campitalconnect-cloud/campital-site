@@ -2,12 +2,15 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const PAGE_TITLES = {
-  '/': 'Campital — Official Website | Campus + Capital = Campital | Student Startup Funding Pipeline',
-  '/you-are': 'Explore Pathways (Startups, Incubators, SMEs) | Campital',
-  '/partnerships': 'Strategic Institutional Partnerships | Campital',
-  '/about-us': 'About Us & Mission | Campital Platform',
-  '/about': 'About Us & Mission | Campital Platform',
-  '/team': 'Leadership & Advisory | Campital Platform',
+  '/': 'Campital — Campus + Capital = Campital | Student Startup & SME Funding Pipeline',
+  '/you-are': 'Find Your Place in Campital (Startups, Incubators, SMEs, Researchers) | Campital',
+  '/how-we-fund': 'How We Fund — Funding Mechanics & Compliant Capital Routes | Campital',
+  '/programs-events': 'Programs & Events — Hackathons, Demo Days & Pitch Competitions | Campital',
+  '/partnerships': 'Strategic Institutional & Ecosystem Partnerships | Campital',
+  '/about-us': 'About Us — Sector-Agnostic Venture Pipeline | Campital',
+  '/about': 'About Us — Sector-Agnostic Venture Pipeline | Campital',
+  '/team': 'Leadership & Advisory | Campital',
+  '/insights': 'Insights & The Campital Brief — Campus to Capital | Campital',
   '/privacy-policy': 'Privacy Policy | Campital',
   '/privacy': 'Privacy Policy | Campital',
   '/terms-of-service': 'Terms of Service | Campital',
@@ -15,12 +18,15 @@ const PAGE_TITLES = {
 };
 
 const PAGE_DESCRIPTIONS = {
-  '/': "Campital (campital.in) is India's dedicated campus-to-capital startup funding pipeline. We evaluate student founders, university incubator cohorts, and SMEs for institutional venture capital.",
-  '/you-are': "Explore Campital's 3 structured capital pathways for campus startups, university incubators, and independent growing SMEs.",
-  '/partnerships': "Strategic institutional partnerships with university incubators, corporate innovation tracks, and angel syndicates.",
-  '/about-us': "Learn about Campital's mission, leadership team, and thesis of powering campus-born startup founders into institutional investment.",
-  '/privacy-policy': "Privacy policy, data protection terms, and regulatory compliance standards for Campital applicants.",
-  '/terms-of-service': "Terms of service, platform rules, and investment conduit disclaimer for Campital.",
+  '/': 'Campital is a campus-to-capital funding pipeline. We discover and evaluate startups from campus incubators, and SMEs directly, then connect investment-ready companies to a compliant route to capital.',
+  '/you-are': 'Explore Campital’s 4 structured pathways: Campus Startups, University Incubators, SMEs, and Faculty/Researchers.',
+  '/how-we-fund': 'One pipeline with the right route for each founder: Startup Seed Route (₹2-5 Cr), SME Growth Route (₹5-10 Cr), and Incubator Portfolio Route.',
+  '/programs-events': 'Where the pipeline starts. Hackathons, Demo Days, and Pitch Competitions built to end in an investment shortlist, not just a stage.',
+  '/partnerships': 'Strategic partnerships with capital partners, campus incubators, and corporate sponsors.',
+  '/about-us': 'Sector-agnostic by design. We don’t bet on industries — we build the pipeline that finds the companies ready for capital.',
+  '/insights': 'Straight talk on getting from campus to capital. Open calls, upcoming demo days, and founder playbooks.',
+  '/privacy-policy': 'Privacy policy, data protection terms, and regulatory compliance standards for Campital applicants.',
+  '/terms-of-service': 'Terms of service, platform rules, and investment conduit disclaimer for Campital.',
 };
 
 export const ScrollToTop = () => {
@@ -48,13 +54,16 @@ export const ScrollToTop = () => {
       const persona = params.get('persona');
       if (persona === 'startup') {
         title = 'For Startup Founders — Get Evaluated, Get Funded | Campital';
-        description = 'Built something on campus? Get evaluated through our 21-day velocity funnel and connect directly with institutional seed capital.';
+        description = 'Built something on campus? Get evaluated through our discovery funnel and connect directly with compliant seed capital.';
       } else if (persona === 'incubator') {
         title = 'For Campus Incubators — University Portfolio Capital Bridge | Campital';
-        description = 'Connect your university incubator cohort to a structured discovery funnel and an accredited investor network beyond grants.';
+        description = 'Give your portfolio a path that doesn’t end at grants. Connect your innovation center to an accredited investor network.';
       } else if (persona === 'sme') {
         title = 'For SMEs — Direct Growth Capital Conduit | Campital';
-        description = 'Independent small and medium enterprises seeking growth capital through a direct evaluation process without campus affiliation.';
+        description = 'Running an SME? Apply directly, no incubator needed. Investment capital tailored for growing enterprises.';
+      } else if (persona === 'faculty') {
+        title = 'For Faculty & Researchers — Lab-to-Market Spinout Route | Campital';
+        description = 'Research with startup potential? Register interest for our dedicated lab-to-market spinout evaluation pipeline.';
       }
     }
 

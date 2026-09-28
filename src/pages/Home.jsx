@@ -1,39 +1,40 @@
 import React from 'react';
 import { Hero } from '../components/home/Hero';
-import { CampusShowcase } from '../components/home/CampusShowcase';
+import { TheGap } from '../components/home/TheGap';
+import { FounderJourney } from '../components/home/FounderJourney';
 import { HowItWorks } from '../components/home/HowItWorks';
 import { AudienceCards } from '../components/home/AudienceCards';
 import { WhyCampital } from '../components/home/WhyCampital';
-import { Traction } from '../components/home/Traction';
-import { PartnerLogos } from '../components/home/PartnerLogos';
+import { NewsletterStrip } from '../components/home/NewsletterStrip';
 import { ClosingCTA } from '../components/home/ClosingCTA';
 
 export const Home = () => {
   return (
     <div className="home-page">
-      {/* A. Hero */}
+      {/* 1. Hero */}
       <Hero />
 
-      {/* B. The Campus-to-Capital Showcase */}
-      <CampusShowcase />
+      {/* 2. The Gap (NEW) */}
+      <TheGap />
 
-      {/* C. How It Works (21-Day Funnel) */}
+      {/* 3. Founder Journey (NEW) */}
+      <FounderJourney />
+
+      {/* 4. How It Works (Source, Evaluate, Fund) */}
       <HowItWorks />
 
-      {/* D. You Are — Three Audience Cards */}
+      {/* 5. You Are teaser (Startup, Incubator, SME, Faculty) */}
       <AudienceCards />
 
-      {/* E. Why Campital */}
+      {/* 6. Why Campital (4 Principles) */}
       <WhyCampital />
 
-      {/* E. Traction Statistics */}
-      <Traction />
+      {/* 7. Newsletter — The Campital Brief (NEW) */}
+      <NewsletterStrip />
 
-      {/* F. Partner Logos */}
-      <PartnerLogos />
-
-      {/* G. Closing CTA */}
+      {/* 8. Closing CTA */}
       <ClosingCTA />
     </div>
   );
 };
+

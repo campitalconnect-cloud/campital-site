@@ -1,154 +1,161 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ShieldCheck, Target, Sparkles, GitMerge } from 'lucide-react';
 import { Container } from '../common/Container';
+import { SectionHeading } from '../common/SectionHeading';
 import { WHY_CAMPITAL_PILLARS } from '../../data/homeData';
 import { fadeUpVariant } from '../../utils/motion';
+
+const iconMap = {
+  ShieldCheck: ShieldCheck,
+  Target: Target,
+  Sparkles: Sparkles,
+  GitMerge: GitMerge,
+};
 
 export const WhyCampital = () => {
   return (
     <section 
+      id="why-campital"
       className="section"
       style={{
         backgroundColor: '#ffffff',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
         position: 'relative',
+        borderBottom: '1px solid #e2e8f0',
       }}
     >
       <Container>
-        {/* Massive Bold Magenta Headline (Matching Reference Screenshot 1) */}
-        <motion.div
-          variants={fadeUpVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          style={{ marginBottom: '4rem', maxWidth: '1080px' }}
+        <SectionHeading
+          eyebrow="Why Campital"
+          title="Built for Outcomes, Not Grant Cycles"
+          subtitle="Four core principles define how Campital turns campus innovation into investable enterprise value."
+          centered
+        />
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '2rem',
+            marginTop: '3.5rem',
+          }}
+          className="why-grid"
         >
-          <h2
-            style={{
-              fontSize: 'clamp(2.3rem, 4.4vw, 3.4rem)',
-              fontWeight: '800',
-              color: '#0066ff',
-              letterSpacing: '-0.035em',
-              lineHeight: 1.15,
-            }}
-          >
-            We partner with Student Entrepreneurs, as their own extended team!
-          </h2>
-        </motion.div>
+          {WHY_CAMPITAL_PILLARS.map((pillar, index) => {
+            const Icon = iconMap[pillar.icon] || ShieldCheck;
+            return (
+              <motion.div
+                key={pillar.id}
+                variants={fadeUpVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-50px' }}
+                custom={index}
+                style={{
+                  background: '#f8fafc',
+                  border: '1.5px solid #e2e8f0',
+                  borderRadius: '20px',
+                  padding: '2.5rem 2rem',
+                  display: 'flex',
+                  gap: '1.5rem',
+                  alignItems: 'flex-start',
+                  transition: 'all 0.25s ease',
+                  position: 'relative',
+                }}
+                className="why-card"
+              >
+                <div
+                  style={{
+                    width: '52px',
+                    height: '52px',
+                    borderRadius: '14px',
+                    background: 'linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 180, 216, 0.15))',
+                    color: '#0066ff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon size={26} />
+                </div>
 
-        {/* Editorial Split Rows with Clean Line Dividers (Matching Reference Screenshot 1) */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {/* Row 1 */}
-          <motion.div
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            custom={0}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 2fr',
-              gap: '2.5rem',
-              paddingTop: '2.5rem',
-              paddingBottom: '2.5rem',
-              borderTop: '1px solid #e2e8f0',
-              alignItems: 'baseline',
-            }}
-            className="editorial-row"
-          >
-            <div>
-              <h3 style={{ fontSize: '1.65rem', fontWeight: '800', color: '#0066ff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-                Founder-First Funding
-              </h3>
-            </div>
-            <div>
-              <h4 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#090d1a', marginBottom: '0.6rem', letterSpacing: '-0.02em' }}>
-                Equity that empowers, not restricts.
-              </h4>
-              <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: '1.65', margin: 0 }}>
-                We keep it simple and fast — often the first believers with an institutional introduction on student-friendly terms, moving you away from recurring grant cycles into real venture momentum.
-              </p>
-            </div>
-          </motion.div>
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      fontSize: '0.78rem',
+                      fontWeight: '800',
+                      color: '#0066ff',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      marginBottom: '0.35rem',
+                    }}
+                  >
+                    Principle {pillar.num}
+                  </div>
 
-          {/* Row 2 */}
-          <motion.div
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            custom={1}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 2fr',
-              gap: '2.5rem',
-              paddingTop: '2.5rem',
-              paddingBottom: '2.5rem',
-              borderTop: '1px solid #e2e8f0',
-              alignItems: 'baseline',
-            }}
-            className="editorial-row"
-          >
-            <div>
-              <h3 style={{ fontSize: '1.65rem', fontWeight: '800', color: '#0066ff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-                A Network That Opens Doors
-              </h3>
-            </div>
-            <div>
-              <h4 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#090d1a', marginBottom: '0.6rem', letterSpacing: '-0.02em' }}>
-                World-class access, one connection away.
-              </h4>
-              <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: '1.65', margin: 0 }}>
-                Supported by the world's best entrepreneurs, industry experts, campus incubators, and corporate partners. Our evaluated founders get direct access to leaders of iconic companies when they need it most.
-              </p>
-            </div>
-          </motion.div>
+                  <h3
+                    style={{
+                      fontSize: '1.35rem',
+                      fontWeight: '800',
+                      color: '#090d1a',
+                      marginBottom: '0.65rem',
+                      letterSpacing: '-0.02em',
+                      lineHeight: '1.3',
+                    }}
+                  >
+                    {pillar.title}
+                  </h3>
 
-          {/* Row 3 */}
-          <motion.div
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            custom={2}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 2fr',
-              gap: '2.5rem',
-              paddingTop: '2.5rem',
-              paddingBottom: '2.5rem',
-              borderTop: '1px solid #e2e8f0',
-              borderBottom: '1px solid #e2e8f0',
-              alignItems: 'baseline',
-            }}
-            className="editorial-row"
-          >
-            <div>
-              <h3 style={{ fontSize: '1.65rem', fontWeight: '800', color: '#0066ff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-                Real Capital, Not Grants
-              </h3>
-            </div>
-            <div>
-              <h4 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#090d1a', marginBottom: '0.6rem', letterSpacing: '-0.02em' }}>
-                A structured funnel with real investment conviction.
-              </h4>
-              <p style={{ color: '#475569', fontSize: '1.05rem', lineHeight: '1.65', margin: 0 }}>
-                Every touchpoint — from hackathon scoring to pitch evaluations — is designed to help founders build viable investment readiness, not just win novelty certificates.
-              </p>
-            </div>
-          </motion.div>
+                  <p
+                    style={{
+                      fontSize: '0.98rem',
+                      color: '#475569',
+                      lineHeight: '1.6',
+                      margin: 0,
+                      marginBottom: '1rem',
+                    }}
+                  >
+                    {pillar.description}
+                  </p>
+
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      fontSize: '0.82rem',
+                      fontWeight: '600',
+                      color: '#0052ff',
+                      backgroundColor: 'rgba(0, 102, 255, 0.06)',
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    <span>{pillar.highlight}</span>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </Container>
 
       <style>{`
-        @media (max-width: 820px) {
-          .editorial-row {
+        .why-card:hover {
+          transform: translateY(-3px);
+          border-color: rgba(0, 102, 255, 0.35) !important;
+          box-shadow: 0 16px 36px rgba(0, 82, 255, 0.08) !important;
+        }
+        @media (max-width: 860px) {
+          .why-grid {
             grid-template-columns: 1fr !important;
-            gap: 1rem !important;
           }
         }
       `}</style>
     </section>
   );
 };
+

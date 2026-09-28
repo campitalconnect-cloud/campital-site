@@ -1,455 +1,321 @@
 import React from 'react';
-import { ArrowUpRight, ShieldCheck, Sparkles, Building2, Briefcase, TrendingUp, Zap, ChevronRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Container } from '../common/Container';
 import { Button } from '../common/Button';
-import { HERO_DATA } from '../../data/homeData';
-import { fadeUpVariant, staggerContainerVariant } from '../../utils/motion';
+import { HERO_BG_DESKTOP_BASE64, HERO_BG_MOBILE_BASE64 } from '../../assets/heroBackgrounds';
 
 export const Hero = () => {
   return (
     <section 
-      className="section-hero"
+      className="section-hero-cinematic"
       style={{
         position: 'relative',
-        paddingTop: '9.5rem',
-        paddingBottom: '6rem',
+        minHeight: 'calc(100vh - 78px)',
+        display: 'flex',
+        alignItems: 'center',
         overflow: 'hidden',
-        background: 'radial-gradient(ellipse at 50% -10%, rgba(220, 238, 255, 0.7) 0%, rgba(255, 255, 255, 1) 75%)',
+        backgroundColor: '#FFFFFF',
       }}
     >
-      {/* Animated Floating Gradient Mesh Orbs */}
-      <motion.div
-        animate={{
-          x: [0, 30, -20, 0],
-          y: [0, -40, 20, 0],
-          scale: [1, 1.15, 0.95, 1],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+      {/* ================= DESKTOP BACKGROUND (>= 1024px) ================= */}
+      <div
+        className="hero-bg-layer desktop-bg-layer"
         style={{
           position: 'absolute',
-          top: '-8%',
-          left: '-6%',
-          width: '580px',
-          height: '580px',
-          background: 'radial-gradient(circle, rgba(0, 102, 255, 0.22) 0%, rgba(56, 189, 248, 0.16) 45%, transparent 70%)',
-          borderRadius: '42% 58% 70% 30% / 45% 45% 55% 55%',
-          filter: 'blur(55px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-      
-      <motion.div
-        animate={{
-          x: [0, -35, 25, 0],
-          y: [0, 35, -25, 0],
-          scale: [1, 1.18, 0.92, 1],
-        }}
-        transition={{
-          duration: 14,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        style={{
-          position: 'absolute',
-          top: '8%',
-          right: '-6%',
-          width: '620px',
-          height: '620px',
-          background: 'radial-gradient(circle, rgba(0, 82, 255, 0.2) 0%, rgba(0, 210, 255, 0.14) 50%, transparent 70%)',
-          borderRadius: '58% 42% 35% 65% / 55% 55% 45% 45%',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          backgroundImage: `url('${HERO_BG_DESKTOP_BASE64}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: '100% 45px',
           zIndex: 0,
         }}
       />
 
-      {/* Ambient Center Glow */}
+      {/* ================= MOBILE BACKGROUND (< 1024px) ================= */}
       <div
+        className="hero-bg-layer mobile-bg-layer"
         style={{
           position: 'absolute',
-          top: '30%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '75%',
-          height: '400px',
-          background: 'radial-gradient(ellipse at center, rgba(0, 102, 255, 0.08) 0%, transparent 70%)',
-          filter: 'blur(40px)',
-          pointerEvents: 'none',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          backgroundImage: `url('${HERO_BG_MOBILE_BASE64}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 35px',
           zIndex: 0,
         }}
       />
 
       <Container>
-        <motion.div
-          variants={staggerContainerVariant}
-          initial="hidden"
-          animate="visible"
+        <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1.15fr 1fr',
-            gap: '3.5rem',
+            gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 1.1fr)',
+            gap: 'clamp(1.5rem, 3vw, 3.5rem)',
             alignItems: 'center',
             position: 'relative',
-            zIndex: 1,
+            zIndex: 2,
+            width: '100%',
+            paddingTop: 'clamp(6.5rem, 12vh, 9.5rem)',
+            paddingBottom: 'clamp(4.5rem, 8vh, 7rem)',
           }}
-          className="hero-grid"
+          className="hero-cinematic-grid"
         >
-          {/* Left Column: Messaging & CTAs */}
-          <div>
-            {/* Trust Pill with Pulsing Radar Beacon */}
-            <motion.div variants={fadeUpVariant} custom={0} style={{ marginBottom: '1.35rem' }}>
-              <div 
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.65rem',
-                  padding: '0.5rem 1.25rem',
-                  borderRadius: '9999px',
-                  border: '1.5px solid rgba(0, 102, 255, 0.3)',
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 247, 255, 0.95) 100%)',
-                  color: '#0052ff',
-                  fontSize: '0.85rem',
-                  fontWeight: '700',
-                  boxShadow: '0 4px 20px rgba(0, 102, 255, 0.12)',
-                  backdropFilter: 'blur(10px)',
-                }}
-              >
-                <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <motion.div
-                    animate={{ scale: [1, 2, 1], opacity: [0.9, 0, 0.9] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{
-                      position: 'absolute',
-                      width: '12px',
-                      height: '12px',
-                      borderRadius: '50%',
-                      backgroundColor: '#0066ff',
-                    }}
-                  />
-                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#0066ff' }} />
-                </div>
-                <span>State of Campus Entrepreneurship Pipeline is Live</span>
-                <ChevronRight size={14} />
-              </div>
-            </motion.div>
-
-            {/* Main Headline with Animated Multi-Tone Gradient */}
-            <motion.h1 
-              variants={fadeUpVariant} 
-              custom={1} 
-              style={{ 
-                marginBottom: '1.35rem',
-                fontSize: 'clamp(2.75rem, 5.2vw, 4.3rem)',
-                fontWeight: '800',
+          {/* ================= LEFT CONTENT COLUMN: EDITORIAL TYPOGRAPHY ================= */}
+          <div className="hero-editorial-col" style={{ maxWidth: '560px' }}>
+            {/* Main High-Impact Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontSize: 'clamp(2.75rem, 5.2vw, 4.6rem)',
+                fontWeight: '900',
                 letterSpacing: '-0.04em',
-                lineHeight: 1.08,
-                color: '#090d1a',
+                lineHeight: 1.16,
+                color: '#08152F',
+                marginBottom: '1.5rem',
               }}
+              className="hero-headline-title"
             >
-              Powering a Generation of{' '}
-              <motion.span
-                animate={{
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
+              Campus + Capital =<br />
+              <span
                 style={{
-                  background: 'linear-gradient(135deg, #0052ff 0%, #0066ff 35%, #00b4d8 70%, #0052ff 100%)',
-                  backgroundSize: '200% 200%',
+                  background: 'linear-gradient(135deg, #1264FF 0%, #20C8F4 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   display: 'inline-block',
+                  paddingBottom: '0.18em',
+                  paddingRight: '0.08em',
                 }}
               >
-                Student Disruptors
-              </motion.span>
+                Campital
+              </span>
             </motion.h1>
 
-            <motion.p 
-              variants={fadeUpVariant} 
-              custom={2} 
-              style={{ 
-                marginBottom: '1rem', 
-                maxWidth: '680px',
-                fontSize: '1.18rem',
-                lineHeight: 1.68,
-                color: '#334155',
-                fontWeight: '400',
-              }}
-            >
-              We believe the next big ideas don't come from boardrooms — they come from dorm rooms and campus labs. If you're a student building something real, we're here to power your journey.
-            </motion.p>
-
+            {/* Subheadline */}
             <motion.p
-              variants={fadeUpVariant}
-              custom={2.5}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontSize: '1.12rem',
-                fontWeight: '800',
-                color: '#090d1a',
-                marginBottom: '2.25rem',
-                letterSpacing: '-0.01em',
+                fontSize: 'clamp(1.15rem, 1.55vw, 1.35rem)',
+                lineHeight: 1.55,
+                fontWeight: '500',
+                color: '#475569',
+                maxWidth: '540px',
+                marginBottom: '2.5rem',
               }}
+              className="hero-description-text"
             >
-              Pitch your startup. Break the mold. Shape the future.
+              Funding. Partners. Momentum.<br />
+              For startups born on campus<br />
+              — and SMEs ready to grow.
             </motion.p>
 
-            {/* CTAs with Glow Hover Effect */}
+            {/* CTA Action Buttons */}
             <motion.div
-              variants={fadeUpVariant}
-              custom={3}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem',
                 flexWrap: 'wrap',
-                marginBottom: '2.75rem',
               }}
+              className="hero-cta-button-group"
             >
               <Button
-                to={HERO_DATA.primaryCta.path}
+                to="/you-are?persona=startup"
                 variant="primary"
                 size="lg"
-                icon={ArrowUpRight}
+                icon={ArrowRight}
                 style={{
-                  boxShadow: '0 8px 25px rgba(0, 102, 255, 0.35)',
+                  background: 'linear-gradient(135deg, #1264FF 0%, #20BFEF 100%)',
+                  height: '56px',
+                  borderRadius: '100px',
+                  padding: '0 2.25rem',
+                  fontSize: '1.02rem',
+                  fontWeight: '700',
+                  color: '#ffffff',
+                  boxShadow: '0 10px 28px rgba(18, 100, 255, 0.32)',
+                  border: 'none',
                 }}
               >
-                {HERO_DATA.primaryCta.label}
+                Get Funded
               </Button>
+
               <Button
-                to={HERO_DATA.secondaryCta.path}
+                to="/partnerships"
                 variant="secondary"
                 size="lg"
                 style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                  borderColor: '#cbd5e1',
-                  color: '#090d1a',
+                  backgroundColor: '#FFFFFF',
+                  height: '56px',
+                  borderRadius: '100px',
+                  padding: '0 2rem',
+                  fontSize: '1.02rem',
+                  fontWeight: '700',
+                  color: '#08152F',
+                  border: '1.5px solid rgba(18, 100, 255, 0.22)',
+                  boxShadow: '0 4px 14px rgba(8, 21, 47, 0.04)',
                 }}
               >
-                {HERO_DATA.secondaryCta.label}
+                Become a Partner
               </Button>
             </motion.div>
 
-            {/* Credibility / Trust Pill */}
-            <motion.div
-              variants={fadeUpVariant}
-              custom={4}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.65rem',
-                padding: '0.6rem 1.25rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                border: '1.5px solid rgba(0, 102, 255, 0.2)',
-                borderRadius: '9999px',
-                fontSize: '0.875rem',
-                color: '#334155',
-                fontWeight: '500',
-                boxShadow: '0 4px 15px rgba(0, 82, 255, 0.06)',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
-              <ShieldCheck size={18} color="#0066ff" />
-              <span>Campus + Capital = <strong>Campital</strong> · Institutional Sourcing Pipeline</span>
-            </motion.div>
           </div>
 
-          {/* Right Column: Pipeline Architecture Visual Card with Ambient Aura */}
-          <motion.div
-            variants={fadeUpVariant}
-            custom={2}
-            style={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            {/* Glowing Gradient Backdrop Ring */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: '-10px',
-                borderRadius: '26px',
-                background: 'linear-gradient(135deg, rgba(0, 102, 255, 0.35) 0%, rgba(0, 210, 255, 0.25) 50%, rgba(59, 130, 246, 0.15) 100%)',
-                filter: 'blur(20px)',
-                zIndex: 0,
-                pointerEvents: 'none',
-              }}
-            />
-
-            <motion.div
-              whileHover={{ y: -6, boxShadow: '0 30px 60px rgba(0, 82, 255, 0.16)' }}
-              transition={{ duration: 0.3 }}
-              style={{
-                width: '100%',
-                maxWidth: '500px',
-                padding: '2.25rem',
-                background: 'linear-gradient(180deg, #ffffff 0%, #f9fbff 100%)',
-                borderRadius: '20px',
-                border: '1.5px solid rgba(0, 102, 255, 0.22)',
-                boxShadow: '0 25px 50px rgba(0, 82, 255, 0.1), 0 4px 15px rgba(15, 23, 42, 0.04)',
-                position: 'relative',
-                zIndex: 1,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.75rem', paddingBottom: '1rem', borderBottom: '1px solid #eef4fc' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                  <motion.div
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10b981', boxShadow: '0 0 10px rgba(16, 185, 129, 0.7)' }}
-                  />
-                  <span style={{ fontSize: '0.82rem', fontWeight: '800', color: '#090d1a', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                    Capital Funnel Engine
-                  </span>
-                </div>
-                <span style={{ fontSize: '0.75rem', fontWeight: '800', padding: '0.3rem 0.75rem', borderRadius: '9999px', backgroundColor: 'rgba(0, 102, 255, 0.1)', color: '#0066ff', border: '1px solid rgba(0, 102, 255, 0.2)' }}>
-                  Live Sourcing
-                </span>
-              </div>
-
-              {/* Sourcing Nodes */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {/* Node 1: Incubators */}
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '1.05rem 1.2rem',
-                    backgroundColor: '#ffffff',
-                    borderRadius: '12px',
-                    border: '1.5px solid #e2e8f0',
-                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(0, 102, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0066ff' }}>
-                      <Building2 size={20} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '0.94rem', fontWeight: '800', color: '#090d1a' }}>Campus Incubators</div>
-                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Student & Alumni Cohorts</div>
-                    </div>
-                  </div>
-                  <span style={{ fontSize: '0.75rem', color: '#0066ff', fontWeight: '800', background: 'rgba(0, 102, 255, 0.08)', border: '1px solid #bfdbfe', padding: '0.25rem 0.6rem', borderRadius: '6px' }}>
-                    Phase 01
-                  </span>
-                </motion.div>
-
-                {/* Node 2: Direct SMEs */}
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '1.05rem 1.2rem',
-                    backgroundColor: '#ffffff',
-                    borderRadius: '12px',
-                    border: '1.5px solid #e2e8f0',
-                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(0, 180, 216, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0284c7' }}>
-                      <Briefcase size={20} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '0.94rem', fontWeight: '800', color: '#090d1a' }}>Direct SMEs</div>
-                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Independent Operating Founders</div>
-                    </div>
-                  </div>
-                  <span style={{ fontSize: '0.75rem', color: '#0284c7', fontWeight: '800', background: 'rgba(0, 180, 216, 0.08)', border: '1px solid #bae6fd', padding: '0.25rem 0.6rem', borderRadius: '6px' }}>
-                    Phase 02
-                  </span>
-                </motion.div>
-
-                {/* Evaluation Tier */}
-                <div
-                  style={{
-                    padding: '1.15rem',
-                    background: 'linear-gradient(135deg, rgba(0, 102, 255, 0.06) 0%, rgba(0, 180, 216, 0.06) 100%)',
-                    border: '1.5px dashed rgba(0, 102, 255, 0.4)',
-                    borderRadius: '12px',
-                    textAlign: 'center',
-                  }}
-                >
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.78rem', fontWeight: '800', color: '#0066ff', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.35rem' }}>
-                    <Zap size={14} />
-                    <span>Rigorous Velocity Evaluation</span>
-                  </div>
-                  <div style={{ fontSize: '0.84rem', color: '#475569', lineHeight: 1.4, fontWeight: '500' }}>
-                    Hackathons · Term-Sheet Pitch Days · IC Review
-                  </div>
-                </div>
-
-                {/* Node 3: Capital Deployment */}
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '1.05rem 1.2rem',
-                    background: 'linear-gradient(135deg, #090d1a 0%, #151e36 100%)',
-                    borderRadius: '12px',
-                    color: '#ffffff',
-                    boxShadow: '0 8px 20px rgba(9, 13, 26, 0.25)',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#38bdf8' }}>
-                      <TrendingUp size={20} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '0.94rem', fontWeight: '800', color: '#ffffff' }}>Institutional Capital</div>
-                      <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Compliant Investment Conduit</div>
-                    </div>
-                  </div>
-                  <span style={{ fontSize: '0.75rem', color: '#ffffff', fontWeight: '800', background: 'linear-gradient(135deg, #0052ff, #00b4d8)', padding: '0.3rem 0.75rem', borderRadius: '6px' }}>
-                    Outcome
-                  </span>
-                </motion.div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+          {/* Right Column Spacer on Desktop */}
+          <div className="hero-desktop-spacer" />
+        </div>
       </Container>
 
+      {/* ================= BOTTOM CENTER SCROLL TO EXPLORE ================= */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        style={{
+          position: 'absolute',
+          bottom: '1.75rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        className="hero-scroll-toggle-container"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            window.scrollTo({
+              top: window.innerHeight - 80,
+              behavior: 'smooth',
+            });
+          }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.65rem',
+            background: 'rgba(255, 255, 255, 0.94)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1.5px solid rgba(18, 100, 255, 0.2)',
+            padding: '0.45rem 1.25rem',
+            borderRadius: '100px',
+            boxShadow: '0 6px 22px rgba(18, 100, 255, 0.12)',
+            cursor: 'pointer',
+            color: '#08152F',
+            fontSize: '0.82rem',
+            fontWeight: '700',
+            letterSpacing: '0.02em',
+            outline: 'none',
+            transition: 'all 0.25s ease',
+          }}
+          className="scroll-explore-btn"
+          aria-label="Scroll to explore"
+        >
+          <div
+            style={{
+              width: '16px',
+              height: '24px',
+              borderRadius: '10px',
+              border: '1.8px solid #1264FF',
+              display: 'flex',
+              justifyContent: 'center',
+              paddingTop: '3.5px',
+            }}
+          >
+            <motion.div
+              animate={{ y: [0, 7, 0], opacity: [1, 0.2, 1] }}
+              transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
+              style={{
+                width: '3px',
+                height: '4.5px',
+                borderRadius: '2px',
+                backgroundColor: '#1264FF',
+              }}
+            />
+          </div>
+          <span>Scroll to explore</span>
+        </button>
+      </motion.div>
+
       <style>{`
-        @media (max-width: 960px) {
-          .hero-grid {
+        /* Desktop Default (>= 1024px) */
+        .desktop-bg-layer {
+          display: block;
+        }
+        .mobile-bg-layer {
+          display: none;
+        }
+
+        /* Mobile & Tablet (< 1024px) */
+        @media (max-width: 1023px) {
+          .desktop-bg-layer {
+            display: none !important;
+          }
+          .mobile-bg-layer {
+            display: block !important;
+          }
+          .section-hero-cinematic {
+            min-height: 100vh !important;
+            min-height: 880px !important;
+            align-items: flex-start !important;
+          }
+          .hero-cinematic-grid {
             grid-template-columns: 1fr !important;
-            gap: 3rem !important;
             text-align: center;
+            padding-top: 7rem !important;
+            padding-bottom: 27rem !important; /* leaves generous space for the lower artwork */
           }
-          .hero-grid .eyebrow {
-            margin-left: auto;
-            margin-right: auto;
+          .hero-editorial-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100% !important;
           }
-          .hero-grid > div:first-child > div {
+          .desktop-br {
+            display: inline;
+          }
+          .hero-headline-title {
+            text-align: center !important;
+            font-size: clamp(2.35rem, 9.5vw, 3.25rem) !important;
+            line-height: 1.18 !important;
+          }
+          .hero-description-text {
+            text-align: center !important;
+            margin: 0 auto 2rem auto !important;
+          }
+          .hero-cta-button-group {
+            width: 100%;
             justify-content: center;
           }
-        }
-        @media (max-width: 600px) {
-          .hero-grid a.btn {
-            width: 100% !important;
+          .hero-cta-button-group a.btn {
+            width: 100%;
+            max-width: 340px;
+          }
+          .hero-micro-footer {
+            display: none;
+          }
+          .hero-desktop-spacer {
+            display: none;
           }
         }
       `}</style>
     </section>
   );
 };
+
+
+
+

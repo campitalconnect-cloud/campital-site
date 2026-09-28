@@ -1,12 +1,14 @@
 import React from 'react';
-import { Rocket, Building2, Briefcase } from 'lucide-react';
+import { Rocket, Building2, Briefcase, GraduationCap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const PERSONA_TABS = [
   { key: 'startup', label: 'For Startups', icon: Rocket },
-  { key: 'incubator', label: 'For Campus Incubators', icon: Building2 },
+  { key: 'incubator', label: 'For Incubators', icon: Building2 },
   { key: 'sme', label: 'For SMEs', icon: Briefcase },
+  { key: 'faculty', label: 'Faculty & Lab IP', icon: GraduationCap },
 ];
+
 
 export const PersonaSwitcher = ({ activePersona, onSelectPersona }) => {
   const handleScrollTo = (key) => {

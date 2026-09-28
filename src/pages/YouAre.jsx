@@ -7,7 +7,7 @@ import { PersonaSection } from '../components/you-are/PersonaSection';
 import { EmailInquiryModal } from '../components/forms/EmailInquiryModal';
 import { PERSONAS_DATA } from '../data/personas';
 
-const PERSONA_KEYS = ['startup', 'incubator', 'sme'];
+const PERSONA_KEYS = ['startup', 'incubator', 'sme', 'faculty'];
 
 export const YouAre = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,7 +41,7 @@ export const YouAre = () => {
     }
   }, [personaParam, location.hash]);
 
-  // ScrollSpy to update activePersonaKey as user scrolls through the 3 tracks
+  // ScrollSpy to update activePersonaKey as user scrolls through the 4 tracks
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -73,7 +73,7 @@ export const YouAre = () => {
       <PageHeader
         eyebrow="Interactive Persona Guide"
         title="Find Your Place in Campital"
-        subtitle="Explore all 3 structured pathways: whether you are building a campus venture, cultivating deal flow in a university incubator, or operating an independent SME."
+        subtitle="Explore all 4 structured pathways: whether you are building a campus venture, cultivating deal flow in an incubator, operating an SME, or commercializing academic lab research."
       >
         <div style={{ display: 'flex', justifyContent: 'center', position: 'sticky', top: '90px', zIndex: 10 }}>
           <PersonaSwitcher
@@ -85,7 +85,7 @@ export const YouAre = () => {
 
       <section className="section" style={{ backgroundColor: '#ffffff' }}>
         <Container>
-          {/* List All 3 Personas In-Line with Full Contents and Separations */}
+          {/* List All 4 Personas In-Line with Full Contents and Separations */}
           {PERSONA_KEYS.map((key, index) => {
             const persona = PERSONAS_DATA[key];
             return (
@@ -111,6 +111,8 @@ export const YouAre = () => {
               ? 'Startup Funding Application'
               : activeModalPersona.key === 'incubator'
               ? 'Campus Incubator Partnership Inquiry'
+              : activeModalPersona.key === 'faculty'
+              ? 'Faculty & Lab IP Commercialization'
               : 'SME Funding Application'
           }
           subtitle={
@@ -118,6 +120,8 @@ export const YouAre = () => {
               ? 'Prepare your startup application details to connect with the evaluation pipeline.'
               : activeModalPersona.key === 'incubator'
               ? 'Initiate a partnership scoping discussion for your campus incubator portfolio.'
+              : activeModalPersona.key === 'faculty'
+              ? 'Register your research area and spin-off interest for early pilot cohorts.'
               : 'Prepare your SME growth funding application for independent review.'
           }
         />
@@ -125,3 +129,4 @@ export const YouAre = () => {
     </div>
   );
 };
+

@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Badge } from '../common/Badge';
-import { Target, Gift, Sparkles } from 'lucide-react';
+import { Target, Gift, Sparkles, ArrowRight, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { fadeUpVariant } from '../../utils/motion';
 
@@ -15,10 +16,51 @@ export const PersonaOverview = ({ persona }) => {
         <h2 style={{ fontSize: 'clamp(2rem, 4.2vw, 3rem)', fontWeight: '800', color: '#090d1a', letterSpacing: '-0.03em', lineHeight: 1.18, marginBottom: '1rem' }}>
           {persona.headline}
         </h2>
-        <p className="text-lead" style={{ color: '#475569', fontSize: '1.12rem', lineHeight: '1.65' }}>
+        <p className="text-lead" style={{ color: '#475569', fontSize: '1.12rem', lineHeight: '1.65', marginBottom: persona.stageLine ? '1.25rem' : 0 }}>
           {persona.subheadline}
         </p>
+
+        {persona.stageLine && (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              padding: '0.5rem 1.15rem',
+              borderRadius: '9999px',
+              backgroundColor: '#f8fafc',
+              border: '1.5px solid #e2e8f0',
+              fontSize: '0.88rem',
+              color: '#334155',
+              fontWeight: '600',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0066ff', fontWeight: '700' }}>
+              <Layers size={15} />
+              <span>{persona.stageLine}</span>
+            </div>
+            {persona.routeLink && (
+              <Link
+                to={persona.routeLink}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  color: '#0066ff',
+                  fontWeight: '700',
+                  textDecoration: 'none',
+                }}
+              >
+                <span>See route</span>
+                <ArrowRight size={14} />
+              </Link>
+            )}
+          </div>
+        )}
       </div>
+
 
       {/* Track Featured Imagery Card */}
       {persona.image && (

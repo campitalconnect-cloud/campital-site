@@ -3,10 +3,11 @@
  * Configure the recipient email and default templates.
  */
 
-// Central recipient address - replace with approved public email when ready
-export const CAMPITAL_CONTACT_EMAIL = 'REPLACE_WITH_APPROVED_PUBLIC_EMAIL';
+// Central verified recipient address for all platform inquiries and applications
+export const CAMPITAL_CONTACT_EMAIL = 'team@campital.in';
 
-export const IS_PLACEHOLDER_EMAIL = CAMPITAL_CONTACT_EMAIL === 'REPLACE_WITH_APPROVED_PUBLIC_EMAIL';
+export const IS_PLACEHOLDER_EMAIL = false;
+
 
 export const INQUIRY_TYPES = {
   STARTUP: {
@@ -39,6 +40,12 @@ export const INQUIRY_TYPES = {
     subjectTemplate: (name, org) => `[Campital Corporate-Ecosystem Partnership] — ${org || name || 'Corporate Partner'}`,
     defaultDescription: 'Corporate or innovation partner offering mentorship, market access, or ecosystem support.',
   },
+  FACULTY: {
+    id: 'faculty',
+    label: 'Faculty & Lab IP Commercialization',
+    subjectTemplate: (name, org) => `[Campital Faculty / Research Inquiry] — ${name || 'Researcher'}${org ? ` (${org})` : ''}`,
+    defaultDescription: 'Academic researcher, faculty member, or lab lead exploring commercial spin-off structuring and capital.',
+  },
   GENERAL: {
     id: 'general',
     label: 'General Inquiry',
@@ -46,3 +53,4 @@ export const INQUIRY_TYPES = {
     defaultDescription: 'General inquiry or feedback about Campital.',
   }
 };
+
