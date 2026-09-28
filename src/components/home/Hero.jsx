@@ -50,6 +50,21 @@ export const Hero = () => {
         }}
       />
 
+      {/* ================= BOTTOM SMOOTH GRADIENT FEATHER (MILD TRANSITION) ================= */}
+      <div
+        className="hero-bottom-feather"
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: '40px',
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.35) 60%, #FFFFFF 100%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
+
       <Container>
         <div
           style={{
