@@ -75,6 +75,34 @@ export const TheGap = () => {
           </p>
         </div>
 
+        {/* Panoramic The Gap Infographic Visual */}
+        <motion.div
+          variants={fadeUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto 3rem auto',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            border: '1.5px solid #e2e8f0',
+            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
+            backgroundColor: '#090d1a',
+          }}
+        >
+          <img
+            src="/images/the_gap_infographic.png"
+            alt="The Campus Capital Gap: Where Campuses Begin to Where Growth Begins"
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+              objectFit: 'cover',
+            }}
+          />
+        </motion.div>
+
         {/* Visual The Gap Breakdown Graphic */}
         <div
           style={{

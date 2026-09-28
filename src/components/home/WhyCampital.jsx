@@ -34,6 +34,34 @@ export const WhyCampital = () => {
           centered
         />
 
+        {/* Panoramic 4-Principles Showcase Visual */}
+        <motion.div
+          variants={fadeUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          style={{
+            maxWidth: '1100px',
+            margin: '3rem auto 3.5rem auto',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            border: '1.5px solid #e2e8f0',
+            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
+            backgroundColor: '#090d1a',
+          }}
+        >
+          <img
+            src="/images/why_campital_showcase.png"
+            alt="Why Campital: Four core principles defining how Campital turns campus innovation into investable enterprise value"
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+              objectFit: 'cover',
+            }}
+          />
+        </motion.div>
+
         <div
           style={{
             display: 'grid',

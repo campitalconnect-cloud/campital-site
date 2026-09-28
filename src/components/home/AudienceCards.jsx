@@ -37,6 +37,34 @@ export const AudienceCards = () => {
           centered
         />
 
+        {/* Panoramic 4-Track Showcase Visual */}
+        <motion.div
+          variants={fadeUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          style={{
+            maxWidth: '1100px',
+            margin: '3rem auto 3.5rem auto',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            border: '1.5px solid #e2e8f0',
+            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
+            backgroundColor: '#090d1a',
+          }}
+        >
+          <img
+            src="/images/you_are_showcase.png"
+            alt="You Are: Designed for Campus Founders, Incubators, SMEs & Researchers"
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+              objectFit: 'cover',
+            }}
+          />
+        </motion.div>
+
         <div
           style={{
             display: 'grid',

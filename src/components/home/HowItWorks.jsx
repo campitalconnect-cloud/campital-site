@@ -58,6 +58,34 @@ export const HowItWorks = () => {
           centered
         />
 
+        {/* Panoramic Three Rigorous Steps Showcase Visual */}
+        <motion.div
+          variants={fadeUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          style={{
+            maxWidth: '1100px',
+            margin: '3rem auto 3.5rem auto',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            border: '1.5px solid #e2e8f0',
+            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
+            backgroundColor: '#090d1a',
+          }}
+        >
+          <img
+            src="/images/how_it_works_showcase.png"
+            alt="How the Pipeline Works: 01 Source -> 02 Evaluate -> 03 Fund"
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+              objectFit: 'cover',
+            }}
+          />
+        </motion.div>
+
         {/* Funnel Layout Grid (Inspired by Reference Screenshot 5) */}
         <div
           style={{
