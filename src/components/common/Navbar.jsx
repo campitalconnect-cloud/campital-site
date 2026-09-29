@@ -104,14 +104,14 @@ export const Navbar = () => {
         height: '84px',
         zIndex: 'var(--z-header, 9999)',
         background: isScrolled
-          ? 'rgba(255, 255, 255, 0.94)'
-          : 'rgba(255, 255, 255, 0.88)',
+          ? 'linear-gradient(135deg, rgba(236, 245, 255, 0.96) 0%, rgba(255, 255, 255, 0.93) 48%, rgba(226, 241, 255, 0.96) 100%)'
+          : 'linear-gradient(135deg, rgba(228, 242, 255, 0.92) 0%, rgba(255, 255, 255, 0.86) 45%, rgba(220, 238, 255, 0.92) 100%)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(18, 100, 255, 0.08)',
+        borderBottom: '1.5px solid rgba(18, 100, 255, 0.16)',
         boxShadow: isScrolled
-          ? '0 6px 24px rgba(18, 100, 255, 0.08)'
-          : 'none',
+          ? '0 8px 28px rgba(18, 100, 255, 0.1)'
+          : '0 4px 18px rgba(18, 100, 255, 0.05)',
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         display: 'flex',
         alignItems: 'center',

@@ -173,15 +173,36 @@
             {
               "@type": "SiteNavigationElement",
               "position": 4,
+              "name": "How We Fund",
+              "description": "Structured evaluation mechanics and compliant seed to growth routes",
+              "url": "https://www.campital.in/how-we-fund"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 5,
+              "name": "Programs & Events",
+              "description": "Hackathons, cohort demo days, and competitive pitch showcases",
+              "url": "https://www.campital.in/programs-events"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 6,
               "name": "Strategic Partnerships",
               "description": "Co-investment conduits, corporate tracks, and angel syndicates",
               "url": "https://www.campital.in/partnerships"
             },
             {
               "@type": "SiteNavigationElement",
-              "position": 5,
-              "name": "About Us & Mission",
-              "description": "Campital founding story, leadership, and campus-to-capital thesis",
+              "position": 7,
+              "name": "Insights & Research",
+              "description": "Reports, founder playbooks, and campus venture benchmarks",
+              "url": "https://www.campital.in/insights"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 8,
+              "name": "About Us & Leadership",
+              "description": "Campital founding story, leadership team, and campus-to-capital thesis",
               "url": "https://www.campital.in/about-us"
             }
           ]
@@ -201,7 +222,24 @@
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Semantic SEO crawler fallback (instantly replaced when React hydrates) -->
+      <header style="display:none;" aria-hidden="true">
+        <h1>Campital — Campus + Capital = Campital | Student Startup & SME Funding Pipeline</h1>
+        <p>Connecting campus-born startups, university incubators, and SMEs to institutional venture capital and seed funding.</p>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/about-us">About Us & Leadership</a>
+          <a href="/you-are">Pathways (Startups, Incubators, SMEs, Researchers)</a>
+          <a href="/how-we-fund">How We Fund (Seed & Growth Routes)</a>
+          <a href="/programs-events">Programs & Events (Hackathons, Demo Days, Pitches)</a>
+          <a href="/partnerships">Strategic Partnerships</a>
+          <a href="/insights">Insights & Research</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms-of-service">Terms of Service</a>
+        </nav>
+      </header>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
