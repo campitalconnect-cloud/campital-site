@@ -1,62 +1,114 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRight, CheckCircle2, Clock, Send, Users, Sparkles } from 'lucide-react';
 import { Container } from '../common/Container';
 import { SectionHeading } from '../common/SectionHeading';
+import { Button } from '../common/Button';
 import { fadeUpVariant } from '../../utils/motion';
-import { Sparkles, ArrowDown } from 'lucide-react';
 
-const PROCESS_STEPS = [
+const STEPS = [
   {
-    id: 'source',
-    num: '01',
-    title: 'Source',
-    days: 'Campus & SME Origination',
-    color: '#0a1128',
-    desc: 'We source high-potential startups from university incubators, and SMEs directly.',
-    width: '100%',
+    step: '01',
+    timing: 'Day 1',
+    title: 'Apply in 5 Minutes',
+    headline: 'Submit your deck and what you are building',
+    description:
+      'Fill out our simple application form with your pitch deck, prototype link, and team background. Open to student, alumni, or faculty-led ventures. No long essays, no application fees.',
+    highlights: ['Takes under 5 minutes', 'Accepts working prototypes or traction', '₹0 application fees'],
+    accentColor: '#1264FF',
   },
   {
-    id: 'evaluate',
-    num: '02',
-    title: 'Evaluate',
-    days: 'Discovery & Scoring',
-    color: '#0052ff',
-    desc: 'Hackathons, demo days and pitch competitions narrow the field to companies that are actually investment-ready.',
-    width: '85%',
+    step: '02',
+    timing: 'Days 2–14',
+    title: 'Pitch & Fast-Track Evaluation',
+    headline: 'Fast review and structured pitch sessions',
+    description:
+      'Our investment committee reviews applications within 48 hours. Shortlisted founders are invited to pitch directly to institutional angel syndicates and venture fund partners.',
+    highlights: ['48-hour initial review', 'Direct investor pitch room', 'Actionable feedback for all teams'],
+    accentColor: '#20BFEF',
   },
   {
-    id: 'fund',
-    num: '03',
-    title: 'Fund',
-    days: 'Compliant Investment Route',
-    color: '#0066ff',
-    desc: 'Vetted companies move into a compliant route to real capital — not another grant.',
-    width: '70%',
+    step: '03',
+    timing: 'Days 15–21',
+    title: 'Term Sheet & Funding',
+    headline: 'Real equity capital, not another grant',
+    description:
+      'Finalist companies receive structured term sheets between ₹2 Cr and ₹5 Cr from institutional co-investors. Close your round quickly and secure real runway to hire and scale.',
+    highlights: ['₹2–5 Cr cheque size', 'Clean founder-friendly terms', 'No equity taken just to pitch'],
+    accentColor: '#10B981',
   },
 ];
 
 export const HowItWorks = () => {
-  const [activeStep, setActiveStep] = useState(0);
-
   return (
     <section 
+      id="how-it-works"
       className="section"
       style={{
-        backgroundColor: '#ffffff',
-        paddingTop: '5.5rem',
-        paddingBottom: '5.5rem',
+        background: 'linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 50%, #F8FAFC 100%)',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
         position: 'relative',
+        borderBottom: '1px solid #E2E8F0',
         overflow: 'hidden',
-        borderBottom: '1px solid #e2e8f0',
       }}
     >
+      {/* Ambient Gradient Orbs */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-10%',
+          right: '-5%',
+          width: '500px',
+          height: '500px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(18, 100, 255, 0.08) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '-10%',
+          left: '-5%',
+          width: '500px',
+          height: '500px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(32, 191, 239, 0.08) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
+
       <Container>
         <SectionHeading
-          eyebrow="How the pipeline works"
-          title="Three Rigorous Steps from Discovery to Term Sheet"
-          subtitle="A transparent, outcome-oriented evaluation engine designed to take promising ventures into real institutional capital."
+          eyebrow="The 21-Day Pipeline"
+          title="How It Works: 3 Steps from Application to Term Sheet"
+          subtitle="A transparent, fast-moving evaluation process designed to get student founders in front of institutional capital without red tape."
           centered
         />
+
+        {/* Timing Pill Banner with Gradient Glow */}
+        <div
+          style={{
+            maxWidth: '680px',
+            margin: '0 auto 3.5rem auto',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(239, 246, 255, 0.9) 100%)',
+            border: '1.5px solid rgba(18, 100, 255, 0.25)',
+            boxShadow: '0 8px 24px rgba(18, 100, 255, 0.08)',
+            borderRadius: '100px',
+            padding: '0.75rem 1.75rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            textAlign: 'center',
+          }}
+        >
+          <Clock size={18} color="#1264FF" />
+          <span style={{ fontSize: '0.94rem', color: '#1E293B', fontWeight: '600' }}>
+            Total timeline: <strong style={{ color: '#1264FF' }}>21 days from submission to investment decision</strong>. No endless waiting.
+          </span>
+        </div>
 
         {/* Panoramic Three Rigorous Steps Showcase Visual */}
         <motion.div
@@ -66,12 +118,12 @@ export const HowItWorks = () => {
           viewport={{ once: true }}
           style={{
             maxWidth: '1100px',
-            margin: '3rem auto 3.5rem auto',
+            margin: '0 auto 3.5rem auto',
             borderRadius: '24px',
             overflow: 'hidden',
-            border: '1.5px solid #e2e8f0',
-            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
-            backgroundColor: '#090d1a',
+            border: '1.5px solid #E2E8F0',
+            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.08)',
+            backgroundColor: '#090D1A',
           }}
         >
           <img
@@ -86,223 +138,197 @@ export const HowItWorks = () => {
           />
         </motion.div>
 
-        {/* Funnel Layout Grid (Inspired by Reference Screenshot 5) */}
+        {/* 3 Steps Shown ONCE in a Clear Horizontal Card Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1.2fr 1fr',
-            gap: '4rem',
-            alignItems: 'center',
-            marginTop: '3.5rem',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '2.25rem',
+            alignItems: 'stretch',
           }}
-          className="process-funnel-grid"
+          className="how-it-works-steps-grid"
         >
-          {/* Left Column: Visual Inverted Funnel Graphic */}
-          <motion.div
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            style={{
-              position: 'relative',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: '2.5rem 2rem',
-              backgroundColor: '#ffffff',
-              borderRadius: '20px',
-              border: '1.5px solid #e2e8f0',
-              boxShadow: '0 15px 35px rgba(15, 23, 42, 0.05)',
-            }}
-          >
-            {/* 21 Days Callout Badge (Matching Reference Screenshot 5) */}
-            <div
+          {STEPS.map((s, index) => (
+            <motion.div
+              key={s.step}
+              variants={fadeUpVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              custom={index}
               style={{
-                position: 'absolute',
-                top: '1.5rem',
-                left: '1.5rem',
+                background: '#FFFFFF',
+                borderRadius: '24px',
+                border: '1.5px solid #E2E8F0',
+                padding: '2.5rem 2.25rem',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'flex-start',
-                zIndex: 2,
+                justifyContent: 'space-between',
+                boxShadow: '0 10px 30px rgba(15, 23, 42, 0.04)',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.28s ease',
+              }}
+              className="step-card"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = s.accentColor;
+                e.currentTarget.style.boxShadow = `0 20px 45px rgba(18, 100, 255, 0.16)`;
+                e.currentTarget.style.transform = 'translateY(-6px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#E2E8F0';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(15, 23, 42, 0.04)';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              <span style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', color: '#64748b', letterSpacing: '0.05em' }}>
-                Velocity
-              </span>
-              <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#0066ff', letterSpacing: '-0.02em' }}>
-                EP to IC in 21 Days ↓
-              </span>
-            </div>
-
-            {/* Funnel Layers with Connecting Progress Arrows */}
-            <div style={{ width: '100%', maxWidth: '420px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem', marginTop: '3.5rem' }}>
-              {PROCESS_STEPS.map((step, idx) => (
-                <React.Fragment key={step.id}>
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    onClick={() => setActiveStep(idx)}
-                    style={{
-                      width: step.width,
-                      backgroundColor: step.color,
-                      color: '#ffffff',
-                      padding: '0.85rem 1.25rem',
-                      borderRadius: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      cursor: 'pointer',
-                      boxShadow: activeStep === idx ? '0 8px 24px rgba(0, 102, 255, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
-                      border: activeStep === idx ? '2px solid #38bdf8' : '1px solid rgba(255,255,255,0.12)',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    <span style={{ fontSize: '0.92rem', fontWeight: '700', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {step.title}
-                    </span>
-                    <span style={{ fontSize: '0.75rem', opacity: 0.95, fontWeight: '700', backgroundColor: 'rgba(255,255,255,0.2)', padding: '0.2rem 0.55rem', borderRadius: '6px', whiteSpace: 'nowrap', marginLeft: '0.5rem' }}>
-                      {step.days}
-                    </span>
-                  </motion.div>
-
-                  {/* Downward Progress Arrow between steps */}
-                  {idx < PROCESS_STEPS.length - 1 && (
-                    <motion.div
-                      animate={{ y: [0, 3, 0] }}
-                      transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.2 }}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '22px',
-                        height: '22px',
-                        borderRadius: '50%',
-                        backgroundColor: 'rgba(0, 102, 255, 0.08)',
-                        border: '1px solid rgba(0, 102, 255, 0.2)',
-                        color: '#0066ff',
-                        margin: '0.15rem 0',
-                        zIndex: 1,
-                      }}
-                    >
-                      <ArrowDown size={12} strokeWidth={2.5} />
-                    </motion.div>
-                  )}
-                </React.Fragment>
-              ))}
-
-              {/* Progress Arrow before Invested Cone */}
-              <motion.div
-                animate={{ y: [0, 3, 0] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+              {/* Top Accent Gradient Line */}
+              <div
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '22px',
-                  height: '22px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(0, 180, 216, 0.12)',
-                  border: '1px solid rgba(0, 180, 216, 0.3)',
-                  color: '#00b4d8',
-                  margin: '0.15rem 0',
-                  zIndex: 1,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '4px',
+                  background: `linear-gradient(90deg, ${s.accentColor} 0%, #20BFEF 100%)`,
                 }}
-              >
-                <ArrowDown size={12} strokeWidth={2.5} />
-              </motion.div>
+              />
 
-              {/* Bottom Invested Cone */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                style={{
-                  width: '48%',
-                  backgroundColor: '#00b4d8',
-                  color: '#ffffff',
-                  padding: '0.85rem 1.15rem',
-                  borderRadius: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.45rem',
-                  fontWeight: '800',
-                  fontSize: '0.98rem',
-                  boxShadow: '0 8px 24px rgba(0, 180, 216, 0.35)',
-                  cursor: 'pointer',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                }}
-              >
-                <Sparkles size={16} />
-                <span>Invested</span>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Right Column: Step Breakdown & Details */}
-          <motion.div
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            custom={1}
-            style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
-          >
-            {PROCESS_STEPS.map((step, idx) => {
-              const isActive = activeStep === idx;
-              return (
+              <div>
+                {/* Step Top Bar: Number & Timing */}
                 <div
-                  key={step.id}
-                  onClick={() => setActiveStep(idx)}
                   style={{
-                    padding: '1.5rem',
-                    borderRadius: '14px',
-                    backgroundColor: isActive ? '#ffffff' : 'rgba(255,255,255,0.6)',
-                    border: isActive ? '1.5px solid #0066ff' : '1px solid #e2e8f0',
-                    boxShadow: isActive ? '0 10px 25px rgba(0, 102, 255, 0.08)' : 'none',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '1.75rem',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <span 
-                        style={{ 
-                          width: '28px', 
-                          height: '28px', 
-                          borderRadius: '6px', 
-                          backgroundColor: isActive ? '#0066ff' : '#f1f5f9', 
-                          color: isActive ? '#ffffff' : '#64748b', 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center', 
-                          fontWeight: '800', 
-                          fontSize: '0.8rem' 
-                        }}
-                      >
-                        {step.num}
-                      </span>
-                      <h4 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#090d1a', letterSpacing: '-0.02em', margin: 0 }}>
-                        {step.title}
-                      </h4>
-                    </div>
-                    <span style={{ fontSize: '0.78rem', fontWeight: '700', color: isActive ? '#0066ff' : '#64748b', backgroundColor: isActive ? 'rgba(0, 102, 255, 0.08)' : '#f1f5f9', padding: '0.2rem 0.6rem', borderRadius: '9999px' }}>
-                      {step.days}
+                  <span
+                    style={{
+                      fontSize: '2.75rem',
+                      fontWeight: '900',
+                      letterSpacing: '-0.04em',
+                      color: '#E2E8F0',
+                      lineHeight: 1,
+                    }}
+                  >
+                    {s.step}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.82rem',
+                      fontWeight: '800',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      background: 'rgba(18, 100, 255, 0.08)',
+                      color: '#1264FF',
+                      padding: '0.4rem 0.95rem',
+                      borderRadius: '100px',
+                      border: '1px solid rgba(18, 100, 255, 0.22)',
+                    }}
+                  >
+                    {s.timing}
+                  </span>
+                </div>
+
+                {/* Step Title */}
+                <h3
+                  style={{
+                    fontSize: '1.45rem',
+                    fontWeight: '800',
+                    color: '#08152F',
+                    letterSpacing: '-0.02em',
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  {s.title}
+                </h3>
+
+                <p
+                  style={{
+                    fontSize: '1.02rem',
+                    color: '#1264FF',
+                    fontWeight: '700',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  {s.headline}
+                </p>
+
+                <p
+                  style={{
+                    fontSize: '0.95rem',
+                    color: '#475569',
+                    lineHeight: '1.65',
+                    marginBottom: '1.75rem',
+                  }}
+                >
+                  {s.description}
+                </p>
+              </div>
+
+              {/* Highlights Checklist */}
+              <div
+                style={{
+                  borderTop: '1px solid #F1F5F9',
+                  paddingTop: '1.35rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.75rem',
+                }}
+              >
+                {s.highlights.map((h) => (
+                  <div key={h} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <CheckCircle2 size={16} color="#10B981" style={{ flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.88rem', color: '#1E293B', fontWeight: '600' }}>
+                      {h}
                     </span>
                   </div>
-                  <p style={{ color: '#475569', fontSize: '0.94rem', lineHeight: '1.55', margin: 0, paddingLeft: '2.5rem' }}>
-                    {step.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Single Call to Action Button Below 3 Steps */}
+        <div
+          style={{
+            marginTop: '3.75rem',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1rem',
+          }}
+        >
+          <Button
+            to="/you-are?persona=startup"
+            variant="primary"
+            size="lg"
+            icon={ArrowRight}
+            style={{
+              background: 'linear-gradient(135deg, #1264FF 0%, #20BFEF 100%)',
+              height: '56px',
+              padding: '0 2.5rem',
+              borderRadius: '100px',
+              fontSize: '1.02rem',
+              fontWeight: '700',
+              boxShadow: '0 12px 32px rgba(18, 100, 255, 0.35)',
+            }}
+          >
+            Apply for Funding (Cohort 2026)
+          </Button>
+          <span style={{ fontSize: '0.88rem', color: '#64748B', fontWeight: '500' }}>
+            Applications are reviewed on a rolling basis. 100% free for student founders.
+          </span>
         </div>
       </Container>
 
       <style>{`
-        @media (max-width: 900px) {
-          .process-funnel-grid {
+        @media (max-width: 960px) {
+          .how-it-works-steps-grid {
             grid-template-columns: 1fr !important;
-            gap: 2.5rem !important;
+            gap: 1.75rem !important;
           }
         }
       `}</style>

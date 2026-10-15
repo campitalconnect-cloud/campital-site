@@ -19,11 +19,12 @@ export const WhyCampital = () => {
       id="why-campital"
       className="section"
       style={{
-        backgroundColor: '#ffffff',
-        paddingTop: '5.5rem',
-        paddingBottom: '5.5rem',
+        background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #EFF6FF 100%)',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
         position: 'relative',
         borderBottom: '1px solid #e2e8f0',
+        overflow: 'hidden',
       }}
     >
       <Container>

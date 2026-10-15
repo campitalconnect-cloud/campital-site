@@ -42,10 +42,12 @@ export const FounderJourney = () => {
       id="founder-journey"
       className="section"
       style={{
-        backgroundColor: '#f8fafc',
+        background: 'linear-gradient(180deg, #FFFFFF 0%, #EFF6FF 50%, #F8FAFC 100%)',
         position: 'relative',
         overflow: 'hidden',
         borderBottom: '1px solid #e2e8f0',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
       }}
     >
       <Container>

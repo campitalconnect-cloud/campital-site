@@ -1,28 +1,21 @@
 import React from 'react';
-import { ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Container } from '../common/Container';
 import { Button } from '../common/Button';
-import { CLOSING_CTA } from '../../data/homeData';
 import { fadeUpVariant } from '../../utils/motion';
-import { CAMPITAL_CONTACT_EMAIL } from '../../config/emailConfig';
 
-export const ClosingCTA = ({
-  headline = CLOSING_CTA.headline,
-  subheadline = CLOSING_CTA.subheadline,
-  eyebrow = CLOSING_CTA.eyebrow,
-  primaryCta = CLOSING_CTA.primaryCta,
-  secondaryCta = CLOSING_CTA.secondaryCta,
-}) => {
+export const ClosingCTA = () => {
   return (
     <section 
       className="section-closing-cta" 
       style={{ 
-        backgroundColor: '#ffffff', 
+        background: 'linear-gradient(180deg, #F8FAFC 0%, #0A173A 55%, #090D1A 100%)', 
         position: 'relative', 
         overflow: 'hidden', 
-        paddingTop: '4rem', 
-        paddingBottom: '5.5rem' 
+        paddingTop: '6rem', 
+        paddingBottom: '6rem' 
       }}
     >
       <Container>
@@ -30,217 +23,164 @@ export const ClosingCTA = ({
           variants={fadeUpVariant}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          className="closing-cta-box"
+          viewport={{ once: true }}
+          className="closing-cta-card"
           style={{
             position: 'relative',
             zIndex: 1,
             textAlign: 'center',
-            padding: 'clamp(3rem, 7vw, 5.5rem) clamp(1.5rem, 5vw, 4rem)',
-            borderRadius: '28px',
+            padding: 'clamp(4rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem)',
+            borderRadius: '30px',
             overflow: 'hidden',
-            boxShadow: '0 25px 60px rgba(0, 30, 90, 0.22)',
-            color: '#ffffff',
-            backgroundImage: `linear-gradient(180deg, rgba(8, 21, 47, 0.72) 0%, rgba(8, 21, 47, 0.92) 100%), url('/images/closing_cta_panorama.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 40%',
-            border: '1.5px solid rgba(255, 255, 255, 0.18)',
+            backgroundColor: '#07122C',
+            backgroundImage: 'radial-gradient(ellipse 90% 60% at 50% 0%, rgba(18, 100, 255, 0.45), rgba(7, 18, 44, 0.98))',
+            border: '1.5px solid rgba(56, 189, 248, 0.28)',
+            boxShadow: '0 30px 70px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(18, 100, 255, 0.2)',
+            color: '#FFFFFF',
           }}
         >
-          {eyebrow && (
-            <div 
-              style={{ 
-                margin: '0 auto 1.5rem', 
-                display: 'inline-flex', 
-                alignItems: 'center', 
-                gap: '0.45rem',
-                padding: '0.4rem 1.1rem',
-                borderRadius: '9999px',
-                backgroundColor: 'rgba(255, 255, 255, 0.16)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                color: '#38bdf8',
-                fontSize: '0.82rem',
-                fontWeight: '800',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-              }}
-            >
-              <Sparkles size={14} />
-              <span>{eyebrow}</span>
-            </div>
-          )}
-
-          <h2 style={{ fontSize: 'clamp(2.15rem, 4.8vw, 3.4rem)', fontWeight: '900', marginBottom: '1.25rem', letterSpacing: '-0.035em', color: '#ffffff', lineHeight: 1.15 }}>
-            {headline}
-          </h2>
-
-          <p style={{ maxWidth: '640px', margin: '0 auto 2.25rem', color: '#e2e8f0', fontSize: 'clamp(1.05rem, 1.6vw, 1.22rem)', lineHeight: '1.6', fontWeight: '400' }}>
-            {subheadline}
-          </p>
-
-          {/* Interactive Question & Track Helper */}
-          <div
-            style={{
-              maxWidth: '720px',
-              margin: '0 auto 2.5rem auto',
-              padding: '1.25rem 1.5rem',
-              borderRadius: '16px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255, 255, 255, 0.18)',
+          {/* Eyebrow Badge */}
+          <div 
+            style={{ 
+              margin: '0 auto 1.75rem', 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '0.5rem',
+              padding: '0.45rem 1.25rem',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(56, 189, 248, 0.35)',
+              color: '#38BDF8',
+              fontSize: '0.84rem',
+              fontWeight: '800',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#38bdf8', fontSize: '0.88rem', fontWeight: '700', marginBottom: '0.85rem' }}>
-              <HelpCircle size={16} />
-              <span>Where do you fit in the Campital pipeline?</span>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.65rem',
-                flexWrap: 'wrap',
-              }}
-            >
-              <Button
-                to="/you-are?persona=startup"
-                variant="ghost"
-                size="sm"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  borderRadius: '100px',
-                  fontSize: '0.82rem',
-                  fontWeight: '600',
-                  padding: '0.35rem 0.95rem',
-                }}
-              >
-                🎓 Campus Founder
-              </Button>
-              <Button
-                to="/you-are?persona=incubator"
-                variant="ghost"
-                size="sm"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  borderRadius: '100px',
-                  fontSize: '0.82rem',
-                  fontWeight: '600',
-                  padding: '0.35rem 0.95rem',
-                }}
-              >
-                🏛️ Campus Incubator
-              </Button>
-              <Button
-                to="/you-are?persona=sme"
-                variant="ghost"
-                size="sm"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  borderRadius: '100px',
-                  fontSize: '0.82rem',
-                  fontWeight: '600',
-                  padding: '0.35rem 0.95rem',
-                }}
-              >
-                💼 SME Growth
-              </Button>
-              <a
-                href={`mailto:${CAMPITAL_CONTACT_EMAIL}?subject=Campital%20Inquiry`}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  background: 'rgba(32, 191, 239, 0.2)',
-                  color: '#38bdf8',
-                  border: '1px solid rgba(32, 191, 239, 0.4)',
-                  borderRadius: '100px',
-                  fontSize: '0.82rem',
-                  fontWeight: '600',
-                  padding: '0.35rem 0.95rem',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <MessageSquare size={13} />
-                <span>Ask a Question</span>
-              </a>
-            </div>
+            <Sparkles size={15} />
+            <span>2026 Intake Open</span>
           </div>
 
-          {/* Primary Action Buttons */}
+          {/* Main Direct Headline */}
+          <h2 
+            style={{ 
+              fontSize: 'clamp(2.4rem, 5.2vw, 3.8rem)', 
+              fontWeight: '900', 
+              marginBottom: '1.35rem', 
+              letterSpacing: '-0.035em', 
+              color: '#FFFFFF', 
+              lineHeight: 1.15,
+              maxWidth: '820px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
+          >
+            Ready to get your campus startup funded?
+          </h2>
+
+          {/* Direct Plain Subheadline with Numbers */}
+          <p 
+            style={{ 
+              maxWidth: '680px', 
+              margin: '0 auto 2.5rem', 
+              color: '#CBD5E1', 
+              fontSize: 'clamp(1.08rem, 1.6vw, 1.3rem)', 
+              lineHeight: '1.65', 
+              fontWeight: '400' 
+            }}
+          >
+            Apply in 5 minutes. Student startups receive ₹2–5 Cr in seed capital. Evaluation decision in 21 days. ₹0 fees.
+          </p>
+
+          {/* Proof Badges Row */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '1rem',
+              gap: 'clamp(1rem, 3.5vw, 2.5rem)',
               flexWrap: 'wrap',
+              marginBottom: '3.25rem',
+              color: '#94A3B8',
+              fontSize: '0.92rem',
+              fontWeight: '600',
             }}
           >
-            {primaryCta && (
-              <Button
-                to={primaryCta.path}
-                variant="white"
-                size="lg"
-                icon={ArrowUpRight}
-                style={{
-                  height: '54px',
-                  borderRadius: '100px',
-                  padding: '0 2.25rem',
-                  fontWeight: '700',
-                  fontSize: '1.02rem',
-                  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.25)',
-                }}
-              >
-                {primaryCta.label}
-              </Button>
-            )}
-            {secondaryCta && (
-              <Button
-                to={secondaryCta.path}
-                variant="secondary"
-                size="lg"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  color: '#ffffff',
-                  border: '1.5px solid rgba(255, 255, 255, 0.4)',
-                  height: '54px',
-                  borderRadius: '100px',
-                  padding: '0 2rem',
-                  fontWeight: '700',
-                  fontSize: '1.02rem',
-                }}
-              >
-                {secondaryCta.label}
-              </Button>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <CheckCircle2 size={18} color="#10B981" />
+              <span style={{ color: '#F1F5F9' }}>₹2–5 Cr Seed Cheques</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <CheckCircle2 size={18} color="#10B981" />
+              <span style={{ color: '#F1F5F9' }}>21-Day Decision Timeline</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <CheckCircle2 size={18} color="#10B981" />
+              <span style={{ color: '#F1F5F9' }}>Zero Founder Fees</span>
+            </div>
+          </div>
+
+          {/* ONE Clear Primary Button + Secondary Partner Link */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '1.25rem',
+            }}
+          >
+            <Button
+              to="/you-are?persona=startup"
+              variant="primary"
+              size="lg"
+              icon={ArrowRight}
+              style={{
+                background: 'linear-gradient(135deg, #1264FF 0%, #20BFEF 100%)',
+                color: '#FFFFFF',
+                height: '58px',
+                padding: '0 3rem',
+                borderRadius: '100px',
+                fontSize: '1.1rem',
+                fontWeight: '800',
+                boxShadow: '0 14px 36px rgba(18, 100, 255, 0.45)',
+                border: 'none',
+              }}
+            >
+              Apply for Funding
+            </Button>
+
+            <Link
+              to="/you-are?persona=incubator"
+              style={{
+                color: '#CBD5E1',
+                fontSize: '1rem',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.4rem 0.8rem',
+                borderRadius: '8px',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#38BDF8';
+                e.currentTarget.style.transform = 'translateX(3px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#CBD5E1';
+                e.currentTarget.style.transform = 'translateX(0)';
+              }}
+            >
+              <span>Partner your incubator</span>
+              <span style={{ fontSize: '1.2rem' }}>&rarr;</span>
+            </Link>
           </div>
         </motion.div>
       </Container>
-
-      <style>{`
-        @media (max-width: 600px) {
-          .closing-cta-box {
-            padding: 2.75rem 1.25rem !important;
-            border-radius: 20px !important;
-          }
-          .closing-cta-box .btn {
-            width: 100% !important;
-          }
-        }
-      `}</style>
     </section>
   );
 };

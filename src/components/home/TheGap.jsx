@@ -10,10 +10,12 @@ export const TheGap = () => {
       id="the-gap"
       className="section"
       style={{
-        backgroundColor: '#ffffff',
+        background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #EFF6FF 100%)',
         position: 'relative',
         overflow: 'hidden',
         borderBottom: '1px solid #e2e8f0',
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
       }}
     >
       <Container>

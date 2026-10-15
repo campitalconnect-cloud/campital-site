@@ -84,11 +84,11 @@ export const Footer = () => {
             <div className="footer-logo-wrap">
               <Logo size="lg" light />
             </div>
-            <p className="footer-brand-desc" style={{ marginTop: '1.25rem', marginBottom: '1.25rem', color: '#94a3b8', fontSize: '0.88rem', lineHeight: '1.65', maxWidth: '300px' }}>
-              Campital closes the campus capital gap — connecting student ventures, incubators, and SMEs to structured institutional funding.
+            <p className="footer-brand-desc" style={{ marginTop: '1.25rem', marginBottom: '1.25rem', color: '#cbd5e1', fontSize: '0.94rem', lineHeight: '1.65', maxWidth: '320px' }}>
+              Campital closes the campus capital gap — connecting student ventures, university incubators, and high-growth SMEs to structured institutional seed funding.
             </p>
             <div className="footer-badge-wrap">
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', padding: '0.3rem 0.75rem', borderRadius: '9999px', backgroundColor: 'rgba(0, 102, 255, 0.15)', border: '1px solid rgba(0, 102, 255, 0.3)', color: '#38bdf8', fontSize: '0.78rem', fontWeight: '700' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', padding: '0.35rem 0.85rem', borderRadius: '9999px', backgroundColor: 'rgba(0, 102, 255, 0.18)', border: '1px solid rgba(56, 189, 248, 0.35)', color: '#38bdf8', fontSize: '0.82rem', fontWeight: '800' }}>
                 <span>Campus + Capital = Campital</span>
               </div>
             </div>
@@ -96,17 +96,17 @@ export const Footer = () => {
 
           {/* Column 2: Platform */}
           <div className="footer-col">
-            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+            <h4 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
               Platform
             </h4>
-            <ul className="footer-links-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', listStyle: 'none', padding: 0, margin: 0 }}>
+            <ul className="footer-links-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', listStyle: 'none', padding: 0, margin: 0 }}>
               {FOOTER_LINKS.platform.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
+                    style={{ color: '#cbd5e1', fontSize: '0.95rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
                   >
                     {link.label}
                   </Link>
@@ -117,17 +117,17 @@ export const Footer = () => {
 
           {/* Column 3: Pathways */}
           <div className="footer-col">
-            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+            <h4 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
               Pathways
             </h4>
-            <ul className="footer-links-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', listStyle: 'none', padding: 0, margin: 0 }}>
+            <ul className="footer-links-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', listStyle: 'none', padding: 0, margin: 0 }}>
               {FOOTER_LINKS.pathways.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
+                    style={{ color: '#cbd5e1', fontSize: '0.95rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
                   >
                     {link.label}
                   </Link>
@@ -138,17 +138,17 @@ export const Footer = () => {
 
           {/* Column 4: Company */}
           <div className="footer-col">
-            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+            <h4 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
               Company
             </h4>
-            <ul className="footer-links-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', listStyle: 'none', padding: 0, margin: 0 }}>
+            <ul className="footer-links-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', listStyle: 'none', padding: 0, margin: 0 }}>
               {FOOTER_LINKS.company.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
+                    style={{ color: '#cbd5e1', fontSize: '0.95rem', fontWeight: '500', transition: 'color 0.2s ease', textDecoration: 'none' }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
                   >
                     {link.label}
                   </Link>
@@ -159,17 +159,88 @@ export const Footer = () => {
 
           {/* Column 5: Office & Brief */}
           <div className="footer-col footer-col-location">
-            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#f8fafc', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
-              Innovation Hub
+            <h4 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
+              The Campital Brief
             </h4>
-            <div style={{ color: '#94a3b8', fontSize: '0.86rem', lineHeight: '1.6', marginBottom: '0.85rem' }}>
-              <strong style={{ color: '#ffffff', display: 'block', marginBottom: '0.2rem' }}>Campital Innovation Hub</strong>
-              Bhive, Ground Floor, JBR Tech Park,<br />
-              Whitefield, Bengaluru 560066, India
+            <div style={{ color: '#cbd5e1', fontSize: '0.88rem', lineHeight: '1.55', marginBottom: '1rem' }}>
+              Monthly intelligence on campus venture deals, upcoming demo days, and founders who got funded. No spam.
             </div>
 
-            {/* Find us on Map Link */}
-            <div style={{ marginBottom: '1.15rem' }}>
+            <div className="footer-email-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+              <Mail size={16} color="#38bdf8" />
+              <a href="mailto:team@campital.in" style={{ color: '#38bdf8', textDecoration: 'none', fontSize: '0.92rem', fontWeight: '700' }}>
+                team@campital.in
+              </a>
+            </div>
+
+            {isSubscribed ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.75rem 1rem', backgroundColor: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981', borderRadius: '12px', color: '#34d399', fontSize: '0.9rem', fontWeight: '600' }}>
+                <CheckCircle2 size={16} />
+                <span>Subscribed to The Brief!</span>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} style={{ maxWidth: '340px', width: '100%', margin: '0 auto' }}>
+                <div 
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    backgroundColor: '#131d36',
+                    border: '1.5px solid #334155',
+                    borderRadius: '12px',
+                    padding: '0.3rem 0.35rem 0.3rem 0.85rem',
+                    transition: 'border-color 0.2s ease',
+                    position: 'relative',
+                  }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = '#38bdf8')}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = '#334155')}
+                >
+                  <input
+                    type="email"
+                    required
+                    placeholder="Enter your email..."
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#ffffff',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      flex: '1 1 auto',
+                      minWidth: 0,
+                      width: '100%',
+                      padding: '0.35rem 0',
+                      fontFamily: 'inherit',
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      background: 'linear-gradient(135deg, #1264FF 0%, #20BFEF 100%)',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '9px',
+                      padding: '0.55rem 0.95rem',
+                      fontSize: '0.84rem',
+                      fontWeight: '800',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    <span>Subscribe</span>
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <div style={{ marginTop: '1rem' }}>
               <a
                 href="https://share.google/wSi3xfFpx3vEyw4Li"
                 target="_blank"
@@ -178,84 +249,19 @@ export const Footer = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.45rem',
-                  color: '#38bdf8',
+                  color: '#94a3b8',
                   fontSize: '0.84rem',
-                  fontWeight: '700',
+                  fontWeight: '600',
                   textDecoration: 'none',
                   transition: 'color 0.2s ease',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#38bdf8')}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
               >
-                <MapPin size={15} />
-                <span>Find us on Google Maps ↗</span>
+                <MapPin size={14} />
+                <span>Bhive, JBR Tech Park, Bengaluru ↗</span>
               </a>
             </div>
-
-            <div className="footer-email-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
-              <Mail size={15} color="#38bdf8" />
-              <a href="mailto:team@campital.in" style={{ color: '#38bdf8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: '700' }}>
-                team@campital.in
-              </a>
-            </div>
-
-            {isSubscribed ? (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.65rem 0.85rem', backgroundColor: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981', borderRadius: '10px', color: '#34d399', fontSize: '0.82rem' }}>
-                <CheckCircle2 size={15} />
-                <span>Subscribed to The Brief!</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} style={{ maxWidth: '320px', width: '100%', margin: '0 auto' }}>
-                <div 
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: '#161f38',
-                    border: '1px solid #293556',
-                    borderRadius: '10px',
-                    padding: '0.25rem 0.3rem 0.25rem 0.85rem',
-                  }}
-                >
-                  <input
-                    type="email"
-                    required
-                    placeholder="Work email for Brief..."
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      color: '#ffffff',
-                      fontSize: '0.82rem',
-                      outline: 'none',
-                      width: '100%',
-                      fontFamily: 'inherit',
-                    }}
-                  />
-                  <button
-                    type="submit"
-                    style={{
-                      backgroundColor: '#0066ff',
-                      color: '#ffffff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '0.45rem 0.75rem',
-                      fontSize: '0.78rem',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.3rem',
-                      whiteSpace: 'nowrap',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    <span>Join</span>
-                    <ArrowRight size={13} />
-                  </button>
-                </div>
-              </form>
-            )}
           </div>
         </div>
 

@@ -2,17 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export const Logo = ({ size = 'md', isLink = true, light = false, className = '' }) => {
-  // Refined modern height map for clean proportions
+  // Refined modern height map for bold, clear brand presence
   const heightMap = {
-    xs: '32px',
-    sm: '40px',
-    md: '48px',
-    lg: '60px',
-    xl: '76px',
+    xs: '36px',
+    sm: '44px',
+    md: '54px',
+    lg: '68px',
+    xl: '84px',
   };
 
   const logoSrc = light ? '/images/campital_logo_dark.png' : '/images/campital_logo.png';
-  const logoHeight = heightMap[size] || '48px';
+  const logoHeight = heightMap[size] || '54px';
 
   const content = (
     <div 
