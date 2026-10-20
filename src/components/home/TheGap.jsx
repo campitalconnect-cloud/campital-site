@@ -10,55 +10,40 @@ export const TheGap = () => {
       id="the-gap"
       className="section"
       style={{
-        background: 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #EFF6FF 100%)',
+        background: '#FFFFFF',
         position: 'relative',
-        overflow: 'hidden',
-        borderBottom: '1px solid #e2e8f0',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        borderBottom: '1px solid #E2E8F0',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
       }}
     >
       <Container>
         <div style={{ maxWidth: '920px', margin: '0 auto', textAlign: 'center', marginBottom: '3.5rem' }}>
           <div
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.35rem 0.95rem',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(0, 102, 255, 0.08)',
-              border: '1px solid rgba(0, 102, 255, 0.2)',
-              color: '#0066ff',
-              fontSize: '0.82rem',
-              fontWeight: '700',
+              fontSize: '0.78rem',
+              fontWeight: '800',
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              marginBottom: '1rem',
+              color: '#0052FF',
+              marginBottom: '0.75rem',
             }}
           >
-            <Sparkles size={14} />
-            <span>The Campus Capital Gap</span>
+            The Campus Capital Gap
           </div>
 
           <h2
             style={{
               fontSize: 'clamp(2rem, 4vw, 2.85rem)',
               fontWeight: '800',
-              color: '#090d1a',
+              color: '#0A1128',
               letterSpacing: '-0.03em',
               lineHeight: '1.2',
               marginBottom: '1.25rem',
             }}
           >
             Great campus ideas stall between <br className="hidden-mobile" />
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #0052ff 0%, #00b4d8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
+            <span style={{ color: '#0052FF' }}>
               the grant and the cheque.
             </span>
           </h2>
@@ -77,19 +62,15 @@ export const TheGap = () => {
         </div>
 
         {/* Panoramic The Gap Infographic Visual */}
-        <motion.div
-          variants={fadeUpVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+        <div
           style={{
             maxWidth: '1100px',
             margin: '0 auto 3rem auto',
-            borderRadius: '24px',
+            borderRadius: '16px',
             overflow: 'hidden',
-            border: '1.5px solid #e2e8f0',
-            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
-            backgroundColor: '#090d1a',
+            border: '1.5px solid #E2E8F0',
+            boxShadow: '0 8px 24px rgba(15, 23, 42, 0.05)',
+            backgroundColor: '#0A1128',
           }}
         >
           <img
@@ -102,7 +83,7 @@ export const TheGap = () => {
               objectFit: 'cover',
             }}
           />
-        </motion.div>
+        </div>
 
         {/* Visual The Gap Breakdown Graphic */}
         <div
@@ -117,17 +98,13 @@ export const TheGap = () => {
           className="the-gap-grid"
         >
           {/* Card 1: The Grant Stage */}
-          <motion.div
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+          <div
             style={{
-              background: '#f8fafc',
-              border: '1.5px solid #e2e8f0',
-              borderRadius: '20px',
+              background: '#F8FAFC',
+              border: '1.5px solid #E2E8F0',
+              borderRadius: '16px',
               padding: '2rem',
-              boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+              boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)',
               position: 'relative',
             }}
           >
@@ -136,7 +113,7 @@ export const TheGap = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.4rem',
-                color: '#64748b',
+                color: '#64748B',
                 fontSize: '0.78rem',
                 fontWeight: '700',
                 textTransform: 'uppercase',
@@ -144,27 +121,27 @@ export const TheGap = () => {
                 marginBottom: '0.75rem',
               }}
             >
-              <ShieldAlert size={14} style={{ color: '#d97706' }} />
+              <ShieldAlert size={14} style={{ color: '#D97706' }} />
               <span>Where Campuses Begin</span>
             </div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: '#090d1a', marginBottom: '0.5rem' }}>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: '#0A1128', marginBottom: '0.5rem' }}>
               The Grant Cycle
             </h3>
-            <p style={{ fontSize: '0.92rem', color: '#64748b', lineHeight: '1.6', marginBottom: '1.25rem' }}>
+            <p style={{ fontSize: '0.92rem', color: '#64748B', lineHeight: '1.6', marginBottom: '1.25rem' }}>
               University incubators offer early micro-grants, hackathon prizes, and lab space. But grants expire, leaving high-potential teams without runway.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem', color: '#475569' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#d97706' }}>•</span> Limited non-dilutive grant caps
+                <span style={{ color: '#D97706' }}>•</span> Limited non-dilutive grant caps
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#d97706' }}>•</span> No direct institutional equity conduit
+                <span style={{ color: '#D97706' }}>•</span> No direct institutional equity conduit
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#d97706' }}>•</span> Founders lose momentum after graduation
+                <span style={{ color: '#D97706' }}>•</span> Founders lose momentum after graduation
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Center Conduit Connector */}
           <div
@@ -173,11 +150,12 @@ export const TheGap = () => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '1.25rem 1rem',
-              background: 'linear-gradient(135deg, #0a1128 0%, #0052ff 100%)',
-              borderRadius: '20px',
-              color: '#ffffff',
-              boxShadow: '0 12px 30px rgba(0, 82, 255, 0.25)',
+              padding: '1.5rem 1.25rem',
+              background: '#0A1128',
+              border: '1.5px solid #1E293B',
+              borderRadius: '16px',
+              color: '#FFFFFF',
+              boxShadow: '0 8px 24px rgba(10, 17, 40, 0.12)',
               textAlign: 'center',
               minWidth: '220px',
               zIndex: 2,
@@ -186,41 +164,37 @@ export const TheGap = () => {
           >
             <div
               style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.2)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                background: '#0052FF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: '0.65rem',
               }}
             >
-              <TrendingUp size={20} style={{ color: '#38bdf8' }} />
+              <TrendingUp size={20} style={{ color: '#FFFFFF' }} />
             </div>
-            <div style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#38bdf8', marginBottom: '0.2rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#38BDF8', marginBottom: '0.2rem' }}>
               The Pipeline
             </div>
-            <div style={{ fontSize: '1.15rem', fontWeight: '800', marginBottom: '0.35rem' }}>
+            <div style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '0.35rem' }}>
               Campital
             </div>
-            <div style={{ fontSize: '0.78rem', color: '#cbd5e1', lineHeight: '1.4' }}>
-              Evaluation &bull; Shortlist &bull; Compliant Route
+            <div style={{ fontSize: '0.78rem', color: '#CBD5E1', lineHeight: '1.4' }}>
+              Evaluation &bull; Shortlist &bull; Term Sheets
             </div>
           </div>
 
           {/* Card 2: The Cheque Stage */}
-          <motion.div
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+          <div
             style={{
-              background: '#f8fafc',
-              border: '1.5px solid #e2e8f0',
-              borderRadius: '20px',
+              background: '#F8FAFC',
+              border: '1.5px solid #E2E8F0',
+              borderRadius: '16px',
               padding: '2rem',
-              boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+              boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)',
               position: 'relative',
             }}
           >
@@ -240,15 +214,15 @@ export const TheGap = () => {
               <CheckCircle2 size={14} />
               <span>Where Growth Begins</span>
             </div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: '#090d1a', marginBottom: '0.5rem' }}>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: '#0A1128', marginBottom: '0.5rem' }}>
               The Investment Cheque
             </h3>
-            <p style={{ fontSize: '0.92rem', color: '#64748b', lineHeight: '1.6', marginBottom: '1.25rem' }}>
+            <p style={{ fontSize: '0.92rem', color: '#64748B', lineHeight: '1.6', marginBottom: '1.25rem' }}>
               Accredited investors and seed funds ready to write real equity cheques once teams prove deal readiness, unit economics, and market demand.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem', color: '#475569' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#059669' }}>✓</span> ₹2Cr – ₹10Cr real equity investment
+                <span style={{ color: '#059669' }}>✓</span> ₹2 Cr to ₹10 Cr real equity investment
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ color: '#059669' }}>✓</span> Standardized investor terms & governance
@@ -257,7 +231,7 @@ export const TheGap = () => {
                 <span style={{ color: '#059669' }}>✓</span> Long-term scaling runway and syndicates
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
 

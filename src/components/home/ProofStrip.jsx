@@ -1,6 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Building2, Award, Users, TrendingUp } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import { Container } from '../common/Container';
 
 export const ProofStrip = () => {
@@ -16,12 +15,9 @@ export const ProofStrip = () => {
   return (
     <section 
       style={{
-        background: 'linear-gradient(180deg, #061129 0%, #09173A 100%)',
-        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        padding: '3rem 0',
-        position: 'relative',
-        zIndex: 2,
+        backgroundColor: '#F8FAFC',
+        borderBottom: '1px solid #E2E8F0',
+        padding: '2.5rem 0',
       }}
       className="proof-strip-section"
     >
@@ -30,31 +26,31 @@ export const ProofStrip = () => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '2rem',
+            gap: '1.75rem',
             alignItems: 'center',
             textAlign: 'center',
           }}
         >
-          {/* Top Label */}
+          {/* Top Label - Understated, No Pill Badge */}
           <div
             style={{
-              fontSize: '0.82rem',
-              fontWeight: '800',
+              fontSize: '0.8rem',
+              fontWeight: '700',
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              color: '#38BDF8',
+              color: '#64748B',
             }}
           >
-            Built for Founders & Incubators Across Premier University Hubs
+            Built for Founders and Incubators Across Premier University Hubs
           </div>
 
-          {/* Hub Names Badges Strip */}
+          {/* Hub Names Badges Strip - Solid Architectural Cards, No Glassmorphism */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 'clamp(0.75rem, 2vw, 1.25rem)',
+              gap: '0.75rem',
               flexWrap: 'wrap',
             }}
             className="hubs-badge-strip"
@@ -65,63 +61,60 @@ export const ProofStrip = () => {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 1.2rem',
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  borderRadius: '100px',
-                  border: '1px solid rgba(255, 255, 255, 0.14)',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
-                  fontSize: '0.88rem',
-                  fontWeight: '700',
-                  color: '#F1F5F9',
-                  transition: 'all 0.2s ease',
+                  gap: '0.45rem',
+                  padding: '0.45rem 1rem',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '6px',
+                  border: '1px solid #CBD5E1',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+                  fontSize: '0.86rem',
+                  fontWeight: '600',
+                  color: '#1E293B',
                 }}
               >
-                <Building2 size={15} color="#38BDF8" />
+                <Building2 size={14} color="#0052FF" />
                 <span>{hub}</span>
               </div>
             ))}
           </div>
 
-          {/* 3 Real Numbers / Metrics Strip */}
+          {/* 3 Real Numbers Strip - Clear High Contrast, No Neon Glow */}
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '2.5rem',
+              gap: '2rem',
               width: '100%',
-              maxWidth: '880px',
+              maxWidth: '840px',
               marginTop: '0.5rem',
-              paddingTop: '2rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              paddingTop: '1.75rem',
+              borderTop: '1px solid #E2E8F0',
             }}
             className="proof-metrics-grid"
           >
             <div>
-              <div style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.45rem)', fontWeight: '900', color: '#FFFFFF', letterSpacing: '-0.03em' }}>
+              <div style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: '800', color: '#0A1128', letterSpacing: '-0.03em' }}>
                 ₹2–5 Cr
               </div>
-              <div style={{ fontSize: '0.88rem', color: '#94A3B8', fontWeight: '600', marginTop: '0.25rem' }}>
-                Cheque size per startup
+              <div style={{ fontSize: '0.86rem', color: '#475569', fontWeight: '500', marginTop: '0.2rem' }}>
+                Seed cheque size per startup
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.45rem)', fontWeight: '900', color: '#38BDF8', letterSpacing: '-0.03em' }}>
+              <div style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: '800', color: '#0052FF', letterSpacing: '-0.03em' }}>
                 21 Days
               </div>
-              <div style={{ fontSize: '0.88rem', color: '#94A3B8', fontWeight: '600', marginTop: '0.25rem' }}>
-                Intake to term sheet review
+              <div style={{ fontSize: '0.86rem', color: '#475569', fontWeight: '500', marginTop: '0.2rem' }}>
+                Submission to term sheet review
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.45rem)', fontWeight: '900', color: '#10B981', letterSpacing: '-0.03em' }}>
+              <div style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', fontWeight: '800', color: '#0A1128', letterSpacing: '-0.03em' }}>
                 ₹0 Fees
               </div>
-              <div style={{ fontSize: '0.88rem', color: '#94A3B8', fontWeight: '600', marginTop: '0.25rem' }}>
+              <div style={{ fontSize: '0.86rem', color: '#475569', fontWeight: '500', marginTop: '0.2rem' }}>
                 Zero cost for founders to apply or pitch
               </div>
             </div>
@@ -133,7 +126,7 @@ export const ProofStrip = () => {
         @media (max-width: 640px) {
           .proof-metrics-grid {
             grid-template-columns: 1fr !important;
-            gap: 1.5rem !important;
+            gap: 1.25rem !important;
           }
         }
       `}</style>

@@ -25,7 +25,7 @@ const CRITERIA = [
   {
     weight: '25%',
     title: 'Market Opportunity',
-    desc: 'Clear addressable market (₹1,000 Cr+ TAM) with defensible economics. Must have potential for venture-scale growth over 5–7 years.',
+    desc: 'Clear addressable market (₹1,000 Cr+ TAM) with defensible economics. Must have potential for venture-scale growth over 5 to 7 years.',
     icon: Target,
     image: '/images/criteria_market_opportunity.jpg',
     tag: '₹1,000 Cr+ TAM',
@@ -79,12 +79,11 @@ export const ScoringAndFAQ = () => {
       id="criteria-and-faq"
       className="section"
       style={{
-        background: 'linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 50%, #F8FAFC 100%)',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        background: '#F8FAFC',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
         borderBottom: '1px solid #E2E8F0',
         position: 'relative',
-        overflow: 'hidden',
       }}
     >
       <Container>
@@ -107,7 +106,7 @@ export const ScoringAndFAQ = () => {
               style={{
                 fontSize: '1.45rem',
                 fontWeight: '800',
-                color: '#08152F',
+                color: '#0A1128',
                 letterSpacing: '-0.02em',
               }}
             >
@@ -126,37 +125,30 @@ export const ScoringAndFAQ = () => {
             }}
             className="criteria-grid"
           >
-            {CRITERIA.map((c, i) => {
+            {CRITERIA.map((c) => {
               const Icon = c.icon;
               return (
-                <motion.div
+                <div
                   key={c.title}
-                  variants={fadeUpVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
                   style={{
                     backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
+                    borderRadius: '16px',
                     border: '1.5px solid #E2E8F0',
                     overflow: 'hidden',
-                    boxShadow: '0 8px 24px rgba(15, 23, 42, 0.04)',
+                    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    transition: 'all 0.25s ease',
+                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
                   }}
                   className="criteria-card"
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#1264FF';
-                    e.currentTarget.style.boxShadow = '0 16px 36px rgba(18, 100, 255, 0.12)';
-                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.borderColor = '#94A3B8';
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(15, 23, 42, 0.07)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = '#E2E8F0';
-                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(15, 23, 42, 0.04)';
-                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(15, 23, 42, 0.03)';
                   }}
                 >
                   {/* Top Image Showcase */}
@@ -166,7 +158,7 @@ export const ScoringAndFAQ = () => {
                       width: '100%',
                       height: '180px',
                       overflow: 'hidden',
-                      backgroundColor: '#08152F',
+                      backgroundColor: '#0A1128',
                     }}
                   >
                     <img
@@ -177,7 +169,6 @@ export const ScoringAndFAQ = () => {
                         height: '100%',
                         objectFit: 'cover',
                         display: 'block',
-                        transition: 'transform 0.35s ease',
                       }}
                       className="criteria-img"
                     />
@@ -187,7 +178,7 @@ export const ScoringAndFAQ = () => {
                       style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(180deg, rgba(8, 21, 47, 0.15) 0%, rgba(8, 21, 47, 0.7) 100%)',
+                        background: 'linear-gradient(180deg, rgba(10, 17, 40, 0.2) 0%, rgba(10, 17, 40, 0.75) 100%)',
                         pointerEvents: 'none',
                       }}
                     />
@@ -198,13 +189,12 @@ export const ScoringAndFAQ = () => {
                         position: 'absolute',
                         top: '0.85rem',
                         left: '0.85rem',
-                        backgroundColor: '#1264FF',
+                        backgroundColor: '#0052FF',
                         color: '#FFFFFF',
-                        fontWeight: '900',
-                        fontSize: '0.95rem',
-                        padding: '0.35rem 0.75rem',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(18, 100, 255, 0.35)',
+                        fontWeight: '800',
+                        fontSize: '0.9rem',
+                        padding: '0.3rem 0.7rem',
+                        borderRadius: '6px',
                         letterSpacing: '-0.02em',
                       }}
                     >
@@ -219,11 +209,10 @@ export const ScoringAndFAQ = () => {
                         left: '0.85rem',
                         color: '#FFFFFF',
                         fontWeight: '700',
-                        fontSize: '0.75rem',
+                        fontSize: '0.74rem',
                         textTransform: 'uppercase',
                         letterSpacing: '0.06em',
-                        backgroundColor: 'rgba(8, 21, 47, 0.65)',
-                        backdropFilter: 'blur(8px)',
+                        backgroundColor: 'rgba(10, 17, 40, 0.88)',
                         padding: '0.25rem 0.6rem',
                         borderRadius: '6px',
                         border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -256,12 +245,12 @@ export const ScoringAndFAQ = () => {
                           style={{
                             width: '32px',
                             height: '32px',
-                            borderRadius: '8px',
-                            backgroundColor: 'rgba(18, 100, 255, 0.08)',
+                            borderRadius: '6px',
+                            backgroundColor: '#F1F5F9',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: '#1264FF',
+                            color: '#0A1128',
                             flexShrink: 0,
                           }}
                         >
@@ -271,7 +260,7 @@ export const ScoringAndFAQ = () => {
                           style={{
                             fontSize: '1.15rem',
                             fontWeight: '800',
-                            color: '#08152F',
+                            color: '#0A1128',
                             letterSpacing: '-0.02em',
                             margin: 0,
                           }}
@@ -292,7 +281,7 @@ export const ScoringAndFAQ = () => {
                       </p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -303,25 +292,21 @@ export const ScoringAndFAQ = () => {
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <div
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                color: '#1264FF',
-                fontSize: '0.82rem',
+                fontSize: '0.78rem',
                 fontWeight: '800',
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
+                letterSpacing: '0.08em',
+                color: '#0052FF',
                 marginBottom: '0.5rem',
               }}
             >
-              <HelpCircle size={15} />
-              <span>Key Questions Answered</span>
+              Key Questions Answered
             </div>
             <h3
               style={{
                 fontSize: '1.55rem',
                 fontWeight: '800',
-                color: '#08152F',
+                color: '#0A1128',
                 letterSpacing: '-0.02em',
               }}
             >
@@ -337,9 +322,9 @@ export const ScoringAndFAQ = () => {
                   key={faq.q}
                   style={{
                     backgroundColor: '#FFFFFF',
-                    borderRadius: '14px',
-                    border: isOpen ? '1.5px solid #1264FF' : '1px solid #E2E8F0',
-                    boxShadow: isOpen ? '0 8px 24px rgba(18, 100, 255, 0.08)' : '0 2px 8px rgba(15, 23, 42, 0.02)',
+                    borderRadius: '12px',
+                    border: isOpen ? '1.5px solid #0052FF' : '1px solid #E2E8F0',
+                    boxShadow: isOpen ? '0 4px 16px rgba(0, 82, 255, 0.06)' : '0 2px 6px rgba(15, 23, 42, 0.02)',
                     overflow: 'hidden',
                     transition: 'border-color 0.2s ease',
                   }}
@@ -360,16 +345,16 @@ export const ScoringAndFAQ = () => {
                   >
                     <span
                       style={{
-                        fontSize: '1.02rem',
+                        fontSize: '1rem',
                         fontWeight: '700',
-                        color: isOpen ? '#1264FF' : '#08152F',
+                        color: isOpen ? '#0052FF' : '#0A1128',
                       }}
                     >
                       {faq.q}
                     </span>
                     <ChevronDown
                       size={18}
-                      color={isOpen ? '#1264FF' : '#64748B'}
+                      color={isOpen ? '#0052FF' : '#64748B'}
                       style={{
                         transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                         transition: 'transform 0.2s ease',
@@ -410,9 +395,6 @@ export const ScoringAndFAQ = () => {
       </Container>
 
       <style>{`
-        .criteria-card:hover .criteria-img {
-          transform: scale(1.05);
-        }
         @media (max-width: 1040px) {
           .criteria-grid {
             grid-template-columns: repeat(2, 1fr) !important;

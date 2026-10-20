@@ -15,11 +15,11 @@ const PATHWAYS = [
     title: 'Startup Track',
     tagline: 'Built something on campus? Get evaluated, get funded.',
     description: 'For student, alumni, and lab-born ventures ready to transition from campus prototypes to scalable, venture-backed companies.',
-    highlights: ['₹2–5 Cr seed cheque size', '21-day decision timeline', '₹0 fees, no equity to pitch'],
+    highlights: ['₹2 Cr to ₹5 Cr seed cheque size', '21-day decision timeline', '₹0 fees, no equity to pitch'],
     ctaText: 'Get Funded',
     icon: Rocket,
     personaKey: 'startup',
-    color: '#1264FF',
+    color: '#0052FF',
     btnVariant: 'primary',
   },
   {
@@ -32,7 +32,7 @@ const PATHWAYS = [
     ctaText: 'Partner Your Incubator',
     icon: Building2,
     personaKey: 'incubator',
-    color: '#08152F',
+    color: '#0A1128',
     btnVariant: 'outline',
   },
   {
@@ -41,7 +41,7 @@ const PATHWAYS = [
     title: 'SME Growth',
     tagline: 'Running an established SME? Apply directly, no incubator needed.',
     description: 'High-growth small and medium enterprises seeking growth capital through a bespoke, independent evaluation process.',
-    highlights: ['₹5–10 Cr growth cheques', 'Independent direct evaluation', 'Validated business models'],
+    highlights: ['₹5 Cr to ₹10 Cr growth cheques', 'Independent direct evaluation', 'Validated business models'],
     ctaText: 'Apply for SME Funding',
     icon: Briefcase,
     personaKey: 'sme',
@@ -71,12 +71,11 @@ export const AudienceCards = () => {
       id="who-it-is-for"
       className="section"
       style={{
-        background: 'linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 40%, #F8FAFC 100%)',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        background: '#FFFFFF',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
         borderBottom: '1px solid #E2E8F0',
         position: 'relative',
-        overflow: 'hidden',
       }}
     >
       <Container>
@@ -88,19 +87,15 @@ export const AudienceCards = () => {
         />
 
         {/* Panoramic 4-Track Showcase Visual */}
-        <motion.div
-          variants={fadeUpVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+        <div
           style={{
             maxWidth: '1100px',
             margin: '2.5rem auto 3.5rem auto',
-            borderRadius: '24px',
+            borderRadius: '16px',
             overflow: 'hidden',
             border: '1.5px solid #E2E8F0',
-            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.08)',
-            backgroundColor: '#090D1A',
+            boxShadow: '0 8px 24px rgba(15, 23, 42, 0.05)',
+            backgroundColor: '#0A1128',
           }}
         >
           <img
@@ -113,7 +108,7 @@ export const AudienceCards = () => {
               objectFit: 'cover',
             }}
           />
-        </motion.div>
+        </div>
 
         {/* 4 Differentiated Pathway Cards Grid */}
         <div
@@ -125,84 +120,64 @@ export const AudienceCards = () => {
           }}
           className="audience-four-grid"
         >
-          {PATHWAYS.map((p, index) => {
+          {PATHWAYS.map((p) => {
             const Icon = p.icon;
             const targetPath = `/you-are?persona=${p.personaKey}`;
 
             return (
-              <motion.div
+              <div
                 key={p.id}
-                variants={fadeUpVariant}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={index}
                 style={{
                   backgroundColor: '#FFFFFF',
-                  borderRadius: '22px',
-                  border: p.id === 'startup' ? '2px solid #1264FF' : '1.5px solid #E2E8F0',
+                  borderRadius: '16px',
+                  border: p.id === 'startup' ? '2px solid #0052FF' : '1.5px solid #E2E8F0',
                   padding: '2.25rem 1.75rem',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  boxShadow: p.id === 'startup' ? '0 16px 36px rgba(18, 100, 255, 0.1)' : '0 8px 24px rgba(15, 23, 42, 0.04)',
+                  boxShadow: p.id === 'startup' ? '0 8px 24px rgba(0, 82, 255, 0.08)' : '0 4px 16px rgba(15, 23, 42, 0.03)',
                   position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.28s ease',
+                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
                   cursor: 'pointer',
                 }}
                 className="pathway-card"
                 onClick={() => navigate(targetPath)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = p.color;
-                  e.currentTarget.style.boxShadow = `0 20px 45px rgba(18, 100, 255, 0.15)`;
-                  e.currentTarget.style.transform = 'translateY(-6px)';
+                  e.currentTarget.style.borderColor = '#94A3B8';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(15, 23, 42, 0.08)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = p.id === 'startup' ? '#1264FF' : '#E2E8F0';
-                  e.currentTarget.style.boxShadow = p.id === 'startup' ? '0 16px 36px rgba(18, 100, 255, 0.1)' : '0 8px 24px rgba(15, 23, 42, 0.04)';
-                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = p.id === 'startup' ? '#0052FF' : '#E2E8F0';
+                  e.currentTarget.style.boxShadow = p.id === 'startup' ? '0 8px 24px rgba(0, 82, 255, 0.08)' : '0 4px 16px rgba(15, 23, 42, 0.03)';
                 }}
               >
-                {/* Top Accent Trim */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '4px',
-                    background: p.id === 'startup' ? 'linear-gradient(90deg, #1264FF 0%, #20BFEF 100%)' : p.color,
-                  }}
-                />
-
                 <div>
                   {/* Top Bar: Icon & Badge */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                     <div
                       style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '14px',
-                        backgroundColor: p.id === 'startup' ? 'rgba(18, 100, 255, 0.1)' : 'rgba(8, 21, 47, 0.06)',
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '8px',
+                        backgroundColor: '#F1F5F9',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: p.color,
                       }}
                     >
-                      <Icon size={24} />
+                      <Icon size={22} />
                     </div>
                     <span
                       style={{
-                        fontSize: '0.76rem',
+                        fontSize: '0.74rem',
                         fontWeight: '800',
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
-                        backgroundColor: p.id === 'startup' ? '#1264FF' : '#F1F5F9',
+                        backgroundColor: p.id === 'startup' ? '#0052FF' : '#F1F5F9',
                         color: p.id === 'startup' ? '#FFFFFF' : '#334155',
-                        padding: '0.35rem 0.8rem',
-                        borderRadius: '100px',
+                        padding: '0.3rem 0.75rem',
+                        borderRadius: '6px',
                       }}
                     >
                       {p.badge}
@@ -211,11 +186,11 @@ export const AudienceCards = () => {
 
                   <h3
                     style={{
-                      fontSize: '1.45rem',
+                      fontSize: '1.35rem',
                       fontWeight: '800',
-                      color: '#08152F',
+                      color: '#0A1128',
                       letterSpacing: '-0.02em',
-                      marginBottom: '0.65rem',
+                      marginBottom: '0.5rem',
                     }}
                   >
                     {p.title}
@@ -223,10 +198,10 @@ export const AudienceCards = () => {
 
                   <p
                     style={{
-                      fontSize: '0.94rem',
-                      color: p.color,
+                      fontSize: '0.92rem',
+                      color: p.id === 'startup' ? '#0052FF' : '#334155',
                       fontWeight: '700',
-                      marginBottom: '1rem',
+                      marginBottom: '0.85rem',
                       lineHeight: '1.45',
                     }}
                   >
@@ -248,7 +223,7 @@ export const AudienceCards = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem', marginBottom: '1.75rem' }}>
                     {p.highlights.map((h) => (
                       <div key={h} style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                        <CheckCircle2 size={15} color="#10B981" style={{ flexShrink: 0 }} />
+                        <CheckCircle2 size={15} color="#059669" style={{ flexShrink: 0 }} />
                         <span style={{ fontSize: '0.84rem', color: '#1E293B', fontWeight: '600' }}>
                           {h}
                         </span>
@@ -266,19 +241,19 @@ export const AudienceCards = () => {
                     size="md"
                     icon={ArrowRight}
                     style={{
-                      height: '46px',
-                      borderRadius: '10px',
+                      height: '44px',
+                      borderRadius: '8px',
                       fontWeight: '700',
                       fontSize: '0.88rem',
-                      background: p.id === 'startup' ? 'linear-gradient(135deg, #1264FF 0%, #20BFEF 100%)' : undefined,
+                      backgroundColor: p.id === 'startup' ? '#0052FF' : undefined,
                       borderColor: p.id !== 'startup' ? '#CBD5E1' : undefined,
-                      color: p.id === 'startup' ? '#FFFFFF' : '#08152F',
+                      color: p.id === 'startup' ? '#FFFFFF' : '#0A1128',
                     }}
                   >
                     {p.ctaText}
                   </Button>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

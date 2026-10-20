@@ -19,12 +19,11 @@ export const WhyCampital = () => {
       id="why-campital"
       className="section"
       style={{
-        background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #EFF6FF 100%)',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        background: '#FFFFFF',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
         position: 'relative',
-        borderBottom: '1px solid #e2e8f0',
-        overflow: 'hidden',
+        borderBottom: '1px solid #E2E8F0',
       }}
     >
       <Container>
@@ -36,19 +35,15 @@ export const WhyCampital = () => {
         />
 
         {/* Panoramic 4-Principles Showcase Visual */}
-        <motion.div
-          variants={fadeUpVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+        <div
           style={{
             maxWidth: '1100px',
             margin: '3rem auto 3.5rem auto',
-            borderRadius: '24px',
+            borderRadius: '16px',
             overflow: 'hidden',
-            border: '1.5px solid #e2e8f0',
-            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
-            backgroundColor: '#090d1a',
+            border: '1.5px solid #E2E8F0',
+            boxShadow: '0 8px 24px rgba(15, 23, 42, 0.05)',
+            backgroundColor: '#0A1128',
           }}
         >
           <img
@@ -61,54 +56,50 @@ export const WhyCampital = () => {
               objectFit: 'cover',
             }}
           />
-        </motion.div>
+        </div>
 
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '2rem',
+            gap: '1.75rem',
             marginTop: '3.5rem',
           }}
           className="why-grid"
         >
-          {WHY_CAMPITAL_PILLARS.map((pillar, index) => {
+          {WHY_CAMPITAL_PILLARS.map((pillar) => {
             const Icon = iconMap[pillar.icon] || ShieldCheck;
             return (
-              <motion.div
+              <div
                 key={pillar.id}
-                variants={fadeUpVariant}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-50px' }}
-                custom={index}
                 style={{
-                  background: '#f8fafc',
-                  border: '1.5px solid #e2e8f0',
-                  borderRadius: '20px',
-                  padding: '2.5rem 2rem',
+                  background: '#F8FAFC',
+                  border: '1.5px solid #E2E8F0',
+                  borderRadius: '16px',
+                  padding: '2.25rem 2rem',
                   display: 'flex',
                   gap: '1.5rem',
                   alignItems: 'flex-start',
-                  transition: 'all 0.25s ease',
+                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
                   position: 'relative',
                 }}
                 className="why-card"
               >
                 <div
                   style={{
-                    width: '52px',
-                    height: '52px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 180, 216, 0.15))',
-                    color: '#0066ff',
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '8px',
+                    background: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
+                    color: '#0A1128',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
                   }}
                 >
-                  <Icon size={26} />
+                  <Icon size={22} />
                 </div>
 
                 <div style={{ flex: 1 }}>
@@ -116,7 +107,7 @@ export const WhyCampital = () => {
                     style={{
                       fontSize: '0.78rem',
                       fontWeight: '800',
-                      color: '#0066ff',
+                      color: '#0052FF',
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
                       marginBottom: '0.35rem',
@@ -129,7 +120,7 @@ export const WhyCampital = () => {
                     style={{
                       fontSize: '1.35rem',
                       fontWeight: '800',
-                      color: '#090d1a',
+                      color: '#0A1128',
                       marginBottom: '0.65rem',
                       letterSpacing: '-0.02em',
                       lineHeight: '1.3',
@@ -140,7 +131,7 @@ export const WhyCampital = () => {
 
                   <p
                     style={{
-                      fontSize: '0.98rem',
+                      fontSize: '0.94rem',
                       color: '#475569',
                       lineHeight: '1.6',
                       margin: 0,
@@ -157,16 +148,17 @@ export const WhyCampital = () => {
                       gap: '0.4rem',
                       fontSize: '0.82rem',
                       fontWeight: '600',
-                      color: '#0052ff',
-                      backgroundColor: 'rgba(0, 102, 255, 0.06)',
-                      padding: '0.3rem 0.75rem',
-                      borderRadius: '8px',
+                      color: '#1E293B',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #E2E8F0',
+                      padding: '0.35rem 0.75rem',
+                      borderRadius: '6px',
                     }}
                   >
                     <span>{pillar.highlight}</span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -174,9 +166,8 @@ export const WhyCampital = () => {
 
       <style>{`
         .why-card:hover {
-          transform: translateY(-3px);
-          border-color: rgba(0, 102, 255, 0.35) !important;
-          box-shadow: 0 16px 36px rgba(0, 82, 255, 0.08) !important;
+          border-color: #94A3B8 !important;
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07) !important;
         }
         @media (max-width: 860px) {
           .why-grid {

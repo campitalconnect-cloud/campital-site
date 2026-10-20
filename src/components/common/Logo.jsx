@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-export const Logo = ({ size = 'md', isLink = true, light = false, className = '' }) => {
+export const Logo = ({ size = 'md', isLink = true, light = false, className = '', onClick }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // Refined modern height map for bold, clear brand presence
   const heightMap = {
     xs: '36px',
@@ -13,6 +16,27 @@ export const Logo = ({ size = 'md', isLink = true, light = false, className = ''
 
   const logoSrc = light ? '/images/campital_logo_dark.png' : '/images/campital_logo.png';
   const logoHeight = heightMap[size] || '54px';
+
+  const handleClick = (e) => {
+    if (onClick) {
+      onClick(e);
+      return;
+    }
+
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const heroElement = document.getElementById('hero');
+      if (heroElement) {
+        heroElement.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      e.preventDefault();
+      navigate('/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const content = (
     <div 
@@ -50,6 +74,7 @@ export const Logo = ({ size = 'md', isLink = true, light = false, className = ''
   return (
     <Link 
       to="/" 
+      onClick={handleClick}
       style={{ 
         textDecoration: 'none', 
         display: 'inline-flex', 

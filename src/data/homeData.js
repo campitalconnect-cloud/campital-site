@@ -4,7 +4,7 @@
 
 export const HERO_DATA = {
   headline: 'Campus + Capital = Campital',
-  subheadline: 'Funding. Partners. Momentum. For startups born on campus — and SMEs ready to grow.',
+  subheadline: 'Funding. Partners. Capital. For startups born on campus, and SMEs ready to grow.',
   primaryCta: {
     label: 'Get Funded',
     path: '/you-are?persona=startup'
@@ -27,13 +27,13 @@ export const HOW_IT_WORKS_STEPS = [
     step: '02',
     title: 'Evaluate',
     description: 'Hackathons, demo days and pitch competitions narrow the field to companies that are actually investment-ready.',
-    detail: 'A rigorous discovery layer tests execution, founder momentum, and product viability before introductions.',
+    detail: 'A rigorous discovery layer tests execution, founder capability, and product viability before introductions.',
     icon: 'Layers'
   },
   {
     step: '03',
     title: 'Fund',
-    description: 'Vetted companies move into a compliant route to real capital — not another grant.',
+    description: 'Vetted companies move into a direct route to real equity capital, not another grant.',
     detail: 'Shortlisted companies enter a structured capital pathway to accredited investors, angel networks, and venture funds.',
     icon: 'TrendingUp'
   }
@@ -55,7 +55,7 @@ export const AUDIENCE_CARDS = [
     badge: 'University Ecosystems',
     title: 'Campus Incubator',
     tagline: "Give your portfolio a path that doesn't end at grants.",
-    description: 'Plugs your university innovation center into a structured evaluation engine and compliant equity investor network.',
+    description: 'Plugs your university innovation center into a structured evaluation engine and accredited equity investor network.',
     ctaText: 'Partner Your Incubator',
     personaKey: 'incubator',
     icon: 'Building2'
@@ -76,7 +76,7 @@ export const AUDIENCE_CARDS = [
     isComingSoon: true,
     title: 'Faculty & Researchers',
     tagline: "Research with startup potential? We're building a route for it.",
-    description: 'A dedicated pipeline taking campus research from the lab to a fundable startup with compliant investor capital.',
+    description: 'A dedicated pipeline taking campus research from the lab to a fundable startup with accredited investor capital.',
     ctaText: 'Register Interest',
     personaKey: 'faculty',
     icon: 'GraduationCap'
@@ -88,7 +88,7 @@ export const WHY_CAMPITAL_PILLARS = [
     id: 'real-capital',
     num: '01',
     title: 'Real capital, not another grant.',
-    description: 'Vetted companies move into a compliant investment route, not a recurring grant cycle.',
+    description: 'Vetted companies move into an institutional investment route, not a recurring grant cycle.',
     highlight: 'Sustainable equity runway vs temporary subsidies',
     icon: 'ShieldCheck'
   },
@@ -112,7 +112,7 @@ export const WHY_CAMPITAL_PILLARS = [
     id: 'two-ways-in',
     num: '04',
     title: 'Two ways in, one destination.',
-    description: 'Campus incubator pipeline or direct SME sourcing — same funding route either way.',
+    description: 'Campus incubator pipeline or direct SME sourcing, leading to the same funding route either way.',
     highlight: 'Merit-based access to capital providers',
     icon: 'GitMerge'
   }
@@ -122,17 +122,17 @@ export const STATS_BAR_CONFIG = {
   // Built component, kept switched off at launch per spec
   showStats: false,
   metrics: [
-    { label: 'Startups Evaluated', value: '—' },
-    { label: 'Partner Campuses', value: '—' },
-    { label: 'Startups Funded', value: '—' },
-    { label: 'Capital Raised by Portfolio', value: '—' }
+    { label: 'Startups Evaluated', value: 'N/A' },
+    { label: 'Partner Campuses', value: 'N/A' },
+    { label: 'Startups Funded', value: 'N/A' },
+    { label: 'Capital Raised by Portfolio', value: 'N/A' }
   ]
 };
 
 export const CLOSING_CTA = {
   eyebrow: 'Join the Pipeline',
   headline: 'Ready when you are.',
-  subheadline: 'Funding. Partners. Momentum. For startups born on campus — and SMEs ready to grow.',
+  subheadline: 'Funding. Partners. Capital. For startups born on campus, and SMEs ready to grow.',
   primaryCta: {
     label: 'Get Funded',
     path: '/you-are?persona=startup'

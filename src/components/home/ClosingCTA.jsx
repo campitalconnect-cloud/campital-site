@@ -11,66 +11,48 @@ export const ClosingCTA = () => {
     <section 
       className="section-closing-cta" 
       style={{ 
-        background: 'linear-gradient(180deg, #F8FAFC 0%, #0A173A 55%, #090D1A 100%)', 
+        background: '#FFFFFF', 
         position: 'relative', 
-        overflow: 'hidden', 
-        paddingTop: '6rem', 
-        paddingBottom: '6rem' 
+        paddingTop: '5.5rem', 
+        paddingBottom: '5.5rem' 
       }}
     >
       <Container>
-        <motion.div
-          variants={fadeUpVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+        <div
           className="closing-cta-card"
           style={{
             position: 'relative',
             zIndex: 1,
             textAlign: 'center',
-            padding: 'clamp(4rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem)',
-            borderRadius: '30px',
-            overflow: 'hidden',
-            backgroundColor: '#07122C',
-            backgroundImage: 'radial-gradient(ellipse 90% 60% at 50% 0%, rgba(18, 100, 255, 0.45), rgba(7, 18, 44, 0.98))',
-            border: '1.5px solid rgba(56, 189, 248, 0.28)',
-            boxShadow: '0 30px 70px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(18, 100, 255, 0.2)',
+            padding: 'clamp(3.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem)',
+            borderRadius: '16px',
+            backgroundColor: '#0A1128',
+            border: '1.5px solid #1E293B',
+            boxShadow: '0 12px 36px rgba(10, 17, 40, 0.15)',
             color: '#FFFFFF',
           }}
         >
-          {/* Eyebrow Badge */}
+          {/* Eyebrow Label */}
           <div 
             style={{ 
-              margin: '0 auto 1.75rem', 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              gap: '0.5rem',
-              padding: '0.45rem 1.25rem',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(56, 189, 248, 0.35)',
-              color: '#38BDF8',
-              fontSize: '0.84rem',
+              margin: '0 auto 1.25rem', 
+              fontSize: '0.78rem',
               fontWeight: '800',
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+              color: '#38BDF8',
             }}
           >
-            <Sparkles size={15} />
-            <span>2026 Intake Open</span>
+            2026 Intake Open
           </div>
 
           {/* Main Direct Headline */}
           <h2 
             style={{ 
-              fontSize: 'clamp(2.4rem, 5.2vw, 3.8rem)', 
-              fontWeight: '900', 
-              marginBottom: '1.35rem', 
-              letterSpacing: '-0.035em', 
+              fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', 
+              fontWeight: '800', 
+              marginBottom: '1.25rem', 
+              letterSpacing: '-0.03em', 
               color: '#FFFFFF', 
               lineHeight: 1.15,
               maxWidth: '820px',
@@ -87,12 +69,12 @@ export const ClosingCTA = () => {
               maxWidth: '680px', 
               margin: '0 auto 2.5rem', 
               color: '#CBD5E1', 
-              fontSize: 'clamp(1.08rem, 1.6vw, 1.3rem)', 
+              fontSize: 'clamp(1.05rem, 1.4vw, 1.2rem)', 
               lineHeight: '1.65', 
               fontWeight: '400' 
             }}
           >
-            Apply in 5 minutes. Student startups receive ₹2–5 Cr in seed capital. Evaluation decision in 21 days. ₹0 fees.
+            Apply in 5 minutes. Student startups receive ₹2 Cr to ₹5 Cr in seed capital. Evaluation decision in 21 days. ₹0 fees.
           </p>
 
           {/* Proof Badges Row */}
@@ -101,9 +83,9 @@ export const ClosingCTA = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 'clamp(1rem, 3.5vw, 2.5rem)',
+              gap: 'clamp(1rem, 3vw, 2.5rem)',
               flexWrap: 'wrap',
-              marginBottom: '3.25rem',
+              marginBottom: '3rem',
               color: '#94A3B8',
               fontSize: '0.92rem',
               fontWeight: '600',
@@ -111,7 +93,7 @@ export const ClosingCTA = () => {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <CheckCircle2 size={18} color="#10B981" />
-              <span style={{ color: '#F1F5F9' }}>₹2–5 Cr Seed Cheques</span>
+              <span style={{ color: '#F1F5F9' }}>₹2 Cr to ₹5 Cr Seed Cheques</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <CheckCircle2 size={18} color="#10B981" />
@@ -138,14 +120,13 @@ export const ClosingCTA = () => {
               size="lg"
               icon={ArrowRight}
               style={{
-                background: 'linear-gradient(135deg, #1264FF 0%, #20BFEF 100%)',
+                backgroundColor: '#0052FF',
                 color: '#FFFFFF',
-                height: '58px',
-                padding: '0 3rem',
-                borderRadius: '100px',
-                fontSize: '1.1rem',
-                fontWeight: '800',
-                boxShadow: '0 14px 36px rgba(18, 100, 255, 0.45)',
+                height: '52px',
+                padding: '0 2.5rem',
+                borderRadius: '8px',
+                fontSize: '1rem',
+                fontWeight: '700',
                 border: 'none',
               }}
             >
@@ -156,30 +137,28 @@ export const ClosingCTA = () => {
               to="/you-are?persona=incubator"
               style={{
                 color: '#CBD5E1',
-                fontSize: '1rem',
-                fontWeight: '700',
+                fontSize: '0.95rem',
+                fontWeight: '600',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
                 padding: '0.4rem 0.8rem',
-                borderRadius: '8px',
-                transition: 'all 0.2s ease',
+                borderRadius: '6px',
+                transition: 'color 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#38BDF8';
-                e.currentTarget.style.transform = 'translateX(3px)';
+                e.currentTarget.style.color = '#FFFFFF';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.color = '#CBD5E1';
-                e.currentTarget.style.transform = 'translateX(0)';
               }}
             >
               <span>Partner your incubator</span>
-              <span style={{ fontSize: '1.2rem' }}>&rarr;</span>
+              <span style={{ fontSize: '1.1rem' }}>&rarr;</span>
             </Link>
           </div>
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

@@ -30,7 +30,7 @@ const STAGES = [
   {
     step: '04',
     title: 'Funded',
-    description: "You've closed through Campital's compliant capital route.",
+    description: "You've closed through Campital's structured equity capital route.",
     icon: Rocket,
     badge: 'Stage 4',
   },
@@ -42,55 +42,40 @@ export const FounderJourney = () => {
       id="founder-journey"
       className="section"
       style={{
-        background: 'linear-gradient(180deg, #FFFFFF 0%, #EFF6FF 50%, #F8FAFC 100%)',
+        background: '#F8FAFC',
         position: 'relative',
-        overflow: 'hidden',
-        borderBottom: '1px solid #e2e8f0',
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        borderBottom: '1px solid #E2E8F0',
+        paddingTop: '5.5rem',
+        paddingBottom: '5.5rem',
       }}
     >
       <Container>
         <div style={{ maxWidth: '860px', margin: '0 auto', textAlign: 'center', marginBottom: '3.5rem' }}>
           <div
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.35rem 0.95rem',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(0, 102, 255, 0.08)',
-              border: '1px solid rgba(0, 102, 255, 0.2)',
-              color: '#0066ff',
-              fontSize: '0.82rem',
-              fontWeight: '700',
+              fontSize: '0.78rem',
+              fontWeight: '800',
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              marginBottom: '1rem',
+              color: '#0052FF',
+              marginBottom: '0.75rem',
             }}
           >
-            <Compass size={14} />
-            <span>Your Path</span>
+            Your Path
           </div>
 
           <h2
             style={{
               fontSize: 'clamp(2rem, 4vw, 2.75rem)',
               fontWeight: '800',
-              color: '#090d1a',
+              color: '#0A1128',
               letterSpacing: '-0.03em',
               lineHeight: '1.2',
               marginBottom: '1.25rem',
             }}
           >
             Wherever you are, <br className="hidden-mobile" />
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #0052ff 0%, #00b4d8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
+            <span style={{ color: '#0052FF' }}>
               there's a next step.
             </span>
           </h2>
@@ -101,19 +86,15 @@ export const FounderJourney = () => {
         </div>
 
         {/* Panoramic Mountain Trail Progression Visual */}
-        <motion.div
-          variants={fadeUpVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+        <div
           style={{
             maxWidth: '1100px',
             margin: '0 auto 3rem auto',
-            borderRadius: '24px',
+            borderRadius: '16px',
             overflow: 'hidden',
-            border: '1.5px solid #e2e8f0',
-            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.06)',
-            backgroundColor: '#090d1a',
+            border: '1.5px solid #E2E8F0',
+            boxShadow: '0 8px 24px rgba(15, 23, 42, 0.05)',
+            backgroundColor: '#0A1128',
           }}
         >
           <img
@@ -126,7 +107,7 @@ export const FounderJourney = () => {
               objectFit: 'cover',
             }}
           />
-        </motion.div>
+        </div>
 
         {/* 4-Step Cards Grid */}
         <div
@@ -138,26 +119,21 @@ export const FounderJourney = () => {
           }}
           className="journey-grid"
         >
-          {STAGES.map((stage, index) => {
+          {STAGES.map((stage) => {
             const IconComponent = stage.icon;
             return (
-              <motion.div
+              <div
                 key={stage.step}
-                variants={fadeUpVariant}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
                 style={{
-                  background: '#ffffff',
-                  border: '1.5px solid #e2e8f0',
-                  borderRadius: '20px',
+                  background: '#FFFFFF',
+                  border: '1.5px solid #E2E8F0',
+                  borderRadius: '16px',
                   padding: '2rem 1.6rem',
-                  boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)',
+                  boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)',
                   display: 'flex',
                   flexDirection: 'column',
                   position: 'relative',
-                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
                 }}
                 className="journey-card"
               >
@@ -171,26 +147,29 @@ export const FounderJourney = () => {
                 >
                   <div
                     style={{
-                      width: '44px',
-                      height: '44px',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 180, 216, 0.15))',
-                      color: '#0066ff',
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '8px',
+                      background: '#F1F5F9',
+                      color: '#0A1128',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
                   >
-                    <IconComponent size={22} />
+                    <IconComponent size={20} />
                   </div>
                   <span
                     style={{
-                      fontSize: '0.78rem',
+                      fontSize: '0.74rem',
                       fontWeight: '800',
-                      color: '#0066ff',
-                      backgroundColor: 'rgba(0, 102, 255, 0.08)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      color: '#334155',
+                      backgroundColor: '#F1F5F9',
+                      border: '1px solid #E2E8F0',
                       padding: '0.25rem 0.65rem',
-                      borderRadius: '9999px',
+                      borderRadius: '6px',
                     }}
                   >
                     {stage.badge}
@@ -199,9 +178,9 @@ export const FounderJourney = () => {
 
                 <div
                   style={{
-                    fontSize: '0.82rem',
+                    fontSize: '0.78rem',
                     fontWeight: '800',
-                    color: '#94a3b8',
+                    color: '#94A3B8',
                     textTransform: 'uppercase',
                     letterSpacing: '0.06em',
                     marginBottom: '0.35rem',
@@ -214,7 +193,7 @@ export const FounderJourney = () => {
                   style={{
                     fontSize: '1.3rem',
                     fontWeight: '800',
-                    color: '#090d1a',
+                    color: '#0A1128',
                     marginBottom: '0.75rem',
                     letterSpacing: '-0.02em',
                   }}
@@ -225,7 +204,7 @@ export const FounderJourney = () => {
                 <p
                   style={{
                     fontSize: '0.92rem',
-                    color: '#64748b',
+                    color: '#64748B',
                     lineHeight: '1.6',
                     margin: 0,
                     flex: 1,
@@ -233,7 +212,7 @@ export const FounderJourney = () => {
                 >
                   {stage.description}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -246,37 +225,36 @@ export const FounderJourney = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
-              color: '#0066ff',
+              color: '#0A1128',
               fontWeight: '700',
-              fontSize: '1.05rem',
+              fontSize: '0.98rem',
               textDecoration: 'none',
-              padding: '0.65rem 1.25rem',
-              borderRadius: '9999px',
-              backgroundColor: '#ffffff',
-              border: '1.5px solid rgba(0, 102, 255, 0.25)',
-              boxShadow: '0 2px 10px rgba(0, 102, 255, 0.08)',
-              transition: 'all 0.2s ease',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '8px',
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid #CBD5E1',
+              boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
+              transition: 'border-color 0.2s ease, background-color 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.borderColor = '#0066ff';
+              e.currentTarget.style.borderColor = '#0052FF';
+              e.currentTarget.style.color = '#0052FF';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.borderColor = 'rgba(0, 102, 255, 0.25)';
+              e.currentTarget.style.borderColor = '#CBD5E1';
+              e.currentTarget.style.color = '#0A1128';
             }}
           >
             <span>See how we fund</span>
-            <ArrowRight size={18} />
+            <ArrowRight size={16} />
           </Link>
         </div>
       </Container>
 
       <style>{`
         .journey-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(0, 102, 255, 0.4) !important;
-          box-shadow: 0 16px 36px rgba(0, 82, 255, 0.1) !important;
+          border-color: #94A3B8 !important;
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07) !important;
         }
         @media (max-width: 992px) {
           .journey-grid {
