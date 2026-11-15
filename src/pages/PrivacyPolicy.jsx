@@ -24,15 +24,15 @@ export const PrivacyPolicy = () => {
         <li><strong>Message / Summary:</strong> Background information provided voluntarily to describe your venture or partnership intent.</li>
       </ul>
 
-      <h3>3. Zero-Backend & Mailto Implementation</h3>
+      <h3>3. Secure Lead Storage & Application Processing</h3>
       <p>
-        <strong>No Backend Storage:</strong> This website is built as a static application with no centralized database, backend server, or third-party form-collection service (e.g., Formspree, EmailJS).
+        <strong>Confidential Storage:</strong> When you submit an application or inquiry, your details and uploaded pitch deck documents are transmitted securely over TLS/HTTPS to our encrypted database and deal-flow evaluation infrastructure.
       </p>
       <p>
-        <strong>User-Initiated Transmission:</strong> Clicking "Open Email Draft" or "Copy Email Details" compiles your form input into a structured <code>mailto:</code> link or formatted clipboard text. The actual transmission of the email is handled exclusively by your local email client (such as Gmail, Apple Mail, or Microsoft Outlook) when you manually choose to send the email.
+        <strong>Strict Confidentiality:</strong> All venture data, pitch materials, and financial metrics are accessed solely by authorized Campital evaluation committee members and accredited investment partners bound by confidentiality obligations. We do not sell or rent applicant data to third parties.
       </p>
       <p>
-        <strong>No Persistent Browser Storage:</strong> We do not store your entered form inputs in <code>localStorage</code>, <code>sessionStorage</code>, or cookies. If you navigate away or refresh the page, the form fields reset.
+        <strong>Automated Confirmations:</strong> Upon submission, our server dispatches an automated verification and receipt email to your submitted address. You may request deletion or updating of your application dossier at any time by contacting <code>team@campital.in</code>.
       </p>
 
       <h3>4. Cookies & Analytics</h3>

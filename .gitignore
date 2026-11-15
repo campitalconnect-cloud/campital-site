@@ -31,3 +31,9 @@ dist-ssr
 .env.development.local
 .env.test.local
 .env.production.local
+server/.env
+server/node_modules
+server/uploads/*
+!server/uploads/.gitkeep
+server/data/*.json
+.neon

@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { Mail, Copy, CheckCircle2, ExternalLink, ArrowRight, ArrowLeft, Check, ShieldCheck, HelpCircle } from 'lucide-react';
+import { 
+  CheckCircle2, 
+  ArrowRight, 
+  ArrowLeft, 
+  Check, 
+  ShieldCheck, 
+  UploadCloud, 
+  FileText, 
+  Loader2, 
+  AlertCircle 
+} from 'lucide-react';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
 import { FormField } from './FormField';
 import { CustomSelect } from './CustomSelect';
-import { CopyEmailButton } from './CopyEmailButton';
-import { useEmailInquiry } from '../../hooks/useEmailInquiry';
-import { CAMPITAL_CONTACT_EMAIL } from '../../config/emailConfig';
+import { api } from '../../services/api';
 
 const STAGE_OPTIONS = [
   { value: 'Idea Stage', label: 'Idea Stage — Concept & research phase' },
@@ -34,44 +42,77 @@ export const EmailInquiryModal = ({
   onClose,
   inquiryType = 'startup',
   title = 'Startup Funding Application',
-  subtitle = 'Prepare your structured application draft to connect with the Campital evaluation team.',
+  subtitle = 'Submit your venture details directly to the Campital evaluation pipeline.',
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    organization: '',
+    campusAffiliation: '',
+    message: '',
+    oneSentencePitch: '',
+    stage: '',
+    productStatus: '',
+    problemAndCustomer: '',
+    traction: '',
+    foundersBackground: '',
+    targetRaiseAndUse: '',
+    priorFunding: '',
+    whyNow: '',
+  });
+
+  const [deckFile, setDeckFile] = useState(null);
+  const [deckUploading, setDeckUploading] = useState(false);
+  const [pitchDeckUrl, setPitchDeckUrl] = useState('');
+
   const [fieldErrors, setFieldErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState(null);
+  const [submitError, setSubmitError] = useState('');
+
   const isStartupTrack = inquiryType === 'startup';
-
-  const {
-    formData,
-    errors,
-    status,
-    statusMessage,
-    generatedDraft,
-    showManualCopyModal,
-    handleChange,
-    openEmailDraft,
-    copyEmailDetails,
-    resetForm,
-  } = useEmailInquiry(inquiryType, { requireOrg: true, requireMessage: false });
-
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const handleClose = () => {
-    resetForm();
-    setCurrentStep(1);
-    setFieldErrors({});
-    if (typeof onClose === 'function') {
-      onClose();
-    }
-  };
-
   const handleFieldChange = (field, value) => {
-    handleChange(field, value);
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (fieldErrors[field]) {
       setFieldErrors((prev) => {
         const next = { ...prev };
         delete next[field];
         return next;
       });
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 26214400) {
+      setFieldErrors((prev) => ({ ...prev, deck: 'File size must be less than 25MB.' }));
+      return;
+    }
+
+    setDeckFile(file);
+    setDeckUploading(true);
+    setFieldErrors((prev) => {
+      const n = { ...prev };
+      delete n.deck;
+      return n;
+    });
+
+    try {
+      const res = await api.uploadPitchDeck(file);
+      if (res && res.fileUrl) {
+        setPitchDeckUrl(res.fileUrl);
+      }
+    } catch (err) {
+      console.warn('Pitch deck upload warning:', err);
+    } finally {
+      setDeckUploading(false);
     }
   };
 
@@ -86,7 +127,7 @@ export const EmailInquiryModal = ({
     if (!formData.email || !formData.email.trim()) {
       errs.email = 'Email address is required.';
     } else if (!EMAIL_REGEX.test(formData.email.trim())) {
-      errs.email = 'Please enter a valid email address (e.g. founder@university.edu).';
+      errs.email = 'Please enter a valid email address.';
     }
 
     if (!formData.organization || !formData.organization.trim()) {
@@ -99,13 +140,9 @@ export const EmailInquiryModal = ({
 
   const handleNextStep = (e) => {
     if (e) e.preventDefault();
-    if (!validateStep1()) {
-      return;
-    }
+    if (!validateStep1()) return;
 
     setCurrentStep(2);
-
-    // Scroll modal content to top
     setTimeout(() => {
       const modalBox = document.querySelector('.modal-content');
       if (modalBox) modalBox.scrollTop = 0;
@@ -120,422 +157,522 @@ export const EmailInquiryModal = ({
     }, 50);
   };
 
-  const handleOpenDraft = () => {
-    openEmailDraft(inquiryType, title);
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!validateStep1()) {
+      setCurrentStep(1);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const payload = {
+        fullName: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        organizationName: formData.organization,
+        campusAffiliation: formData.campusAffiliation,
+        personaType: inquiryType.toUpperCase(),
+        generalMessage: formData.message,
+        pitchHeadline: formData.oneSentencePitch,
+        ventureStage: formData.stage,
+        productStatus: formData.productStatus,
+        problemCustomer: formData.problemAndCustomer,
+        tractionMetrics: formData.traction,
+        founderBackground: formData.foundersBackground,
+        targetCheque: formData.targetRaiseAndUse,
+        priorFunding: formData.priorFunding,
+        whyNow: formData.whyNow,
+        pitchDeckUrl: pitchDeckUrl || null
+      };
+
+      const result = await api.submitLead(payload);
+      setSubmissionResult(result);
+      setSubmitSuccess(true);
+    } catch (err) {
+      console.error('Submission failed:', err);
+      setSubmitError(err.message || 'Failed to submit application. Please check your network connection.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleCopy = () => {
-    return copyEmailDetails(inquiryType, title);
+  const handleClose = () => {
+    setCurrentStep(1);
+    setSubmitSuccess(false);
+    setSubmissionResult(null);
+    setSubmitError('');
+    if (typeof onClose === 'function') onClose();
   };
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title={isStartupTrack ? (currentStep === 1 ? 'Startup Application (1/2)' : 'Startup Screening (2/2)') : title}
-      maxWidth={isStartupTrack && currentStep === 2 ? '720px' : '600px'}
+      title={
+        submitSuccess
+          ? 'Application Received'
+          : isStartupTrack
+          ? currentStep === 1
+            ? 'Startup Application (Step 1 of 2)'
+            : 'Startup Screening (Step 2 of 2)'
+          : title
+      }
+      maxWidth={isStartupTrack && currentStep === 2 && !submitSuccess ? '720px' : '620px'}
     >
-      {/* Subtitle */}
-      <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '1.25rem', marginTop: '-0.5rem', lineHeight: '1.5' }}>
-        {isStartupTrack
-          ? (currentStep === 1
-              ? 'Step 1 of 2: Enter founder and venture contact details.'
-              : 'Step 2 of 2: Complete the 10 screening questions for our evaluation committee.')
-          : subtitle}
-      </p>
-
-      {/* Multi-Step Progress Indicator for Startup Persona */}
-      {isStartupTrack && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            background: '#f8fafc',
-            border: '1.5px solid #e2e8f0',
-            borderRadius: '12px',
-            padding: '0.65rem 1rem',
-            marginBottom: '1.25rem',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span
-              style={{
-                width: '24px',
-                height: '24px',
-                borderRadius: '50%',
-                background: currentStep === 1 ? '#0066ff' : '#10b981',
-                color: '#ffffff',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.78rem',
-                fontWeight: '700',
-              }}
-            >
-              {currentStep > 1 ? <Check size={13} /> : '1'}
-            </span>
-            <span style={{ fontSize: '0.82rem', fontWeight: currentStep === 1 ? '700' : '500', color: currentStep === 1 ? '#0066ff' : '#475569' }}>
-              Basics
-            </span>
-          </div>
-
-          <div style={{ height: '2px', flex: '1', margin: '0 0.75rem', background: currentStep === 2 ? '#0066ff' : '#cbd5e1' }} />
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span
-              style={{
-                width: '24px',
-                height: '24px',
-                borderRadius: '50%',
-                background: currentStep === 2 ? '#0066ff' : '#e2e8f0',
-                color: currentStep === 2 ? '#ffffff' : '#64748b',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.78rem',
-                fontWeight: '700',
-              }}
-            >
-              2
-            </span>
-            <span style={{ fontSize: '0.82rem', fontWeight: currentStep === 2 ? '700' : '500', color: currentStep === 2 ? '#0066ff' : '#94a3b8' }}>
-              10 Screening Questions
-            </span>
-          </div>
-        </div>
-      )}
-
       {/* ========================================================= */}
-      {/* STEP 1: BASIC DETAILS (ONE BY ONE) */}
+      {/* SUCCESS CONFIRMATION STATE */}
       {/* ========================================================= */}
-      {(!isStartupTrack || currentStep === 1) && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-          <FormField
-            label="Your Full Name"
-            name="name"
-            value={formData.name}
-            onChange={handleFieldChange}
-            placeholder="e.g. Saran Kumar"
-            required
-            error={fieldErrors.name || errors.name}
-          />
-
-          <FormField
-            label="Work / Academic Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleFieldChange}
-            placeholder="founder@university.edu"
-            required
-            error={fieldErrors.email || errors.email}
-            helper={
-              formData.email && !fieldErrors.email && EMAIL_REGEX.test(formData.email) ? (
-                <span style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.8rem' }}>
-                  ✓ Valid email address
-                </span>
-              ) : null
-            }
-          />
-
-          <FormField
-            label={isStartupTrack ? 'Startup / Venture Name' : 'Organization / University Name'}
-            name="organization"
-            value={formData.organization}
-            onChange={handleFieldChange}
-            placeholder={isStartupTrack ? 'e.g. QuantumPulse Labs' : 'e.g. NextGen Robotics'}
-            required
-            error={fieldErrors.organization || errors.organization}
-          />
-
-          <FormField
-            label={isStartupTrack ? 'Initial Summary / Note (Optional)' : 'Overview & Stage of Venture'}
-            name="message"
-            type="textarea"
-            value={formData.message}
-            onChange={handleFieldChange}
-            placeholder="Briefly introduce your venture or goals..."
-            rows={3}
-            error={errors.message}
-          />
-        </div>
-      )}
-
-      {/* ========================================================= */}
-      {/* STEP 2: 10 STARTUP SCREENING QUESTIONS (STRICTLY ONE BY ONE) */}
-      {/* ========================================================= */}
-      {isStartupTrack && currentStep === 2 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          
-          {/* Question 1 */}
-          <div className="screening-card">
-            <FormField
-              label="1. What does your company do, in one sentence?"
-              name="oneSentencePitch"
-              value={formData.oneSentencePitch}
-              onChange={handleChange}
-              placeholder="e.g. We build autonomous robotics to eliminate defect sorting in textile plants."
-              helper="Keep it clear, concise, and focused on what you do."
-            />
-          </div>
-
-          {/* Question 2 */}
-          <div className="screening-card">
-            <div className="form-group">
-              <label className="form-label">
-                2. What stage are you at — idea, MVP, early revenue, or scaling?
-              </label>
-              <CustomSelect
-                name="stage"
-                value={formData.stage}
-                onChange={handleChange}
-                options={STAGE_OPTIONS}
-                placeholder="Select your venture stage..."
-              />
-            </div>
-          </div>
-
-          {/* Question 3 */}
-          <div className="screening-card">
-            <FormField
-              label="3. Are you affiliated with a campus incubator? If so, which one?"
-              name="campusAffiliation"
-              value={formData.campusAffiliation}
-              onChange={handleChange}
-              placeholder="e.g. IIT Madras Research Park / NSRCEL IIMB / Independent (None)"
-              helper="Mention university incubator or type Independent if not affiliated."
-            />
-          </div>
-
-          {/* Question 4 */}
-          <div className="screening-card">
-            <FormField
-              label="4. Who are the founders, and what's each person's role/background?"
-              name="foundersBackground"
-              type="textarea"
-              value={formData.foundersBackground}
-              onChange={handleChange}
-              placeholder="e.g. Founder 1: CEO (Final year CS, IITB) - tech lead; Founder 2: COO (Alum, 2 yrs at Ather) - ops."
-              rows={2}
-            />
-          </div>
-
-          {/* Question 5 */}
-          <div className="screening-card">
-            <FormField
-              label="5. What problem are you solving, and for whom?"
-              name="problemAndCustomer"
-              type="textarea"
-              value={formData.problemAndCustomer}
-              onChange={handleChange}
-              placeholder="Describe the exact pain point and your target customer segment..."
-              rows={2}
-            />
-          </div>
-
-          {/* Question 6 */}
-          <div className="screening-card">
-            <FormField
-              label="6. What traction do you have so far?"
-              name="traction"
-              type="textarea"
-              value={formData.traction}
-              onChange={handleChange}
-              placeholder="e.g. 2 signed pilots (₹3.5L ARR), 1,200 waitlist users, 15 letters of intent..."
-              helper="Users, revenue, pilots, LOIs, waitlist — whatever is real."
-              rows={2}
-            />
-          </div>
-
-          {/* Question 7 */}
-          <div className="screening-card">
-            <FormField
-              label="7. How much are you raising, and what will it fund?"
-              name="targetRaiseAndUse"
-              value={formData.targetRaiseAndUse}
-              onChange={handleChange}
-              placeholder="e.g. Raising ₹50 Lakhs for 2 engineers, compute infrastructure & 5 pilots"
-            />
-          </div>
-
-          {/* Question 8 */}
-          <div className="screening-card">
-            <div className="form-group">
-              <label className="form-label">
-                8. Have you raised before — grants, angel money, a prior round?
-              </label>
-              <CustomSelect
-                name="priorFunding"
-                value={formData.priorFunding}
-                onChange={handleChange}
-                options={PRIOR_FUNDING_OPTIONS}
-                placeholder="Select prior funding history..."
-              />
-            </div>
-          </div>
-
-          {/* Question 9 */}
-          <div className="screening-card">
-            <div className="form-group">
-              <label className="form-label">
-                9. Do you have a working product, or is this still a deck/concept?
-              </label>
-              <CustomSelect
-                name="productStatus"
-                value={formData.productStatus}
-                onChange={handleChange}
-                options={PRODUCT_STATUS_OPTIONS}
-                placeholder="Select product status..."
-              />
-            </div>
-          </div>
-
-          {/* Question 10 */}
-          <div className="screening-card">
-            <FormField
-              label="10. Why now — what's changed that makes this the right time for this company to exist?"
-              name="whyNow"
-              type="textarea"
-              value={formData.whyNow}
-              onChange={handleChange}
-              placeholder="e.g. New 2026 industrial regulation, 10x drop in sensor hardware cost, or rapid AI capability..."
-              rows={2}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Status Notifications */}
-      {status === 'draft_opened' && (
-        <div className="alert-box alert-success" style={{ margin: '1rem 0', padding: '0.75rem 1rem' }}>
-          <CheckCircle2 size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
-          <div style={{ fontSize: '0.85rem' }}>{statusMessage}</div>
-        </div>
-      )}
-
-      {status === 'copied' && (
-        <div className="alert-box alert-success" style={{ margin: '1rem 0', padding: '0.75rem 1rem' }}>
-          <CheckCircle2 size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
-          <div style={{ fontSize: '0.85rem' }}>{statusMessage}</div>
-        </div>
-      )}
-
-      {/* Action Navigation Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.75rem',
-          marginTop: '1.5rem',
-          paddingTop: '1.25rem',
-          borderTop: '1px solid #e2e8f0',
-        }}
-      >
-        {isStartupTrack && currentStep === 1 ? (
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={handleNextStep}
-            icon={ArrowRight}
-            style={{ width: '100%', justifyContent: 'center' }}
-          >
-            Continue to 10 Screening Questions (Step 2/2)
-          </Button>
-        ) : (
+      {submitSuccess ? (
+        <div style={{ textAlign: 'center', padding: '1rem 0.5rem 0.5rem' }}>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: isStartupTrack ? 'auto 1.3fr 1fr' : '1.3fr 1fr',
-              gap: '0.65rem',
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              backgroundColor: '#ecfdf5',
+              border: '2px solid #a7f3d0',
+              color: '#059669',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '1.25rem'
             }}
-            className="form-actions"
           >
-            {isStartupTrack && (
-              <Button
-                variant="secondary"
-                onClick={handlePrevStep}
-                icon={ArrowLeft}
-                style={{ whiteSpace: 'nowrap', padding: '0.75rem 1rem' }}
-              >
-                Back
-              </Button>
-            )}
-            <Button
-              variant="primary"
-              onClick={handleOpenDraft}
-              icon={ExternalLink}
-              style={{ justifyContent: 'center', padding: '0.75rem 1rem' }}
-            >
-              Open Email Draft
-            </Button>
-            <CopyEmailButton onCopy={handleCopy} style={{ padding: '0.75rem 1rem' }} />
+            <CheckCircle2 size={36} />
           </div>
-        )}
 
-        {/* Discreet, Small Zero-Backend & Privacy Notice */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.4rem',
-            fontSize: '0.74rem',
-            color: '#94a3b8',
-            textAlign: 'center',
-            marginTop: '0.25rem',
-            lineHeight: '1.4',
-          }}
-        >
-          <ShieldCheck size={13} style={{ color: '#0066ff', flexShrink: 0 }} />
-          <span>Zero-backend privacy: All details prepare directly in your local email client. No data is stored on external servers.</span>
-        </div>
-      </div>
+          <h3 style={{ fontSize: '1.45rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.4rem' }}>
+            Application Submitted Successfully!
+          </h3>
+          <p style={{ color: '#64748b', fontSize: '0.94rem', lineHeight: '1.6', maxWidth: '480px', margin: '0 auto 1.5rem' }}>
+            A confirmation email has been sent to <strong>{formData.email}</strong>. Our investment committee evaluates applications weekly.
+          </p>
 
-      {/* Manual Copy Fallback Modal */}
-      {showManualCopyModal && generatedDraft && (
-        <div
-          style={{
-            marginTop: '1.25rem',
-            padding: '1rem',
-            backgroundColor: '#f8fafc',
-            borderRadius: '10px',
-            border: '1.5px solid #e2e8f0',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#090d1a' }}>
-              Application Text Draft
-            </span>
-            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
-              To: {CAMPITAL_CONTACT_EMAIL}
-            </span>
-          </div>
-          <textarea
-            readOnly
-            value={generatedDraft.clipboardText}
+          <div
             style={{
-              width: '100%',
-              minHeight: '150px',
-              fontFamily: 'monospace',
-              fontSize: '0.8rem',
-              background: '#ffffff',
-              color: '#334155',
-              padding: '0.75rem',
-              borderRadius: '8px',
-              border: '1.5px solid #cbd5e1',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: '12px',
+              padding: '1.25rem',
+              textAlign: 'left',
+              marginBottom: '1.75rem',
+              fontSize: '0.9rem'
             }}
-            onClick={(e) => e.target.select()}
-          />
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.5rem', borderBottom: '1px solid #f1f5f9' }}>
+              <span style={{ color: '#64748b' }}>Reference ID:</span>
+              <strong style={{ color: '#0052FF' }}>{submissionResult?.leadReference || '#CAMP-NEW'}</strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid #f1f5f9' }}>
+              <span style={{ color: '#64748b' }}>Venture Name:</span>
+              <strong style={{ color: '#0f172a' }}>{formData.organization}</strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.5rem' }}>
+              <span style={{ color: '#64748b' }}>Status:</span>
+              <span style={{ backgroundColor: '#eff6ff', color: '#1d4ed8', padding: '2px 8px', borderRadius: '4px', fontWeight: '700', fontSize: '0.8rem' }}>
+                UNDER EVALUATION
+              </span>
+            </div>
+          </div>
+
+          <Button
+            variant="primary"
+            onClick={handleClose}
+            style={{ width: '100%', justifyContent: 'center', padding: '0.85rem' }}
+          >
+            Done
+          </Button>
         </div>
+      ) : (
+        <>
+          {/* Subtitle */}
+          <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '1.25rem', marginTop: '-0.5rem', lineHeight: '1.5' }}>
+            {isStartupTrack
+              ? currentStep === 1
+                ? 'Step 1 of 2: Enter founder contact details and campus affiliation.'
+                : 'Step 2 of 2: Complete the screening questions for the evaluation committee.'
+              : subtitle}
+          </p>
+
+          {/* Multi-Step Progress Indicator for Startup Persona */}
+          {isStartupTrack && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                background: '#f8fafc',
+                border: '1.5px solid #e2e8f0',
+                borderRadius: '12px',
+                padding: '0.65rem 1rem',
+                marginBottom: '1.25rem',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: currentStep === 1 ? '#0066ff' : '#10b981',
+                    color: '#ffffff',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.78rem',
+                    fontWeight: '700',
+                  }}
+                >
+                  {currentStep > 1 ? <Check size={13} /> : '1'}
+                </span>
+                <span style={{ fontSize: '0.82rem', fontWeight: currentStep === 1 ? '700' : '500', color: currentStep === 1 ? '#0066ff' : '#475569' }}>
+                  Basics
+                </span>
+              </div>
+
+              <div style={{ height: '2px', flex: '1', margin: '0 0.75rem', background: currentStep === 2 ? '#0066ff' : '#cbd5e1' }} />
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: currentStep === 2 ? '#0066ff' : '#e2e8f0',
+                    color: currentStep === 2 ? '#ffffff' : '#64748b',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.78rem',
+                    fontWeight: '700',
+                  }}
+                >
+                  2
+                </span>
+                <span style={{ fontSize: '0.82rem', fontWeight: currentStep === 2 ? '700' : '500', color: currentStep === 2 ? '#0066ff' : '#94a3b8' }}>
+                  Screening & Deck
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 1: CONTACT DETAILS */}
+          {/* ========================================================= */}
+          {(!isStartupTrack || currentStep === 1) && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <FormField
+                label="Full Name"
+                name="name"
+                value={formData.name}
+                onChange={handleFieldChange}
+                placeholder="e.g. Saran Kumar"
+                required
+                error={fieldErrors.name}
+              />
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }} className="form-double-col">
+                <FormField
+                  label="Work / Academic Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleFieldChange}
+                  placeholder="founder@university.edu"
+                  required
+                  error={fieldErrors.email}
+                />
+                <FormField
+                  label="Phone / WhatsApp"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleFieldChange}
+                  placeholder="+91 98765 43210"
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }} className="form-double-col">
+                <FormField
+                  label={isStartupTrack ? 'Startup / Venture Name' : 'Organization Name'}
+                  name="organization"
+                  value={formData.organization}
+                  onChange={handleFieldChange}
+                  placeholder={isStartupTrack ? 'e.g. QuantumPulse Labs' : 'e.g. NextGen Incubator'}
+                  required
+                  error={fieldErrors.organization}
+                />
+                <FormField
+                  label="Campus Affiliation / College"
+                  name="campusAffiliation"
+                  value={formData.campusAffiliation}
+                  onChange={handleFieldChange}
+                  placeholder="e.g. IIT Madras, BITS, NIT"
+                />
+              </div>
+
+              {!isStartupTrack && (
+                <FormField
+                  label="Message / Goals"
+                  name="message"
+                  type="textarea"
+                  value={formData.message}
+                  onChange={handleFieldChange}
+                  placeholder="Briefly describe your venture or partnership intent..."
+                  rows={3}
+                />
+              )}
+            </div>
+          )}
+
+          {/* ========================================================= */}
+          {/* STEP 2: SCREENING QUESTIONS & PITCH DECK UPLOAD */}
+          {/* ========================================================= */}
+          {isStartupTrack && currentStep === 2 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+              
+              <div className="screening-card">
+                <FormField
+                  label="1. What does your company do, in one sentence?"
+                  name="oneSentencePitch"
+                  value={formData.oneSentencePitch}
+                  onChange={handleFieldChange}
+                  placeholder="e.g. We build autonomous robotics to eliminate defect sorting in textile plants."
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }} className="form-double-col">
+                <div className="form-group">
+                  <label className="form-label">2. Venture Stage</label>
+                  <CustomSelect
+                    name="stage"
+                    value={formData.stage}
+                    onChange={handleFieldChange}
+                    options={STAGE_OPTIONS}
+                    placeholder="Select venture stage..."
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">3. Product Status</label>
+                  <CustomSelect
+                    name="productStatus"
+                    value={formData.productStatus}
+                    onChange={handleFieldChange}
+                    options={PRODUCT_STATUS_OPTIONS}
+                    placeholder="Select product status..."
+                  />
+                </div>
+              </div>
+
+              <div className="screening-card">
+                <FormField
+                  label="4. Problem & Target Customer"
+                  name="problemAndCustomer"
+                  type="textarea"
+                  value={formData.problemAndCustomer}
+                  onChange={handleFieldChange}
+                  placeholder="Who has this urgent pain point, and how do they solve it today?"
+                  rows={2}
+                />
+              </div>
+
+              <div className="screening-card">
+                <FormField
+                  label="5. Current Traction (Revenue, Pilots, Waitlist, LOIs)"
+                  name="traction"
+                  type="textarea"
+                  value={formData.traction}
+                  onChange={handleFieldChange}
+                  placeholder="Share concrete numbers: users, pilots, revenue, or customer feedback."
+                  rows={2}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }} className="form-double-col">
+                <FormField
+                  label="6. Target Raise & Cheque Size"
+                  name="targetRaiseAndUse"
+                  value={formData.targetRaiseAndUse}
+                  onChange={handleFieldChange}
+                  placeholder="e.g. ₹2.5 Cr for 18-month runway"
+                />
+                <div className="form-group">
+                  <label className="form-label">7. Prior Capital</label>
+                  <CustomSelect
+                    name="priorFunding"
+                    value={formData.priorFunding}
+                    onChange={handleFieldChange}
+                    options={PRIOR_FUNDING_OPTIONS}
+                    placeholder="Select prior funding..."
+                  />
+                </div>
+              </div>
+
+              {/* Pitch Deck Upload Card */}
+              <div
+                style={{
+                  background: '#f8fafc',
+                  border: '1.5px dashed #cbd5e1',
+                  borderRadius: '12px',
+                  padding: '1.25rem',
+                  textAlign: 'center'
+                }}
+              >
+                <UploadCloud size={28} style={{ color: '#0052FF', margin: '0 auto 0.5rem' }} />
+                <div style={{ fontSize: '0.88rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.25rem' }}>
+                  Upload Pitch Deck / Deal Memo (Optional)
+                </div>
+                <div style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '0.75rem' }}>
+                  Accepted formats: PDF, PPTX (Max 25MB). Stored securely.
+                </div>
+
+                <label
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    background: '#ffffff',
+                    border: '1.5px solid #cbd5e1',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '8px',
+                    fontSize: '0.84rem',
+                    fontWeight: '600',
+                    color: '#0f172a',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <input
+                    type="file"
+                    accept=".pdf,.pptx,.ppt,.doc,.docx"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                  {deckUploading ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      <span>Uploading deck...</span>
+                    </>
+                  ) : deckFile ? (
+                    <>
+                      <FileText size={14} color="#059669" />
+                      <span>{deckFile.name} (Ready)</span>
+                    </>
+                  ) : (
+                    <span>Choose Pitch Deck File</span>
+                  )}
+                </label>
+                {fieldErrors.deck && (
+                  <div style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '0.4rem' }}>
+                    {fieldErrors.deck}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Submission Error Banner */}
+          {submitError && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                backgroundColor: '#fef2f2',
+                border: '1px solid #fecaca',
+                padding: '0.75rem 1rem',
+                borderRadius: '8px',
+                color: '#b91c1c',
+                fontSize: '0.85rem',
+                marginTop: '1rem'
+              }}
+            >
+              <AlertCircle size={16} style={{ flexShrink: 0 }} />
+              <div>{submitError}</div>
+            </div>
+          )}
+
+          {/* Action Navigation Buttons */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.75rem',
+              marginTop: '1.5rem',
+              paddingTop: '1.25rem',
+              borderTop: '1px solid #e2e8f0',
+            }}
+          >
+            {isStartupTrack && currentStep === 1 ? (
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={handleNextStep}
+                icon={ArrowRight}
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                Continue to Screening & Pitch Deck (Step 2/2)
+              </Button>
+            ) : (
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: isStartupTrack ? 'auto 1fr' : '1fr',
+                  gap: '0.75rem',
+                }}
+              >
+                {isStartupTrack && (
+                  <Button
+                    variant="secondary"
+                    onClick={handlePrevStep}
+                    icon={ArrowLeft}
+                    disabled={isSubmitting}
+                    style={{ whiteSpace: 'nowrap', padding: '0.75rem 1.25rem' }}
+                  >
+                    Back
+                  </Button>
+                )}
+                <Button
+                  variant="primary"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting || deckUploading}
+                  style={{ justifyContent: 'center', padding: '0.85rem 1.5rem', fontWeight: '800' }}
+                >
+                  {isSubmitting ? 'Submitting Application...' : 'Submit Application Directly'}
+                </Button>
+              </div>
+            )}
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.4rem',
+                fontSize: '0.74rem',
+                color: '#94a3b8',
+                textAlign: 'center',
+                marginTop: '0.25rem',
+              }}
+            >
+              <ShieldCheck size={13} style={{ color: '#0052FF', flexShrink: 0 }} />
+              <span>Your submission is securely received and reviewed by accredited investment partners under strict confidentiality.</span>
+            </div>
+          </div>
+        </>
       )}
 
       <style>{`
-        .screening-card {
-          padding-bottom: 0.25rem;
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+          animation: spin 1s linear infinite;
         }
         @media (max-width: 580px) {
-          .form-actions {
+          .form-double-col {
             grid-template-columns: 1fr !important;
           }
         }
@@ -543,5 +680,3 @@ export const EmailInquiryModal = ({
     </Modal>
   );
 };
-
-

@@ -1,39 +1,33 @@
 import React, { useState } from 'react';
-import { Mail, Check, Send, Sparkles } from 'lucide-react';
+import { Mail, Check, Send, Sparkles, Loader2 } from 'lucide-react';
 import { Container } from '../common/Container';
 import { Button } from '../common/Button';
-import { CAMPITAL_CONTACT_EMAIL } from '../../config/emailConfig';
+import { api } from '../../services/api';
 
 export const NewsletterStrip = () => {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('idle'); // 'idle' | 'success' | 'error'
+  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setStatus('error');
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
-    // Zero-backend: Prepare mailto subscription draft
-    const subject = encodeURIComponent('[The Campital Brief] Newsletter Subscription');
-    const body = encodeURIComponent(
-      `Hello Campital Team,\n\nPlease add ${email} to The Campital Brief monthly newsletter for open calls, demo days, and founder announcements.\n\nSubscriber Email: ${email}`
-    );
-    const mailtoUrl = `mailto:${CAMPITAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+    setStatus('loading');
+    setErrorMessage('');
 
     try {
-      const link = document.createElement('a');
-      link.href = mailtoUrl;
-      link.target = '_top';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      await api.subscribeNewsletter(email, 'homepage');
+      setStatus('success');
     } catch (err) {
-      console.warn('Mailto trigger error:', err);
+      console.warn('Newsletter subscription error:', err);
+      setStatus('error');
+      setErrorMessage(err.message || 'Subscription failed. Please try again.');
     }
-
-    setStatus('success');
   };
 
   return (

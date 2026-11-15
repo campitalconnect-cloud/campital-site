@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadStatus {
+  NEW
+  UNDER_REVIEW
+  MORE_INFO_REQUESTED
+  SHORTLISTED
+  EVALUATION_SCHEDULED
+  DUE_DILIGENCE
+  TERM_SHEET_ISSUED
+  CLOSED_FUNDED
+  ARCHIVED_REJECTED
+}
+
+enum PersonaType {
+  STARTUP
+  INCUBATOR
+  SME
+  FACULTY
+  CAPITAL
+  CORPORATE
+  EVENT_RSVP
+  GENERAL
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  DEAL_TEAM
+  REVIEWER
+}
+
+model Lead {
+  id                String          @id @default(uuid())
+  leadNumber        Int             @default(autoincrement())
+  personaType       PersonaType     @default(STARTUP)
+  status            LeadStatus      @default(NEW)
+  
+  // Basic Info
+  fullName          String
+  email             String
+  phone             String?
+  organizationName  String
+  campusAffiliation String?
+  linkedinUrl       String?
+  websiteUrl        String?
+
+  // Startup Deep Dive Screening
+  pitchHeadline     String?
+  ventureStage      String?
+  productStatus     String?
+  problemCustomer   String?
+  tractionMetrics   String?
+  founderBackground String?
+  targetCheque      String?
+  useOfFunds        String?
+  priorFunding      String?
+  whyNow            String?
+  pitchDeckUrl      String?
+
+  // Partner / General Inquiries
+  partnerCategory   String?
+  generalMessage    String?
+
+  // Internal Management
+  assignedToId      String?
+  assignedTo        AdminUser?      @relation("AssignedLeads", fields: [assignedToId], references: [id])
+  internalRating    Int?            @default(0)
+  tags              String[]        @default([])
+
+  notes             LeadNote[]
+  statusHistory     StageHistory[]
+  emailLogs         EmailLog[]
+
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([personaType, status])
+  @@index([email])
+}
+
+model LeadNote {
+  id        String    @id @default(uuid())
+  leadId    String
+  lead      Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    AdminUser @relation(fields: [authorId], references: [id])
+  content   String
+  createdAt DateTime  @default(now())
+}
+
+model StageHistory {
+  id          String      @id @default(uuid())
+  leadId      String
+  lead        Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  fromStatus  LeadStatus
+  toStatus    LeadStatus
+  changedById String?
+  note        String?
+  createdAt   DateTime    @default(now())
+}
+
+model EmailLog {
+  id           String    @id @default(uuid())
+  leadId       String?
+  lead         Lead?     @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  recipient    String
+  templateName String
+  subject      String
+  status       String
+  externalId   String?
+  error        String?
+  sentAt       DateTime  @default(now())
+}
+
+model AdminUser {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         AdminRole  @default(DEAL_TEAM)
+  isActive     Boolean    @default(true)
+  assignedLeads Lead[]    @relation("AssignedLeads")
+  notesWritten LeadNote[]
+  createdAt    DateTime   @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  source    String   @default("homepage")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model EventRegistration {
+  id           String   @id @default(uuid())
+  fullName     String
+  email        String
+  organization String
+  trackInterest String?
+  eventName    String   @default("2026 Calendar Rollout")
+  createdAt    DateTime @default(now())
+}
+

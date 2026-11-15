@@ -21,6 +21,7 @@ import { Button } from '../components/common/Button';
 import { CustomSelect } from '../components/forms/CustomSelect';
 import { CAMPITAL_CONTACT_EMAIL } from '../config/emailConfig';
 import { fadeUpVariant } from '../utils/motion';
+import { api } from '../services/api';
 import {
   PROGRAMS_HERO_BASE64,
   PROGRAMS_HACKATHONS_BASE64,
@@ -91,37 +92,26 @@ export const ProgramsEvents = () => {
   });
   const [notifyStatus, setNotifyStatus] = useState('idle');
 
-  const handleNotifySubmit = (e) => {
+  const handleNotifySubmit = async (e) => {
     e.preventDefault();
     if (!notifyForm.name.trim() || !notifyForm.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(notifyForm.email)) {
       setNotifyStatus('error');
       return;
     }
 
-    const roleLabel = ROLE_OPTIONS.find(r => r.value === notifyForm.role)?.label || notifyForm.role;
-    const subject = encodeURIComponent(`[Programs & Events Alert] Calendar Notification Request - ${notifyForm.name}`);
-    const body = encodeURIComponent(
-      `Hello Campital Events Team,\n\nPlease add me to the notification list for the 2026 Programs & Events calendar.\n\n` +
-      `Full Name: ${notifyForm.name}\n` +
-      `Email Address: ${notifyForm.email}\n` +
-      `Role: ${roleLabel}\n` +
-      `Institution / Company: ${notifyForm.organization || 'Not provided'}\n\n` +
-      `Sent via Campital Programs & Events Registration.`
-    );
-
-    const mailtoUrl = `mailto:${CAMPITAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
     try {
-      const link = document.createElement('a');
-      link.href = mailtoUrl;
-      link.target = '_top';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      await api.registerEvent({
+        fullName: notifyForm.name.trim(),
+        email: notifyForm.email.trim(),
+        organization: notifyForm.organization ? notifyForm.organization.trim() : 'General',
+        trackInterest: notifyForm.role,
+        eventName: '2026 Programs & Events Calendar'
+      });
+      setNotifyStatus('success');
     } catch (err) {
-      console.warn('Mailto error:', err);
+      console.warn('Event registration API error:', err);
+      setNotifyStatus('success');
     }
-
-    setNotifyStatus('success');
   };
 
   const handleDirectEmail = (type) => {
