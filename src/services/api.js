@@ -1,7 +1,7 @@
 /**
  * Campital Unified API Client
  * Manages public intake submissions, pitch deck uploads, and authenticated CRM requests.
- * Features built-in resiliency, safe parsing, and seamless localhost proxy failover.
+ * Features bulletproof resiliency, private network CORS support, and automatic localhost backend failover.
  */
 
 function getAuthHeaders() {
@@ -14,23 +14,31 @@ function getAuthHeaders() {
 
 /**
  * Universal resilient fetcher:
- * 1. Checks relative /api first.
- * 2. If running locally and relative /api returns non-JSON/HTML or network error (e.g. Vite proxy not yet restarted or port mismatch),
- *    automatically fails over to direct http://localhost:5001/api.
- * 3. Safely parses response as text first, guarding against empty body or HTML error pages.
- * 4. Yields actionable error messages rather than raw SyntaxError "Unexpected end of JSON input".
+ * In local development, connects directly to the dedicated backend server on port 5001,
+ * falling back to 127.0.0.1:5001 and relative /api proxy.
+ * Shields against foreign servers (e.g. port clashes or unproxied dev servers returning 405/HTML).
  */
 async function safeRequest(endpoint, options = {}) {
-  const isLocal = typeof window !== 'undefined' && 
-    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  const isLocal = typeof window !== 'undefined' && (
+    window.location.hostname === 'localhost' || 
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname === '0.0.0.0' ||
+    window.location.hostname.endsWith('.local') ||
+    Boolean(window.location.port)
+  );
 
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  
-  // Build candidate URLs: relative proxy first, direct localhost:5001 as fallback
-  const candidates = [
-    `/api${cleanEndpoint}`,
-    ...(isLocal ? [`http://localhost:5001/api${cleanEndpoint}`] : [])
-  ];
+
+  // When developing locally, prioritize direct backend on port 5001
+  const candidates = isLocal
+    ? [
+        `http://localhost:5001/api${cleanEndpoint}`,
+        `http://127.0.0.1:5001/api${cleanEndpoint}`,
+        `/api${cleanEndpoint}`
+      ]
+    : [
+        `/api${cleanEndpoint}`
+      ];
 
   let lastError = null;
 
@@ -41,12 +49,11 @@ async function safeRequest(endpoint, options = {}) {
       const contentType = res.headers.get('content-type') || '';
       const text = await res.text();
 
-      // Check if response is HTML (e.g. Vite SPA index.html fallback when proxy is missing)
+      // Check if response is an unproxied HTML page
       const isHtml = text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html') || contentType.includes('text/html');
 
       if (isHtml) {
         if (i < candidates.length - 1) {
-          // Fall back to direct localhost:5001 backend
           continue;
         }
         throw new Error('API server returned HTML page instead of JSON. Ensure backend is running on port 5001.');
@@ -60,11 +67,15 @@ async function safeRequest(endpoint, options = {}) {
           if (i < candidates.length - 1) {
             continue;
           }
-          throw new Error(`Invalid response format from server (${res.status}): ${text.slice(0, 100)}`);
+          throw new Error(`Invalid response from server (${res.status}): ${text.slice(0, 100)}`);
         }
       }
 
+      // If a candidate returns 405 (Method Not Allowed) or 404 or 502/504, failover to next candidate
       if (!res.ok) {
+        if ((res.status === 405 || res.status === 404 || res.status >= 502) && i < candidates.length - 1) {
+          continue;
+        }
         throw new Error(data.error || data.message || `Server request failed with status ${res.status}`);
       }
 
@@ -222,8 +233,12 @@ export const api = {
 
   getExportCsvUrl() {
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem('campital_admin_token') : '';
-    const isLocal = typeof window !== 'undefined' && 
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const isLocal = typeof window !== 'undefined' && (
+      window.location.hostname === 'localhost' || 
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname === '0.0.0.0' ||
+      Boolean(window.location.port)
+    );
     const base = isLocal ? 'http://localhost:5001/api' : '/api';
     return `${base}/admin/export/csv?token=${token || ''}`;
   }

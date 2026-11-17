@@ -16,6 +16,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Private-Network', 'true');
+  next();
+});
+
 app.use(cors({
   origin: true, // Allow frontend dev & prod origins
   credentials: true,
