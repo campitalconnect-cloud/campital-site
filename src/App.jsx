@@ -18,26 +18,23 @@ import { TermsOfService } from './pages/TermsOfService';
 import { NotFound } from './pages/NotFound';
 import { CookieConsent } from './components/common/CookieConsent';
 
-// Admin CRM Pages
+// Admin CRM Pages (Obfuscated Desk Route)
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminLayout } from './pages/admin/AdminLayout';
-import { AdminDashboard } from './pages/admin/AdminDashboard';
-import { AdminPipeline } from './pages/admin/AdminPipeline';
 import { AdminLeads } from './pages/admin/AdminLeads';
 import { AdminSubscribers } from './pages/admin/AdminSubscribers';
 import { AdminEvents } from './pages/admin/AdminEvents';
 
 export const App = () => {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminRoute = location.pathname.startsWith('/portal-desk-92');
 
   if (isAdminRoute) {
     return (
       <Routes>
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="pipeline" element={<AdminPipeline />} />
+        <Route path="/portal-desk-92/login" element={<AdminLogin />} />
+        <Route path="/portal-desk-92" element={<AdminLayout />}>
+          <Route index element={<AdminLeads />} />
           <Route path="leads" element={<AdminLeads />} />
           <Route path="subscribers" element={<AdminSubscribers />} />
           <Route path="events" element={<AdminEvents />} />

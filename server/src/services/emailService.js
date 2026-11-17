@@ -321,6 +321,44 @@ export const emailService = {
       html,
       templateName: 'EVENT_REGISTRATION',
     });
+  },
+
+  /**
+   * 6. Direct Reply from Lead Desk
+   */
+  async sendDirectLeadReply(lead, { subject, message, replyBy = 'Campital Deal Desk' }) {
+    const bodyHtml = `
+      <p>Dear ${lead.fullName},</p>
+      <div style="background: #f8fafc; border-left: 4px solid #0052FF; padding: 16px 20px; margin: 20px 0; border-radius: 6px; font-size: 15px; color: #1e293b; line-height: 1.6; white-space: pre-wrap;">${message}</div>
+      <div class="meta-box">
+        <div class="meta-row">
+          <span class="meta-label">Regarding:</span>
+          <span class="meta-value">${lead.organizationName}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Reference ID:</span>
+          <span class="meta-value">#CAMP-${lead.leadNumber || 'APP'}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Desk Representative:</span>
+          <span class="meta-value">${replyBy}</span>
+        </div>
+      </div>
+      <p>Warm regards,<br/><strong>${replyBy}</strong><br/>Campital Deal Desk &bull; <a href="mailto:campital.connect@gmail.com" style="color:#0052FF;">campital.connect@gmail.com</a></p>
+    `;
+
+    const html = wrapEmailHtml({
+      title: subject || `Update regarding ${lead.organizationName}`,
+      bodyHtml,
+    });
+
+    return sendEmail({
+      to: lead.email,
+      subject: subject || `[Campital] Message regarding your application: ${lead.organizationName} (#CAMP-${lead.leadNumber || 'APP'})`,
+      html,
+      templateName: 'DIRECT_REPLY',
+      leadId: lead.id
+    });
   }
 };
 

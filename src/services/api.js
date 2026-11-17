@@ -213,6 +213,14 @@ export const api = {
     });
   },
 
+  async sendLeadReply(id, { subject, message }) {
+    return safeRequest(`/admin/leads/${id}/reply`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ subject, message })
+    });
+  },
+
   async getAdminAnalytics() {
     return safeRequest('/admin/analytics', {
       headers: getAuthHeaders()

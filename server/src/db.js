@@ -1,11 +1,15 @@
-import { PrismaClient } from '@prisma/client';
-import fs from 'fs';
+import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import bcrypt from 'bcryptjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '../.env') });
+dotenv.config();
+
+import { PrismaClient } from '@prisma/client';
+import fs from 'fs';
+import bcrypt from 'bcryptjs';
 
 let prismaInstance = null;
 let usePrisma = false;
@@ -36,11 +40,10 @@ const defaultStore = {
   leads: [],
   adminUsers: [
     {
-      id: 'admin-default-1',
-      name: 'Campital Admin',
-      email: 'admin@campital.in',
-      // Hash of "Admin@12345"
-      passwordHash: bcrypt.hashSync('Admin@12345', 10),
+      id: 'admin-core-desk-1',
+      name: 'Campital Lead Desk',
+      email: 'core.desk@campital.in',
+      passwordHash: '$2b$10$hEXZlxxiGsUoXZxrvErwOubLj71gYYpjcXU4kW6mPHkBL.Hsd3uRe',
       role: 'SUPER_ADMIN',
       isActive: true,
       createdAt: new Date().toISOString()

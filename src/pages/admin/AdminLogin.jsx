@@ -23,7 +23,7 @@ export const AdminLogin = () => {
 
     try {
       await api.adminLogin(email, password);
-      navigate('/admin');
+      navigate('/portal-desk-92');
     } catch (err) {
       setError(err.message || 'Invalid credentials.');
     } finally {

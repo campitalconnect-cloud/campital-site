@@ -18,6 +18,7 @@ router.get('/leads', adminController.getLeads);
 router.get('/leads/:id', adminController.getLeadById);
 router.patch('/leads/:id/status', adminController.updateLeadStatus);
 router.post('/leads/:id/notes', adminController.addNote);
+router.post('/leads/:id/reply', adminController.sendLeadReply);
 
 export default router;
 

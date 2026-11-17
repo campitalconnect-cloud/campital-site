@@ -277,6 +277,47 @@ export const adminController = {
       console.error('CSV export error:', err);
       return res.status(500).json({ error: 'Failed to export CSV.' });
     }
+  },
+
+  /**
+   * Send Direct Reply Email to Lead
+   */
+  async sendLeadReply(req, res) {
+    try {
+      const { id } = req.params;
+      const { subject, message } = req.body;
+
+      if (!message || !message.trim()) {
+        return res.status(400).json({ error: 'Message content is required.' });
+      }
+
+      const lead = await db.leads.findById(id);
+      if (!lead) {
+        return res.status(404).json({ error: 'Lead not found.' });
+      }
+
+      const replyResult = await emailService.sendDirectLeadReply(lead, {
+        subject: subject && subject.trim() ? subject.trim() : `[Campital] In inquiry response: ${lead.organizationName}`,
+        message: message.trim(),
+        replyBy: req.adminUser?.name || 'Campital Deal Desk'
+      });
+
+      // Record in internal notes
+      await db.notes.create({
+        leadId: id,
+        authorId: req.adminUser.id,
+        content: `[Direct Email Dispatched by ${req.adminUser.name || 'Admin'}]\nSubject: ${subject || 'Direct Reply'}\n\n${message.trim()}`
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: `Reply email successfully dispatched to ${lead.email}.`,
+        replyResult
+      });
+    } catch (err) {
+      console.error('Error sending lead reply:', err);
+      return res.status(500).json({ error: 'Failed to dispatch reply email.' });
+    }
   }
 };
 

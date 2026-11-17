@@ -22,7 +22,7 @@ export const AdminLayout = () => {
 
   useEffect(() => {
     if (!api.isAuthenticated()) {
-      navigate('/admin/login');
+      navigate('/portal-desk-92/login');
       return;
     }
     const user = api.getStoredAdminUser();
@@ -31,15 +31,13 @@ export const AdminLayout = () => {
 
   const handleLogout = () => {
     api.adminLogout();
-    navigate('/admin/login');
+    navigate('/portal-desk-92/login');
   };
 
   const navItems = [
-    { label: 'Overview', path: '/admin', icon: LayoutDashboard },
-    { label: 'Pipeline Kanban', path: '/admin/pipeline', icon: Kanban },
-    { label: 'All Leads', path: '/admin/leads', icon: Users },
-    { label: 'Subscribers', path: '/admin/subscribers', icon: Mail },
-    { label: 'Event RSVPs', path: '/admin/events', icon: Calendar },
+    { label: 'Received Leads', path: '/portal-desk-92', icon: Users },
+    { label: 'Subscribers', path: '/portal-desk-92/subscribers', icon: Mail },
+    { label: 'Event RSVPs', path: '/portal-desk-92/events', icon: Calendar },
   ];
 
   return (

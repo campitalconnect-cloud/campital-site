@@ -1,19 +1,24 @@
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
+import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Ensure server/.env is loaded regardless of process working directory
+dotenv.config({ path: path.join(__dirname, '../.env') });
+dotenv.config();
+
+import express from 'express';
+import cors from 'cors';
 
 import leadsRoutes from './routes/leadsRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import subscribersRoutes from './routes/subscribersRoutes.js';
 import eventsRoutes from './routes/eventsRoutes.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use((req, res, next) => {
@@ -64,4 +69,3 @@ app.listen(PORT, () => {
   console.log(`📍 Admin Endpoint: http://localhost:${PORT}/api/admin`);
   console.log(`=======================================================`);
 });
-
