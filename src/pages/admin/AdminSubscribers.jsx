@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, CheckCircle2, Loader2, Download } from 'lucide-react';
+import { api } from '../../services/api';
 
 export const AdminSubscribers = () => {
   const [subscribers, setSubscribers] = useState([]);
@@ -12,11 +13,7 @@ export const AdminSubscribers = () => {
   const fetchSubscribers = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('campital_admin_token');
-      const res = await fetch('/api/subscribers', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
+      const data = await api.getAdminSubscribers();
       setSubscribers(data.subscribers || []);
     } catch (err) {
       console.error('Failed to fetch subscribers:', err);

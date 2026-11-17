@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, CheckCircle2, Loader2, GraduationCap, Building2 } from 'lucide-react';
+import { api } from '../../services/api';
 
 export const AdminEvents = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -12,11 +13,7 @@ export const AdminEvents = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('campital_admin_token');
-      const res = await fetch('/api/events', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
+      const data = await api.getAdminEvents();
       setRegistrations(data.registrations || []);
     } catch (err) {
       console.error('Failed to fetch events:', err);

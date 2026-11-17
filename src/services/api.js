@@ -1,16 +1,83 @@
 /**
  * Campital Unified API Client
  * Manages public intake submissions, pitch deck uploads, and authenticated CRM requests.
+ * Features built-in resiliency, safe parsing, and seamless localhost proxy failover.
  */
 
-const API_BASE = '/api';
-
 function getAuthHeaders() {
-  const token = localStorage.getItem('campital_admin_token');
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('campital_admin_token') : null;
   return {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {})
   };
+}
+
+/**
+ * Universal resilient fetcher:
+ * 1. Checks relative /api first.
+ * 2. If running locally and relative /api returns non-JSON/HTML or network error (e.g. Vite proxy not yet restarted or port mismatch),
+ *    automatically fails over to direct http://localhost:5001/api.
+ * 3. Safely parses response as text first, guarding against empty body or HTML error pages.
+ * 4. Yields actionable error messages rather than raw SyntaxError "Unexpected end of JSON input".
+ */
+async function safeRequest(endpoint, options = {}) {
+  const isLocal = typeof window !== 'undefined' && 
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  
+  // Build candidate URLs: relative proxy first, direct localhost:5001 as fallback
+  const candidates = [
+    `/api${cleanEndpoint}`,
+    ...(isLocal ? [`http://localhost:5001/api${cleanEndpoint}`] : [])
+  ];
+
+  let lastError = null;
+
+  for (let i = 0; i < candidates.length; i++) {
+    const url = candidates[i];
+    try {
+      const res = await fetch(url, options);
+      const contentType = res.headers.get('content-type') || '';
+      const text = await res.text();
+
+      // Check if response is HTML (e.g. Vite SPA index.html fallback when proxy is missing)
+      const isHtml = text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html') || contentType.includes('text/html');
+
+      if (isHtml) {
+        if (i < candidates.length - 1) {
+          // Fall back to direct localhost:5001 backend
+          continue;
+        }
+        throw new Error('API server returned HTML page instead of JSON. Ensure backend is running on port 5001.');
+      }
+
+      let data = {};
+      if (text.trim()) {
+        try {
+          data = JSON.parse(text);
+        } catch (jsonErr) {
+          if (i < candidates.length - 1) {
+            continue;
+          }
+          throw new Error(`Invalid response format from server (${res.status}): ${text.slice(0, 100)}`);
+        }
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || data.message || `Server request failed with status ${res.status}`);
+      }
+
+      return data;
+    } catch (err) {
+      lastError = err;
+      if (i < candidates.length - 1) {
+        continue;
+      }
+    }
+  }
+
+  throw lastError || new Error('Network error: Unable to reach Campital API server.');
 }
 
 export const api = {
@@ -18,16 +85,11 @@ export const api = {
    * Public: Submit intake lead / application
    */
   async submitLead(leadData) {
-    const res = await fetch(`${API_BASE}/leads`, {
+    return safeRequest('/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(leadData)
     });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Failed to submit application.');
-    }
-    return data;
   },
 
   /**
@@ -37,62 +99,44 @@ export const api = {
     const formData = new FormData();
     formData.append('deck', file);
 
-    const res = await fetch(`${API_BASE}/leads/upload-deck`, {
+    return safeRequest('/leads/upload-deck', {
       method: 'POST',
       body: formData
     });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Failed to upload pitch deck.');
-    }
-    return data;
   },
 
   /**
    * Public: Newsletter subscription
    */
   async subscribeNewsletter(email, source = 'homepage') {
-    const res = await fetch(`${API_BASE}/subscribers/subscribe`, {
+    return safeRequest('/subscribers/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, source })
     });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Subscription failed.');
-    }
-    return data;
   },
 
   /**
    * Public: Event priority registration
    */
   async registerEvent(payload) {
-    const res = await fetch(`${API_BASE}/events/register`, {
+    return safeRequest('/events/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Event registration failed.');
-    }
-    return data;
   },
 
   // ================= ADMIN & CRM API =================
 
   async adminLogin(email, password) {
-    const res = await fetch(`${API_BASE}/admin/login`, {
+    const data = await safeRequest('/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Admin login failed.');
-    }
-    if (data.token) {
+
+    if (data.token && typeof localStorage !== 'undefined') {
       localStorage.setItem('campital_admin_token', data.token);
       localStorage.setItem('campital_admin_user', JSON.stringify(data.user));
     }
@@ -100,13 +144,15 @@ export const api = {
   },
 
   adminLogout() {
-    localStorage.removeItem('campital_admin_token');
-    localStorage.removeItem('campital_admin_user');
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('campital_admin_token');
+      localStorage.removeItem('campital_admin_user');
+    }
   },
 
   getStoredAdminUser() {
     try {
-      const u = localStorage.getItem('campital_admin_user');
+      const u = typeof localStorage !== 'undefined' ? localStorage.getItem('campital_admin_user') : null;
       return u ? JSON.parse(u) : null;
     } catch (e) {
       return null;
@@ -114,15 +160,13 @@ export const api = {
   },
 
   isAuthenticated() {
-    return !!localStorage.getItem('campital_admin_token');
+    return typeof localStorage !== 'undefined' ? !!localStorage.getItem('campital_admin_token') : false;
   },
 
   async getAdminProfile() {
-    const res = await fetch(`${API_BASE}/admin/profile`, {
+    return safeRequest('/admin/profile', {
       headers: getAuthHeaders()
     });
-    if (!res.ok) throw new Error('Session expired.');
-    return res.json();
   },
 
   async getAdminLeads(filters = {}) {
@@ -131,57 +175,56 @@ export const api = {
     if (filters.personaType && filters.personaType !== 'ALL') params.append('personaType', filters.personaType);
     if (filters.search) params.append('search', filters.search);
 
-    const res = await fetch(`${API_BASE}/admin/leads?${params.toString()}`, {
+    return safeRequest(`/admin/leads?${params.toString()}`, {
       headers: getAuthHeaders()
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to fetch leads.');
-    return data;
   },
 
   async getAdminLeadById(id) {
-    const res = await fetch(`${API_BASE}/admin/leads/${id}`, {
+    return safeRequest(`/admin/leads/${id}`, {
       headers: getAuthHeaders()
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to fetch lead details.');
-    return data;
   },
 
   async updateLeadStatus(id, { status, note, sendNotificationEmail, emailNote }) {
-    const res = await fetch(`${API_BASE}/admin/leads/${id}/status`, {
+    return safeRequest(`/admin/leads/${id}/status`, {
       method: 'PATCH',
       headers: getAuthHeaders(),
       body: JSON.stringify({ status, note, sendNotificationEmail, emailNote })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to update status.');
-    return data;
   },
 
   async addLeadNote(id, content) {
-    const res = await fetch(`${API_BASE}/admin/leads/${id}/notes`, {
+    return safeRequest(`/admin/leads/${id}/notes`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify({ content })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to add note.');
-    return data;
   },
 
   async getAdminAnalytics() {
-    const res = await fetch(`${API_BASE}/admin/analytics`, {
+    return safeRequest('/admin/analytics', {
       headers: getAuthHeaders()
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to fetch analytics.');
-    return data;
+  },
+
+  async getAdminSubscribers() {
+    return safeRequest('/subscribers', {
+      headers: getAuthHeaders()
+    });
+  },
+
+  async getAdminEvents() {
+    return safeRequest('/events', {
+      headers: getAuthHeaders()
+    });
   },
 
   getExportCsvUrl() {
-    const token = localStorage.getItem('campital_admin_token');
-    return `${API_BASE}/admin/export/csv?token=${token || ''}`;
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('campital_admin_token') : '';
+    const isLocal = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const base = isLocal ? 'http://localhost:5001/api' : '/api';
+    return `${base}/admin/export/csv?token=${token || ''}`;
   }
 };
-
