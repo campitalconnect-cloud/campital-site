@@ -5,7 +5,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"node server/src/index.js\" \"vite\"",
+    "dev:client": "vite",
     "server": "node server/src/index.js",
     "server:dev": "node --watch server/src/index.js",
     "build": "vite build",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^10.0.7",
     "vite": "^6.1.0"
   }
 }

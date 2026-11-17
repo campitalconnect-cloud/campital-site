@@ -40,10 +40,13 @@ const PRIOR_FUNDING_OPTIONS = [
 export const EmailInquiryModal = ({
   isOpen,
   onClose,
-  inquiryType = 'startup',
+  inquiryType,
+  personaKey,
   title = 'Startup Funding Application',
   subtitle = 'Submit your venture details directly to the Campital evaluation pipeline.',
 }) => {
+  const effectiveInquiryType = inquiryType || personaKey || 'startup';
+  const isStartupTrack = effectiveInquiryType === 'startup';
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
@@ -73,7 +76,6 @@ export const EmailInquiryModal = ({
   const [submissionResult, setSubmissionResult] = useState(null);
   const [submitError, setSubmitError] = useState('');
 
-  const isStartupTrack = inquiryType === 'startup';
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleFieldChange = (field, value) => {
@@ -174,7 +176,7 @@ export const EmailInquiryModal = ({
         phone: formData.phone,
         organizationName: formData.organization,
         campusAffiliation: formData.campusAffiliation,
-        personaType: inquiryType.toUpperCase(),
+        personaType: effectiveInquiryType.toUpperCase(),
         generalMessage: formData.message,
         pitchHeadline: formData.oneSentencePitch,
         ventureStage: formData.stage,

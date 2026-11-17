@@ -34,7 +34,7 @@ export const ApplicationCTA = ({ persona, onOpenInquiry }) => {
       </div>
 
       <div style={{ marginTop: '1.5rem', fontSize: '0.82rem', color: '#94a3b8' }}>
-        Prepared via zero-backend email draft. No automated commitments or guarantees.
+        Direct institutional pipeline: Securely submitted to the Campital evaluation committee with instant tracking ID.
       </div>
     </div>
   );

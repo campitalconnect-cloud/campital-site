@@ -111,7 +111,7 @@ export const NewsletterStrip = () => {
               }}
             >
               <Check size={18} />
-              <span>Subscription draft ready! Check your email client to confirm.</span>
+              <span>Successfully subscribed! You're on the priority list for The Campital Brief.</span>
             </div>
           ) : (
             <form

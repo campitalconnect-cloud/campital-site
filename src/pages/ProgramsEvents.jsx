@@ -19,6 +19,7 @@ import {
 import { Container } from '../components/common/Container';
 import { Button } from '../components/common/Button';
 import { CustomSelect } from '../components/forms/CustomSelect';
+import { EmailInquiryModal } from '../components/forms/EmailInquiryModal';
 import { CAMPITAL_CONTACT_EMAIL } from '../config/emailConfig';
 import { fadeUpVariant } from '../utils/motion';
 import { api } from '../services/api';
@@ -114,40 +115,24 @@ export const ProgramsEvents = () => {
     }
   };
 
-  const handleDirectEmail = (type) => {
-    let subject = '';
-    let body = '';
-    if (type === 'host') {
-      subject = encodeURIComponent('[Host Partnership] Campus Hackathon / Demo Day Proposal');
-      body = encodeURIComponent(
-        `Hello Campital Team,\n\nWe are interested in co-designing and hosting a Campital Hackathon / Demo Day at our campus incubator.\n\n` +
-        `Institution / Incubator Name: \n` +
-        `Location / City: \n` +
-        `Target Cohort Size / Departments: \n` +
-        `Contact Person: \n` +
-        `Phone Number: \n\n` +
-        `Looking forward to partnering.`
-      );
-    } else {
-      subject = encodeURIComponent('[Sponsorship Inquiry] Corporate Challenge Track / Event Sponsorship');
-      body = encodeURIComponent(
-        `Hello Campital Team,\n\nWe are interested in exploring challenge sponsorship and brand partnerships for upcoming Campital events.\n\n` +
-        `Company / Brand Name: \n` +
-        `Industry / Focus Areas: \n` +
-        `Contact Person: \n` +
-        `Work Email: \n` +
-        `Budget / Objectives: \n\n` +
-        `Looking forward to discussing opportunities.`
-      );
-    }
+  const [eventModal, setEventModal] = useState({ isOpen: false, type: 'incubator', title: '', subtitle: '' });
 
-    const mailtoUrl = `mailto:${CAMPITAL_CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-    const link = document.createElement('a');
-    link.href = mailtoUrl;
-    link.target = '_top';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleOpenEventModal = (type) => {
+    if (type === 'host') {
+      setEventModal({
+        isOpen: true,
+        type: 'incubator',
+        title: 'Bring Campital to Your Campus',
+        subtitle: 'Propose co-designing a Campital Hackathon or Demo Day for your university cohort.'
+      });
+    } else {
+      setEventModal({
+        isOpen: true,
+        type: 'corporate',
+        title: 'Sponsor a Challenge Track',
+        subtitle: 'Connect with our team to sponsor problem statements and gain early access to top campus ventures.'
+      });
+    }
   };
 
   return (
@@ -557,10 +542,10 @@ export const ProgramsEvents = () => {
                 >
                   <CheckCircle2 size={36} style={{ color: '#059669', margin: '0 auto 0.75rem' }} />
                   <h3 style={{ fontSize: '1.3rem', fontWeight: '800', marginBottom: '0.5rem' }}>
-                    Notification Request Prepared!
+                    Priority Alert Registered!
                   </h3>
                   <p style={{ fontSize: '0.95rem', color: '#047857', maxWidth: '500px', margin: '0 auto' }}>
-                    Your email client has been prepared with your calendar alert details. Send the pre-filled message to confirm your priority access.
+                    You are registered for priority access to the 2026 Programs & Events rollout. A confirmation has been dispatched.
                   </p>
                 </div>
               ) : (
@@ -764,7 +749,7 @@ export const ProgramsEvents = () => {
                   </p>
                   <Button
                     variant="primary"
-                    onClick={() => handleDirectEmail('host')}
+                    onClick={() => handleOpenEventModal('host')}
                     icon={ArrowRight}
                     style={{
                       background: 'linear-gradient(135deg, #1264FF 0%, #20BFEF 100%)',
@@ -798,7 +783,7 @@ export const ProgramsEvents = () => {
                   </p>
                   <Button
                     variant="secondary"
-                    onClick={() => handleDirectEmail('sponsor')}
+                    onClick={() => handleOpenEventModal('sponsor')}
                     icon={ArrowRight}
                     style={{
                       backgroundColor: '#FFFFFF',
@@ -816,6 +801,16 @@ export const ProgramsEvents = () => {
           </div>
         </Container>
       </section>
+
+      {eventModal.isOpen && (
+        <EmailInquiryModal
+          isOpen={eventModal.isOpen}
+          onClose={() => setEventModal({ ...eventModal, isOpen: false })}
+          inquiryType={eventModal.type}
+          title={eventModal.title}
+          subtitle={eventModal.subtitle}
+        />
+      )}
 
       <style>{`
         .format-card:hover {

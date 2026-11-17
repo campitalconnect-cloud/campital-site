@@ -517,7 +517,7 @@ export const HowWeFund = () => {
               Ready to submit your venture for evaluation?
             </h2>
             <p style={{ fontSize: '1.05rem', color: '#cbd5e1', lineHeight: '1.6', marginBottom: '2rem' }}>
-              Fill our zero-backend intake screening to prepare an investor-ready brief directly into your email client.
+              Submit your venture details directly to our evaluation pipeline with automated tracking and screening review.
             </p>
             <Button
               variant="white"
@@ -536,7 +536,7 @@ export const HowWeFund = () => {
       <EmailInquiryModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        personaKey={selectedPersona}
+        inquiryType={selectedPersona}
       />
 
       <style>{`
