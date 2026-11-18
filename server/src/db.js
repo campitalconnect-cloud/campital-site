@@ -29,11 +29,16 @@ if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('postgres'))
 }
 
 // Local File Store for zero-config fallback
-const DATA_DIR = path.join(__dirname, '../data');
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const DATA_DIR = isServerless ? '/tmp' : path.join(__dirname, '../data');
 const DATA_FILE = path.join(DATA_DIR, 'store.json');
 
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (dirErr) {
+  console.warn('⚠️ Could not create data directory (read-only filesystem):', dirErr.message);
 }
 
 const defaultStore = {
@@ -56,24 +61,35 @@ const defaultStore = {
   events: []
 };
 
+let memoryStore = null;
+
 function readLocalStore() {
+  if (memoryStore) return memoryStore;
   try {
     if (!fs.existsSync(DATA_FILE)) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify(defaultStore, null, 2));
-      return defaultStore;
+      try {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(defaultStore, null, 2));
+      } catch (e) {
+        // Read-only filesystem
+      }
+      memoryStore = JSON.parse(JSON.stringify(defaultStore));
+      return memoryStore;
     }
     const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-    return JSON.parse(raw);
+    memoryStore = JSON.parse(raw);
+    return memoryStore;
   } catch (e) {
-    return defaultStore;
+    memoryStore = JSON.parse(JSON.stringify(defaultStore));
+    return memoryStore;
   }
 }
 
 function writeLocalStore(data) {
+  memoryStore = data;
   try {
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
   } catch (e) {
-    console.error('Failed to write local store:', e);
+    // Read-only filesystem, memoryStore keeps it for function lifetime
   }
 }
 

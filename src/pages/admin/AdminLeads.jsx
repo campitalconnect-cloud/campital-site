@@ -6,7 +6,12 @@ import {
   ExternalLink, 
   GraduationCap, 
   Building2, 
-  Loader2 
+  Loader2,
+  RefreshCw,
+  Database,
+  CheckCircle2,
+  AlertCircle,
+  Inbox
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { AdminLeadDrawer } from './AdminLeadDrawer';
@@ -14,6 +19,9 @@ import { AdminLeadDrawer } from './AdminLeadDrawer';
 export const AdminLeads = () => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [personaFilter, setPersonaFilter] = useState('ALL');
@@ -23,19 +31,28 @@ export const AdminLeads = () => {
     fetchLeads();
   }, [statusFilter, personaFilter, search]);
 
-  const fetchLeads = async () => {
-    setLoading(true);
+  const fetchLeads = async (manual = false) => {
+    if (manual) {
+      setIsRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    setFetchError(null);
+
     try {
       const res = await api.getAdminLeads({
         status: statusFilter,
         personaType: personaFilter,
         search: search
       });
-      setLeads(res.leads);
+      setLeads(res.leads || []);
+      setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
     } catch (err) {
       console.error('Failed to fetch leads:', err);
+      setFetchError(err.message || 'Unable to connect to database server.');
     } finally {
       setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -64,26 +81,114 @@ export const AdminLeads = () => {
           </p>
         </div>
 
-        <a
-          href={api.getExportCsvUrl()}
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.65rem 1.25rem',
-            borderRadius: '8px',
-            backgroundColor: '#0052FF',
-            color: '#FFFFFF',
-            fontSize: '0.85rem',
-            fontWeight: '700',
-            textDecoration: 'none'
-          }}
-        >
-          <Download size={15} />
-          <span>Export CSV</span>
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          {/* Manual Refresh Button */}
+          <button
+            onClick={() => fetchLeads(true)}
+            disabled={loading || isRefreshing}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.65rem 1rem',
+              borderRadius: '8px',
+              backgroundColor: '#1E293B',
+              border: '1px solid #334155',
+              color: '#94A3B8',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              cursor: loading || isRefreshing ? 'not-allowed' : 'pointer',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              if (!loading && !isRefreshing) {
+                e.currentTarget.style.color = '#FFFFFF';
+                e.currentTarget.style.borderColor = '#475569';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#94A3B8';
+              e.currentTarget.style.borderColor = '#334155';
+            }}
+          >
+            <RefreshCw size={14} className={loading || isRefreshing ? 'animate-spin' : ''} />
+            <span>{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
+          </button>
+
+          {/* Export CSV */}
+          <a
+            href={api.getExportCsvUrl()}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.65rem 1.25rem',
+              borderRadius: '8px',
+              backgroundColor: '#0052FF',
+              color: '#FFFFFF',
+              fontSize: '0.85rem',
+              fontWeight: '700',
+              textDecoration: 'none',
+              boxShadow: '0 4px 12px rgba(0, 82, 255, 0.25)'
+            }}
+          >
+            <Download size={15} />
+            <span>Export CSV</span>
+          </a>
+        </div>
+      </div>
+
+      {/* Real-time Status / Feedback Bar */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+          padding: '0.75rem 1.25rem',
+          backgroundColor: '#0F172A',
+          border: '1px solid #1E293B',
+          borderRadius: '10px',
+          fontSize: '0.82rem'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          {loading || isRefreshing ? (
+            <>
+              <Loader2 size={15} className="animate-spin" color="#38BDF8" />
+              <span style={{ color: '#38BDF8', fontWeight: '600' }}>
+                Connecting to Neon DB & synchronizing dossiers...
+              </span>
+            </>
+          ) : fetchError ? (
+            <>
+              <AlertCircle size={15} color="#EF4444" />
+              <span style={{ color: '#EF4444', fontWeight: '600' }}>
+                {fetchError}
+              </span>
+            </>
+          ) : (
+            <>
+              <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 8px #10B981' }} />
+              <span style={{ color: '#E2E8F0', fontWeight: '600' }}>
+                Neon PostgreSQL Synced
+              </span>
+              <span style={{ color: '#64748B' }}>•</span>
+              <span style={{ color: '#94A3B8' }}>
+                <strong style={{ color: '#FFFFFF' }}>{leads.length}</strong> active inquiry dossiers
+              </span>
+            </>
+          )}
+        </div>
+
+        {lastUpdated && !loading && !fetchError && (
+          <div style={{ color: '#64748B', fontSize: '0.78rem' }}>
+            Last updated at {lastUpdated}
+          </div>
+        )}
       </div>
 
       {/* Filter Toolbar */}
@@ -134,7 +239,8 @@ export const AdminLeads = () => {
             borderRadius: '8px',
             color: '#FFFFFF',
             fontSize: '0.85rem',
-            outline: 'none'
+            outline: 'none',
+            cursor: 'pointer'
           }}
         >
           <option value="ALL">All Tracks</option>
@@ -157,7 +263,8 @@ export const AdminLeads = () => {
             borderRadius: '8px',
             color: '#FFFFFF',
             fontSize: '0.85rem',
-            outline: 'none'
+            outline: 'none',
+            cursor: 'pointer'
           }}
         >
           <option value="ALL">All Statuses</option>
@@ -175,9 +282,64 @@ export const AdminLeads = () => {
       {/* Leads Table Container */}
       <div style={{ backgroundColor: '#0F172A', border: '1px solid #1E293B', borderRadius: '16px', overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '5rem 0', color: '#64748B' }}>
-            <Loader2 size={32} className="animate-spin" style={{ margin: '0 auto 1rem', color: '#0052FF' }} />
-            <div>Filtering leads database...</div>
+          /* Animated Skeleton Table with Shimmer */
+          <div style={{ padding: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: '2rem', color: '#94A3B8' }}>
+              <Loader2 size={24} className="animate-spin" color="#0052FF" />
+              <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>Fetching active lead dossiers from database...</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {[1, 2, 3, 4, 5].map((idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1.5rem',
+                    padding: '1rem',
+                    backgroundColor: '#162032',
+                    borderRadius: '8px',
+                    opacity: 1 - idx * 0.12,
+                    animation: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                  }}
+                >
+                  <div style={{ width: '80px', height: '18px', backgroundColor: '#1E293B', borderRadius: '4px' }} />
+                  <div style={{ flex: '2', height: '18px', backgroundColor: '#1E293B', borderRadius: '4px' }} />
+                  <div style={{ flex: '2', height: '18px', backgroundColor: '#1E293B', borderRadius: '4px' }} />
+                  <div style={{ width: '90px', height: '18px', backgroundColor: '#1E293B', borderRadius: '4px' }} />
+                  <div style={{ width: '100px', height: '18px', backgroundColor: '#1E293B', borderRadius: '4px' }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : fetchError ? (
+          <div style={{ textAlign: 'center', padding: '4rem 2rem', color: '#EF4444' }}>
+            <AlertCircle size={40} style={{ margin: '0 auto 1rem', opacity: 0.8 }} />
+            <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#FFFFFF', marginBottom: '0.5rem' }}>
+              Database Connection Failed
+            </h3>
+            <p style={{ color: '#94A3B8', fontSize: '0.88rem', maxWidth: '450px', margin: '0 auto 1.5rem' }}>
+              {fetchError}
+            </p>
+            <button
+              onClick={() => fetchLeads(true)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.65rem 1.25rem',
+                backgroundColor: '#0052FF',
+                color: '#FFFFFF',
+                borderRadius: '8px',
+                border: 'none',
+                fontWeight: '700',
+                fontSize: '0.88rem',
+                cursor: 'pointer'
+              }}
+            >
+              <RefreshCw size={14} />
+              <span>Retry Connection</span>
+            </button>
           </div>
         ) : leads.length > 0 ? (
           <div style={{ overflowX: 'auto' }}>
@@ -278,8 +440,51 @@ export const AdminLeads = () => {
             </table>
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '4rem', color: '#64748B' }}>
-            No inquiries match the current search or filter criteria.
+          <div style={{ textAlign: 'center', padding: '4.5rem 2rem' }}>
+            <div
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '16px',
+                backgroundColor: '#1E293B',
+                color: '#64748B',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1rem'
+              }}
+            >
+              <Inbox size={28} />
+            </div>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#FFFFFF', margin: '0 0 0.5rem 0' }}>
+              No Inquiries Found
+            </h3>
+            <p style={{ color: '#94A3B8', fontSize: '0.88rem', maxWidth: '420px', margin: '0 auto 1.5rem', lineHeight: '1.5' }}>
+              {search || statusFilter !== 'ALL' || personaFilter !== 'ALL'
+                ? 'No dossiers match your current search query or filter selection. Try clearing filters to view all entries.'
+                : 'No startup or partnership applications have been received yet. Incoming screening submissions will appear here automatically.'}
+            </p>
+            {(search || statusFilter !== 'ALL' || personaFilter !== 'ALL') && (
+              <button
+                onClick={() => {
+                  setSearch('');
+                  setStatusFilter('ALL');
+                  setPersonaFilter('ALL');
+                }}
+                style={{
+                  padding: '0.55rem 1rem',
+                  borderRadius: '8px',
+                  backgroundColor: '#1E293B',
+                  border: '1px solid #334155',
+                  color: '#38BDF8',
+                  fontSize: '0.85rem',
+                  fontWeight: '700',
+                  cursor: 'pointer'
+                }}
+              >
+                Clear All Filters
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -293,4 +498,3 @@ export const AdminLeads = () => {
     </div>
   );
 };
-

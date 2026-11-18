@@ -9,6 +9,7 @@ export const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [authStep, setAuthStep] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
@@ -20,14 +21,18 @@ export const AdminLogin = () => {
 
     setIsLoading(true);
     setError('');
+    setAuthStep('Verifying credentials with CRM vault...');
 
     try {
       await api.adminLogin(email, password);
-      navigate('/portal-desk-92');
+      setAuthStep('✓ Session authenticated. Loading desk...');
+      setTimeout(() => {
+        navigate('/portal-desk-92');
+      }, 400);
     } catch (err) {
       setError(err.message || 'Invalid credentials.');
-    } finally {
       setIsLoading(false);
+      setAuthStep('');
     }
   };
 
@@ -166,16 +171,17 @@ export const AdminLogin = () => {
             style={{
               width: '100%',
               justifyContent: 'center',
-              backgroundColor: '#0052FF',
+              backgroundColor: authStep.startsWith('✓') ? '#10B981' : '#0052FF',
               padding: '0.85rem',
               fontWeight: '700',
-              marginTop: '0.5rem'
+              marginTop: '0.5rem',
+              transition: 'background-color 0.2s ease'
             }}
           >
             {isLoading ? (
               <>
                 <Loader2 size={16} className="animate-spin" />
-                <span style={{ marginLeft: '0.5rem' }}>Authenticating...</span>
+                <span style={{ marginLeft: '0.5rem' }}>{authStep || 'Authenticating...'}</span>
               </>
             ) : (
               <>

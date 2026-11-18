@@ -56,7 +56,7 @@ async function safeRequest(endpoint, options = {}) {
         if (i < candidates.length - 1) {
           continue;
         }
-        throw new Error('API server returned HTML page instead of JSON. Ensure backend is running on port 5001.');
+        throw new Error(isLocal ? 'API server returned HTML page instead of JSON. Ensure backend is running on port 5001.' : 'API route is initializing or returned HTML. Please verify deployment configuration.');
       }
 
       let data = {};
@@ -77,7 +77,7 @@ async function safeRequest(endpoint, options = {}) {
           continue;
         }
         if (res.status === 405) {
-          throw new Error('Backend server is not responding on port 5001. Please make sure the backend server is running.');
+          throw new Error(isLocal ? 'Backend server is not responding on port 5001. Please make sure the backend server is running.' : 'HTTP 405: Endpoint method not permitted. Please verify API configuration.');
         }
         throw new Error(data.error || data.message || `Server request failed with status ${res.status}`);
       }
