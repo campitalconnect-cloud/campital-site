@@ -76,6 +76,9 @@ async function safeRequest(endpoint, options = {}) {
         if ((res.status === 405 || res.status === 404 || res.status >= 502) && i < candidates.length - 1) {
           continue;
         }
+        if (res.status === 405) {
+          throw new Error('Backend server is not responding on port 5001. Please make sure the backend server is running.');
+        }
         throw new Error(data.error || data.message || `Server request failed with status ${res.status}`);
       }
 

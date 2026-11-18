@@ -114,7 +114,7 @@ export const AdminLogin = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@campital.in"
+                placeholder="name@campital.in"
                 style={{
                   width: '100%',
                   padding: '0.85rem 1rem 0.85rem 2.75rem',
@@ -179,7 +179,7 @@ export const AdminLogin = () => {
               </>
             ) : (
               <>
-                <span>Sign In to CRM</span>
+                <span>Sign In to Desk</span>
                 <ArrowRight size={16} style={{ marginLeft: '0.5rem' }} />
               </>
             )}
@@ -188,30 +188,11 @@ export const AdminLogin = () => {
 
         <div
           style={{
-            marginTop: '1.5rem',
-            padding: '0.85rem',
-            backgroundColor: 'rgba(0, 82, 255, 0.08)',
-            border: '1px solid rgba(0, 82, 255, 0.2)',
-            borderRadius: '10px',
-            fontSize: '0.78rem',
-            color: '#94A3B8',
-            textAlign: 'center'
-          }}
-        >
-          <div style={{ fontWeight: '700', color: '#38BDF8', marginBottom: '0.2rem' }}>
-            Default Admin Credentials
-          </div>
-          <div>Email: <code>admin@campital.in</code></div>
-          <div>Password: <code>Admin@12345</code></div>
-        </div>
-
-        <div
-          style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.4rem',
-            marginTop: '1.5rem',
+            marginTop: '1.75rem',
             color: '#64748B',
             fontSize: '0.75rem'
           }}
