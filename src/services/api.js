@@ -208,6 +208,13 @@ export const api = {
     });
   },
 
+  async deleteLead(id) {
+    return safeRequest(`/admin/leads/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+  },
+
   async addLeadNote(id, content) {
     return safeRequest(`/admin/leads/${id}/notes`, {
       method: 'POST',

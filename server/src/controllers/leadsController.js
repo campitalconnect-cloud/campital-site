@@ -76,15 +76,20 @@ export const leadsController = {
         note: 'Lead intake submitted via website funnel.'
       });
 
-      // 3. Dispatch Automated Emails in background
-      Promise.all([
-        emailService.sendApplicantAcknowledgment(lead).catch(e => console.warn('Applicant email error:', e)),
-        emailService.sendDealTeamAlert(lead).catch(e => console.warn('Deal team email error:', e))
-      ]);
+      // 3. Dispatch Automated Confirmation Emails (Awaited for Serverless execution)
+      try {
+        await Promise.allSettled([
+          emailService.sendApplicantAcknowledgment(lead),
+          emailService.sendDealTeamAlert(lead)
+        ]);
+        console.log(`✉️ Automated confirmation emails dispatched for lead #${lead.leadNumber || 'NEW'} (${lead.email})`);
+      } catch (emailErr) {
+        console.warn('⚠️ Automated email dispatch warning:', emailErr.message);
+      }
 
       return res.status(201).json({
         success: true,
-        message: 'Application received successfully.',
+        message: 'Application received successfully. A confirmation email has been sent to your inbox.',
         leadReference: `#CAMP-${lead.leadNumber || 'NEW'}`,
         leadId: lead.id
       });

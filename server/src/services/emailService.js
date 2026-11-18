@@ -85,7 +85,7 @@ function wrapEmailHtml({ title, preheader, bodyHtml, ctaText, ctaUrl }) {
  * Universal sender function with DB logging
  */
 async function sendEmail({ to, subject, html, templateName, leadId = null }) {
-  const fromAddress = process.env.EMAIL_FROM || 'onboarding@resend.dev';
+  const fromAddress = process.env.EMAIL_FROM || 'Campital Deal Desk <team@campital.in>';
   let status = 'SENT';
   let externalId = null;
   let errorMsg = null;
@@ -95,6 +95,7 @@ async function sendEmail({ to, subject, html, templateName, leadId = null }) {
       const { data, error } = await resendClient.emails.send({
         from: fromAddress,
         to: [to],
+        reply_to: 'team@campital.in',
         subject,
         html,
       });
@@ -109,13 +110,13 @@ async function sendEmail({ to, subject, html, templateName, leadId = null }) {
       status = 'FAILED';
       errorMsg = err.message;
       console.warn(`❌ [Resend] Dispatch warning to ${to}:`, err.message);
-      // In Resend sandbox mode, if the recipient is unverified, fallback to mock so lead flow continues
     }
   } else if (transporter) {
     try {
       const info = await transporter.sendMail({
         from: fromAddress,
         to,
+        replyTo: 'team@campital.in',
         subject,
         html,
       });
@@ -133,15 +134,19 @@ async function sendEmail({ to, subject, html, templateName, leadId = null }) {
   }
 
   // Record in Database
-  await db.emailLogs.create({
-    leadId,
-    recipient: to,
-    templateName,
-    subject,
-    status,
-    externalId,
-    error: errorMsg,
-  });
+  try {
+    await db.emailLogs.create({
+      leadId,
+      recipient: to,
+      templateName,
+      subject,
+      status,
+      externalId,
+      error: errorMsg,
+    });
+  } catch (logErr) {
+    console.warn('Email log write warning:', logErr.message);
+  }
 
   return { status, externalId };
 }
@@ -152,28 +157,60 @@ export const emailService = {
    */
   async sendApplicantAcknowledgment(lead) {
     const isStartup = lead.personaType === 'STARTUP';
-    const title = isStartup ? 'Startup Application Received' : 'Partnership Scoping Received';
+    const title = isStartup ? 'Application Received - Campital Deal Desk' : 'Partnership Scoping Received - Campital';
 
     const bodyHtml = `
-      <h2 style="color: #0f172a; margin-top: 0; font-size: 20px;">Dear ${lead.fullName},</h2>
-      <p>Thank you for submitting <strong>${lead.organizationName}</strong> to Campital's evaluation pipeline.</p>
-      <p>Our deal discovery team and evaluation committee review incoming venture dossiers on a weekly rolling basis.</p>
-      
-      <div class="meta-box">
-        <div class="meta-row"><span class="meta-label">Reference ID:</span><span class="meta-value">#CAMP-${lead.leadNumber || 'NEW'}</span></div>
-        <div class="meta-row"><span class="meta-label">Venture / Organization:</span><span class="meta-value">${lead.organizationName}</span></div>
-        <div class="meta-row"><span class="meta-label">Track:</span><span class="meta-value">${lead.personaType}</span></div>
-        ${lead.targetCheque ? `<div class="meta-row"><span class="meta-label">Target Cheque:</span><span class="meta-value">${lead.targetCheque}</span></div>` : ''}
-        ${lead.campusAffiliation ? `<div class="meta-row"><span class="meta-label">Campus Affiliation:</span><span class="meta-value">${lead.campusAffiliation}</span></div>` : ''}
+      <div style="margin-bottom: 24px;">
+        <span style="display: inline-block; background-color: #EFF6FF; color: #0052FF; border: 1px solid #BFDBFE; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 9999px;">
+          Official Submission Confirmation
+        </span>
       </div>
 
-      <h3 style="color: #0f172a; font-size: 16px; margin-top: 24px;">What happens next?</h3>
-      <ol style="padding-left: 20px; color: #475569;">
-        <li><strong>Metrics & Screening Review:</strong> Our team assesses problem defensibility, product stage, and campus origination.</li>
-        <li><strong>Evaluation Committee:</strong> Shortlisted teams will be invited to a discovery session or upcoming Campital Demo Day.</li>
-        <li><strong>Status Update:</strong> Expect a direct follow-up from our deal desk within <strong>5 to 7 business days</strong>.</li>
+      <h2 style="color: #0f172a; margin: 0 0 12px 0; font-size: 20px; font-weight: 800; letter-spacing: -0.02em;">
+        Dear ${lead.fullName},
+      </h2>
+      <p style="margin: 0 0 16px 0; color: #334155; font-size: 15px; line-height: 1.6;">
+        Thank you for submitting <strong>${lead.organizationName}</strong> to the Campital Institutional Venture Network. Your application has been logged into our centralized screening database.
+      </p>
+
+      <div class="meta-box" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px; margin: 24px 0;">
+        <div style="font-size: 11px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; border-bottom: 1px solid #E2E8F0; padding-bottom: 8px;">
+          Submission Dossier Summary
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Reference ID:</span>
+          <span class="meta-value" style="color: #0052FF; font-weight: 800;">#CAMP-${lead.leadNumber || 'NEW'}</span>
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Venture / Entity:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.organizationName}</span>
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Evaluation Track:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.personaType}</span>
+        </div>
+        ${lead.targetCheque ? `
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Target Cheque:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.targetCheque}</span>
+        </div>` : ''}
+        ${lead.campusAffiliation ? `
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 7px 0; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Campus Affiliation:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.campusAffiliation}</span>
+        </div>` : ''}
+      </div>
+
+      <h3 style="color: #0f172a; font-size: 16px; margin: 24px 0 12px 0; font-weight: 700;">What happens next?</h3>
+      <ol style="padding-left: 20px; color: #475569; margin: 0 0 20px 0; line-height: 1.7; font-size: 14px;">
+        <li><strong>Quantitative & Metrics Screening:</strong> Our deal discovery team reviews problem defensibility, product stage, and IP origination against our rubric.</li>
+        <li><strong>Deal Committee Evaluation:</strong> High-scoring applications are reviewed for syndication or an invite to an upcoming Campital Demo Day.</li>
+        <li><strong>Direct Status Update:</strong> Expect a direct follow-up from our team at <a href="mailto:team@campital.in" style="color: #0052FF; text-decoration: none; font-weight: 600;">team@campital.in</a> within <strong>5 to 7 business days</strong>.</li>
       </ol>
-      <p>If you have urgent updates or new traction data to share, simply reply directly to this email.</p>
+
+      <p style="margin: 0; color: #64748B; font-size: 13px; line-height: 1.6; border-top: 1px solid #E2E8F0; padding-top: 16px;">
+        Need to share an updated deck, financial model, or milestone traction? Simply reply directly to this email and reference <strong>#CAMP-${lead.leadNumber || 'NEW'}</strong>.
+      </p>
     `;
 
     const html = wrapEmailHtml({
@@ -194,40 +231,112 @@ export const emailService = {
    * 2. Send Deal Team Internal Alert
    */
   async sendDealTeamAlert(lead) {
-    const adminUrl = `${process.env.CLIENT_ORIGIN || 'http://localhost:3000'}/admin/leads/${lead.id}`;
+    const baseUrl = (process.env.CLIENT_ORIGIN && !process.env.CLIENT_ORIGIN.includes('localhost'))
+      ? process.env.CLIENT_ORIGIN
+      : 'https://www.campital.in';
+    const adminUrl = `${baseUrl}/portal-desk-92`;
     const to = process.env.CENTRAL_TEAM_EMAIL || 'team@campital.in';
 
     const bodyHtml = `
-      <h2 style="color: #0f172a; margin-top: 0; font-size: 20px;">🚨 New Lead Intake: ${lead.organizationName}</h2>
-      <p>A new applicant has completed the intake funnel on Campital.</p>
-      
-      <div class="meta-box">
-        <div class="meta-row"><span class="meta-label">Lead Ref:</span><span class="meta-value">#CAMP-${lead.leadNumber || 'NEW'}</span></div>
-        <div class="meta-row"><span class="meta-label">Applicant Name:</span><span class="meta-value">${lead.fullName} (${lead.email})</span></div>
-        <div class="meta-row"><span class="meta-label">Track:</span><span class="meta-value">${lead.personaType}</span></div>
-        <div class="meta-row"><span class="meta-label">Venture:</span><span class="meta-value">${lead.organizationName}</span></div>
-        <div class="meta-row"><span class="meta-label">Campus:</span><span class="meta-value">${lead.campusAffiliation || 'N/A'}</span></div>
-        <div class="meta-row"><span class="meta-label">Cheque Target:</span><span class="meta-value">${lead.targetCheque || 'N/A'}</span></div>
-        <div class="meta-row"><span class="meta-label">Stage:</span><span class="meta-value">${lead.ventureStage || 'N/A'}</span></div>
+      <div style="margin-bottom: 16px;">
+        <span style="display: inline-block; background-color: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 9999px;">
+          Confidential • New Inbound Dossier
+        </span>
       </div>
 
-      ${lead.pitchHeadline ? `<p><strong>Pitch Headline:</strong> <em>"${lead.pitchHeadline}"</em></p>` : ''}
-      ${lead.tractionMetrics ? `<p><strong>Traction:</strong> ${lead.tractionMetrics}</p>` : ''}
-      ${lead.pitchDeckUrl ? `<p><strong>Deck Uploaded:</strong> <a href="${lead.pitchDeckUrl}" target="_blank">Download Pitch Deck</a></p>` : ''}
+      <h2 style="color: #0f172a; margin: 0 0 8px 0; font-size: 22px; font-weight: 900; letter-spacing: -0.02em;">
+        ${lead.organizationName}
+      </h2>
+      <p style="margin: 0 0 20px 0; color: #64748B; font-size: 14px;">
+        Submitted by <strong>${lead.fullName}</strong> (${lead.email}${lead.phone ? ' • ' + lead.phone : ''})
+      </p>
+      
+      <div class="meta-box" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <div style="font-size: 11px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; border-bottom: 1px solid #E2E8F0; padding-bottom: 8px;">
+          Deal Intake Metrics
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Reference ID:</span>
+          <span class="meta-value" style="color: #0052FF; font-weight: 800;">#CAMP-${lead.leadNumber || 'NEW'}</span>
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Origination Track:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.personaType}</span>
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Campus / Lab Affiliation:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.campusAffiliation || 'Direct Inbound'}</span>
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Venture Stage:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.ventureStage || 'Early Stage'}</span>
+        </div>
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Target Cheque:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.targetCheque || 'Open'}</span>
+        </div>
+        ${lead.priorFunding ? `
+        <div class="meta-row" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px;">
+          <span class="meta-label" style="color: #64748B; font-weight: 600;">Prior Funding:</span>
+          <span class="meta-value" style="color: #0F172A; font-weight: 700;">${lead.priorFunding}</span>
+        </div>` : ''}
+      </div>
 
-      <p style="margin-top: 24px;">Click below to view the full 10-point screening report and assign to deal reviewer:</p>
+      ${lead.pitchHeadline ? `
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 12px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">Executive Pitch</div>
+        <p style="margin: 0; color: #0F172A; font-size: 15px; font-weight: 600; font-style: italic;">"${lead.pitchHeadline}"</p>
+      </div>` : ''}
+
+      ${lead.problemCustomer ? `
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 12px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">Target Problem & Customer</div>
+        <p style="margin: 0; color: #334155; font-size: 14px; line-height: 1.5;">${lead.problemCustomer}</p>
+      </div>` : ''}
+
+      ${lead.tractionMetrics ? `
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 12px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">Traction & Key Metrics</div>
+        <p style="margin: 0; color: #334155; font-size: 14px; line-height: 1.5;">${lead.tractionMetrics}</p>
+      </div>` : ''}
+
+      ${lead.founderBackground ? `
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 12px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">Founder Pedigree & Background</div>
+        <p style="margin: 0; color: #334155; font-size: 14px; line-height: 1.5;">${lead.founderBackground}</p>
+      </div>` : ''}
+
+      ${lead.pitchDeckUrl ? `
+      <div style="margin: 20px 0; padding: 14px 18px; background-color: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;">
+        <strong style="color: #1E40AF; font-size: 13px;">📎 Pitch Deck Attached:</strong>
+        <a href="${lead.pitchDeckUrl}" target="_blank" style="margin-left: 8px; color: #0052FF; font-weight: 700; text-decoration: underline; font-size: 13px;">
+          Download / Inspect Deck Document ↗
+        </a>
+      </div>` : ''}
+
+      ${lead.generalMessage ? `
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 12px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">Submitter Message</div>
+        <p style="margin: 0; color: #334155; font-size: 14px; line-height: 1.5; white-space: pre-wrap;">${lead.generalMessage}</p>
+      </div>` : ''}
+
+      <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #E2E8F0; text-align: center;">
+        <p style="margin: 0 0 16px 0; color: #475569; font-size: 14px; font-weight: 600;">
+          Access the Deal Desk console to evaluate this submission, assign a reviewer, or dispatch a direct reply:
+        </p>
+      </div>
     `;
 
     const html = wrapEmailHtml({
-      title: `New Lead: ${lead.organizationName}`,
+      title: `Deal Alert: ${lead.organizationName}`,
       bodyHtml,
-      ctaText: 'Open in Campital CRM',
+      ctaText: 'Access Deal Desk Console',
       ctaUrl: adminUrl,
     });
 
     return sendEmail({
       to,
-      subject: `🔥 New Lead #${lead.leadNumber || 'NEW'} (${lead.personaType}): ${lead.organizationName} - ${lead.fullName}`,
+      subject: `[Campital Deal Desk] 📥 New Inbound Dossier: ${lead.organizationName} (#CAMP-${lead.leadNumber || 'NEW'}) • ${lead.personaType}`,
       html,
       templateName: 'DEAL_TEAM_ALERT',
       leadId: lead.id,

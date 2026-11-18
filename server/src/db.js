@@ -231,6 +231,7 @@ export const db = {
       store.leads = store.leads.filter(l => l.id !== id);
       store.leadNotes = store.leadNotes.filter(n => n.leadId !== id);
       store.stageHistory = store.stageHistory.filter(h => h.leadId !== id);
+      store.emailLogs = (store.emailLogs || []).map(e => e.leadId === id ? { ...e, leadId: null } : e);
       writeLocalStore(store);
       return { id };
     }

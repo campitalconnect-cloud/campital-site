@@ -11,7 +11,9 @@ import {
   Database,
   CheckCircle2,
   AlertCircle,
-  Inbox
+  Inbox,
+  Trash2,
+  X
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { AdminLeadDrawer } from './AdminLeadDrawer';
@@ -26,10 +28,35 @@ export const AdminLeads = () => {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [personaFilter, setPersonaFilter] = useState('ALL');
   const [selectedLeadId, setSelectedLeadId] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState(null);
 
   useEffect(() => {
     fetchLeads();
   }, [statusFilter, personaFilter, search]);
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
+    try {
+      await api.deleteLead(deleteTarget.id);
+      setFeedbackMessage({
+        type: 'success',
+        text: `✓ Dossier #CAMP-${deleteTarget.leadNumber || 'NEW'} (${deleteTarget.organizationName}) has been deleted.`
+      });
+      setDeleteTarget(null);
+      fetchLeads(true);
+    } catch (err) {
+      setFeedbackMessage({
+        type: 'error',
+        text: err.message || 'Failed to delete lead dossier.'
+      });
+    } finally {
+      setIsDeleting(false);
+      setTimeout(() => setFeedbackMessage(null), 5000);
+    }
+  };
 
   const fetchLeads = async (manual = false) => {
     if (manual) {
@@ -190,6 +217,35 @@ export const AdminLeads = () => {
           </div>
         )}
       </div>
+
+      {/* Action Feedback Banner */}
+      {feedbackMessage && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0.75rem 1.25rem',
+            borderRadius: '8px',
+            backgroundColor: feedbackMessage.type === 'success' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+            border: `1px solid ${feedbackMessage.type === 'success' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+            color: feedbackMessage.type === 'success' ? '#34D399' : '#F87171',
+            fontSize: '0.85rem',
+            fontWeight: '600'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {feedbackMessage.type === 'success' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
+            <span>{feedbackMessage.text}</span>
+          </div>
+          <button
+            onClick={() => setFeedbackMessage(null)}
+            style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', padding: '0 4px' }}
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
 
       {/* Filter Toolbar */}
       <div
@@ -415,24 +471,60 @@ export const AdminLeads = () => {
                       </span>
                     </td>
                     <td style={{ padding: '1rem 1.25rem', textAlign: 'right' }}>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedLeadId(lead.id);
-                        }}
-                        style={{
-                          padding: '0.4rem 0.85rem',
-                          borderRadius: '6px',
-                          backgroundColor: '#1E293B',
-                          border: '1px solid #334155',
-                          color: '#38BDF8',
-                          fontSize: '0.8rem',
-                          fontWeight: '700',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Open Dossier
-                      </button>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedLeadId(lead.id);
+                          }}
+                          style={{
+                            padding: '0.4rem 0.85rem',
+                            borderRadius: '6px',
+                            backgroundColor: '#1E293B',
+                            border: '1px solid #334155',
+                            color: '#38BDF8',
+                            fontSize: '0.8rem',
+                            fontWeight: '700',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.borderColor = '#0052FF'}
+                          onMouseLeave={(e) => e.currentTarget.style.borderColor = '#334155'}
+                        >
+                          Open Dossier
+                        </button>
+
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteTarget(lead);
+                          }}
+                          title="Delete Lead Dossier"
+                          style={{
+                            padding: '0.4rem 0.55rem',
+                            borderRadius: '6px',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid rgba(239, 68, 68, 0.25)',
+                            color: '#F87171',
+                            fontSize: '0.8rem',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.25)';
+                            e.currentTarget.style.borderColor = '#EF4444';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+                            e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.25)';
+                          }}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -495,6 +587,108 @@ export const AdminLeads = () => {
         onClose={() => setSelectedLeadId(null)}
         onLeadUpdated={fetchLeads}
       />
+
+      {/* Delete Confirmation Modal */}
+      {deleteTarget && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 100,
+            padding: '1.5rem'
+          }}
+          onClick={() => !isDeleting && setDeleteTarget(null)}
+        >
+          <div
+            style={{
+              backgroundColor: '#0F172A',
+              border: '1px solid #1E293B',
+              borderRadius: '16px',
+              maxWidth: '460px',
+              width: '100%',
+              padding: '1.75rem',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <div
+                style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '10px',
+                  backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                  color: '#EF4444',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Trash2 size={20} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#FFFFFF', margin: 0 }}>
+                  Permanently Delete Dossier?
+                </h3>
+                <div style={{ fontSize: '0.8rem', color: '#94A3B8', marginTop: '0.2rem' }}>
+                  Action cannot be undone
+                </div>
+              </div>
+            </div>
+
+            <p style={{ color: '#CBD5E1', fontSize: '0.9rem', lineHeight: '1.6', margin: '0 0 1.5rem 0' }}>
+              Are you sure you want to delete <strong style={{ color: '#FFFFFF' }}>{deleteTarget.organizationName}</strong> (<span style={{ color: '#38BDF8', fontFamily: 'monospace' }}>#CAMP-{deleteTarget.leadNumber || 'NEW'}</span>)? All associated screening notes and audit logs will be permanently removed.
+            </p>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem' }}>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setDeleteTarget(null)}
+                style={{
+                  padding: '0.65rem 1.15rem',
+                  borderRadius: '8px',
+                  backgroundColor: '#1E293B',
+                  border: '1px solid #334155',
+                  color: '#E2E8F0',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  cursor: isDeleting ? 'not-allowed' : 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={handleConfirmDelete}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.65rem 1.25rem',
+                  borderRadius: '8px',
+                  backgroundColor: '#DC2626',
+                  border: 'none',
+                  color: '#FFFFFF',
+                  fontSize: '0.88rem',
+                  fontWeight: '700',
+                  cursor: isDeleting ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 4px 12px rgba(220, 38, 38, 0.35)'
+                }}
+              >
+                {isDeleting && <Loader2 size={15} className="animate-spin" />}
+                <span>{isDeleting ? 'Deleting...' : 'Yes, Delete Dossier'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

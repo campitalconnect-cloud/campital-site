@@ -14,7 +14,8 @@ import {
   Tag,
   MessageSquare,
   ShieldCheck,
-  Loader2
+  Loader2,
+  Trash2
 } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 import { api } from '../../services/api';
@@ -49,6 +50,7 @@ export const AdminLeadDrawer = ({ leadId, onClose, onLeadUpdated }) => {
   // Internal Note State
   const [noteContent, setNoteContent] = useState('');
   const [addingNote, setAddingNote] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!leadId) return;
@@ -135,6 +137,22 @@ export const AdminLeadDrawer = ({ leadId, onClose, onLeadUpdated }) => {
     }
   };
 
+  const handleDeleteLead = async () => {
+    if (!window.confirm(`Permanently delete dossier #CAMP-${lead?.leadNumber || 'NEW'} (${lead?.organizationName})? This cannot be undone.`)) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await api.deleteLead(leadId);
+      if (onLeadUpdated) onLeadUpdated();
+      onClose();
+    } catch (err) {
+      alert(err.message || 'Failed to delete dossier.');
+      setIsDeleting(false);
+    }
+  };
+
   if (!leadId) return null;
 
   return (
@@ -201,19 +219,54 @@ export const AdminLeadDrawer = ({ leadId, onClose, onLeadUpdated }) => {
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            style={{
-              background: '#1E293B',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '0.5rem',
-              color: '#94A3B8',
-              cursor: 'pointer'
-            }}
-          >
-            <X size={18} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <button
+              onClick={handleDeleteLead}
+              disabled={isDeleting}
+              title="Delete this dossier"
+              style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.25)',
+                borderRadius: '8px',
+                padding: '0.5rem 0.85rem',
+                color: '#F87171',
+                fontSize: '0.82rem',
+                fontWeight: '700',
+                cursor: isDeleting ? 'not-allowed' : 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                if (!isDeleting) {
+                  e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.22)';
+                  e.currentTarget.style.borderColor = '#EF4444';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.25)';
+              }}
+            >
+              <Trash2 size={14} />
+              <span>{isDeleting ? 'Deleting...' : 'Delete Dossier'}</span>
+            </button>
+
+            <button
+              onClick={onClose}
+              style={{
+                background: '#1E293B',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '0.5rem',
+                color: '#94A3B8',
+                cursor: 'pointer'
+              }}
+            >
+              <X size={18} />
+            </button>
+          </div>
         </div>
 
         {/* Body Content */}

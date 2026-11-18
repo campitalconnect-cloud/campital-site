@@ -318,6 +318,29 @@ export const adminController = {
       console.error('Error sending lead reply:', err);
       return res.status(500).json({ error: 'Failed to dispatch reply email.' });
     }
+  },
+
+  /**
+   * Delete Lead by ID
+   */
+  async deleteLead(req, res) {
+    try {
+      const { id } = req.params;
+      const lead = await db.leads.findById(id);
+      if (!lead) {
+        return res.status(404).json({ error: 'Lead dossier not found.' });
+      }
+
+      await db.leads.delete(id);
+
+      return res.status(200).json({
+        success: true,
+        message: `Dossier #CAMP-${lead.leadNumber || 'NEW'} (${lead.organizationName}) has been permanently removed.`
+      });
+    } catch (err) {
+      console.error('Error deleting lead:', err);
+      return res.status(500).json({ error: 'Failed to delete lead from database.' });
+    }
   }
 };
 
