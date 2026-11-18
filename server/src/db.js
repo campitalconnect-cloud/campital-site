@@ -42,8 +42,8 @@ const defaultStore = {
     {
       id: 'admin-core-desk-1',
       name: 'Campital Lead Desk',
-      email: 'core.desk@campital.in',
-      passwordHash: '$2b$10$hEXZlxxiGsUoXZxrvErwOubLj71gYYpjcXU4kW6mPHkBL.Hsd3uRe',
+      email: process.env.ADMIN_EMAIL || 'core.desk@campital.in',
+      passwordHash: process.env.ADMIN_PASSWORD ? bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10) : '',
       role: 'SUPER_ADMIN',
       isActive: true,
       createdAt: new Date().toISOString()
